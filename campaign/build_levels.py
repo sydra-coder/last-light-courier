@@ -193,12 +193,17 @@ for number in range(1, 101):
         for square in squares:
             if repair and repair['effect'] == 'open' and repair['tile'] in square:
                 continue
+            if any(p in homes for p in square):
+                continue
             for phase in range(4):
                 activation = spine.index(homes[0])
                 if all(spine[step] != square[(phase + step - activation) % 4]
+                       and spine[step] != square[(phase + step - activation - 1) % 4]
                        for step in range(activation + 1, len(spine))):
                     return square, phase
-        return [[3, 3], [4, 3], [4, 4], [3, 4]], 0
+        square = [[3, 3], [4, 3], [4, 4], [3, 4]]
+        assert not any(p in homes for p in square)
+        return square, 0
 
     patrol, phase = make_patrol(number % 4 != 0)
     patrol2, phase2 = make_patrol(True) if second else (None, None)
