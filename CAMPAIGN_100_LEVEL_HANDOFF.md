@@ -36,7 +36,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 | Chapter | Levels | Theme | Start light | Repairs |
 |---:|---:|---|---:|---:|
-| 1 | 1–10 | First Deliveries | 20–22 | 4 |
+| 1 | 1–10 | First Deliveries | 20–23 | 4 |
 | 2 | 11–20 | Broken Crossings | 20–22 | 4 |
 | 3 | 21–30 | Waterline | 21–28 | 4 |
 | 4 | 31–40 | Switchyard | 21–28 | 4 |
@@ -53,53 +53,53 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Design brief:** Tutorial: one house, return, bank; then reveal the other houses.
 
-**Goal:** bank 1 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (4,1), lantern 20.
+**Goal:** bank 1 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (4,1), lantern 23.
 
-**Houses:** A Lantern Row (6,3) = 120 pts; B East Watch (3,6) = 180 pts; C The Mill (1,3) = 240 pts.
+**Houses:** A Lantern Row (6,1) = 120 pts; B East Watch (6,4) = 180 pts; C The Mill (5,6) = 240 pts.
 
 ```text
     01234567
-0   #......#
-1   #...D..#
-2   ....#...
-3   .C....A.
-4   ..##....
+0   .......#
+1   ....D.A.
+2   ........
+3   ........
+4   ..#...B.
 5   ........
-6   ...B....
-7   ...#....
+6   .....C..
+7   ........
 ```
 
-**Hazards:** first patrol (4,5) → (5,5) → (5,6) → (4,6); initial index 0. No timed tile on this board.
+**Hazards:** first patrol (3,5) → (4,5) → (4,6) → (3,6); initial index 1. No timed tile on this board.
 
 **Repair:** none on this board.
 
-**Verified no-purchase full route:** `R2 D5 L5 U5 R3`. 20 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
+**Verified no-purchase full route:** `R2 D5 L5 U5 R3`. 20 moves, 9 light left, 640 points banked including the 100-point mastery bonus.
 
 ### 002 — First Deliveries
 
 **Design brief:** Choose between two nearby houses before returning.
 
-**Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (1,3), lantern 20.
+**Goal:** bank 1 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (1,3), lantern 23.
 
-**Houses:** A Lantern Row (2,6) = 120 pts; B East Watch (6,4) = 180 pts; C The Mill (4,1) = 240 pts.
+**Houses:** A Lantern Row (1,5) = 120 pts; B East Watch (3,6) = 180 pts; C The Mill (6,6) = 240 pts.
 
 ```text
     01234567
 0   ........
-1   ....C...
-2   #.......
+1   ........
+2   ........
 3   .D......
-4   ......B.
-5   ..#.##.#
-6   ..A.....
-7   #.....##
+4   ........
+5   .A......
+6   ...B..C.
+7   #......#
 ```
 
-**Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. No timed tile on this board.
+**Hazards:** first patrol (6,4) → (7,4) → (7,5) → (6,5); initial index 2. No timed tile on this board.
 
 **Repair:** none on this board.
 
-**Verified no-purchase full route:** `D3 R5 U5 L5 D2`. 20 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
+**Verified no-purchase full route:** `D3 R5 U5 L5 D2`. 20 moves, 9 light left, 640 points banked including the 100-point mastery bonus.
 
 ### 003 — First Deliveries
 
@@ -107,77 +107,77 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (1,6), lantern 22.
 
-**Houses:** A Lantern Row (1,2) = 120 pts; B East Watch (6,1) = 180 pts; C The Mill (6,6) = 240 pts.
+**Houses:** A Lantern Row (1,4) = 120 pts; B East Watch (1,1) = 180 pts; C The Mill (4,1) = 240 pts.
 
 ```text
     01234567
-0   #.....##
-1   ......B.
-2   .A......
-3   ...#....
-4   ..#.....
-5   ...#..R.
-6   .D....C.
-7   #..#.##.
+0   ........
+1   .B.RC...
+2   ........
+3   ........
+4   .A#....#
+5   ........
+6   .D......
+7   ...#....
 ```
 
-**Hazards:** first patrol (3,1) → (4,1) → (4,2) → (3,2); initial index 0. No timed tile on this board.
+**Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. No timed tile on this board.
 
-**Repair:** Clear crates at (6,5); S band, **150 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear crates at (3,1); S band, **150 points**; opens the R tile; verified 2-move static all-house shortcut.
 
-**Verified no-purchase full route:** `U5 R5 D3 R1 D2 L6`. 22 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
+**Verified no-purchase full route:** `U5 R1 U1 R2 D1 R2 D5 L5`. 22 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
 
 ### 004 — First Deliveries
 
 **Design brief:** Shadow wakes after the first delivery.
 
-**Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (1,6), lantern 20.
+**Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (1,6), lantern 21.
 
-**Houses:** A Lantern Row (5,6) = 120 pts; B East Watch (6,1) = 180 pts; C The Mill (1,1) = 240 pts.
+**Houses:** A Lantern Row (3,6) = 120 pts; B East Watch (6,6) = 180 pts; C The Mill (6,3) = 240 pts.
 
 ```text
     01234567
 0   ......#.
-1   .C....B.
+1   ........
 2   #.......
-3   .....#..
-4   ..#.....
-5   ..#.....
-6   #D...A..
+3   .....#C.
+4   ........
+5   ........
+6   #D.A..B.
 7   ........
 ```
 
-**Hazards:** first patrol (6,2) → (7,2) → (7,3) → (6,3); initial index 1. No timed tile on this board.
+**Hazards:** first patrol (6,1) → (7,1) → (7,2) → (6,2); initial index 2. No timed tile on this board.
 
 **Repair:** none on this board.
 
-**Verified no-purchase full route:** `R5 U5 L5 D5`. 20 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
+**Verified no-purchase full route:** `R5 U5 L5 D5`. 20 moves, 7 light left, 640 points banked including the 100-point mastery bonus.
 
 ### 005 — First Deliveries
 
 **Design brief:** Wait by choosing a safe side step to alter patrol timing.
 
-**Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (3,6), lantern 20.
+**Goal:** bank 2 of 3 houses to clear; bank all 3 for mastery. **Start:** depot (3,6), lantern 21.
 
-**Houses:** A Lantern Row (1,4) = 120 pts; B East Watch (4,1) = 180 pts; C The Mill (6,4) = 240 pts.
+**Houses:** A Lantern Row (1,6) = 120 pts; B East Watch (1,3) = 180 pts; C The Mill (2,1) = 240 pts.
 
 ```text
     01234567
-0   .....#..
-1   ....B...
-2   .......#
-3   .......#
-4   .A....C.
+0   ........
+1   ..C.....
+2   ........
+3   .B.....#
+4   ........
 5   ...#.#.#
-6   #..D...#
-7   .......#
+6   #A.D...#
+7   ........
 ```
 
-**Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. No timed tile on this board.
+**Hazards:** first patrol (4,1) → (5,1) → (5,2) → (4,2); initial index 2. No timed tile on this board.
 
 **Repair:** none on this board.
 
-**Verified no-purchase full route:** `L2 U5 R5 D5 L3`. 20 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
+**Verified no-purchase full route:** `L2 U5 R5 D5 L3`. 20 moves, 7 light left, 640 points banked including the 100-point mastery bonus.
 
 ### 006 — First Deliveries
 
@@ -201,7 +201,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. No timed tile on this board.
 
-**Repair:** Clear rubble at (5,1); S band, **150 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear rubble at (5,1); S band, **450 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `D3 R5 U6 L2 D1 L3 D2`. 22 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
 
@@ -279,7 +279,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (5,3) → (6,3) → (6,4) → (5,4); initial index 0. two-light dark tile (6,2).
 
-**Repair:** Relight streetlamp at (6,2); S band, **150 points**; dark tile costs 1 light after repair.
+**Repair:** Relight streetlamp at (6,2); S band, **650 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `U5 R5 D5 L5`. 20 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
 
@@ -305,7 +305,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,4) → (1,4) → (1,5) → (0,5); initial index 1. No timed tile on this board.
 
-**Repair:** Clear central crates at (2,1); R band, **300 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear central crates at (2,1); R band, **1150 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U4 L3 U1 L2 D6 R5 U1`. 22 moves, 6 light left, 640 points banked including the 100-point mastery bonus.
 
@@ -383,7 +383,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (1,3).
 
-**Repair:** Open alley gate at (4,1); R band, **400 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Open alley gate at (4,1); R band, **1550 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `L3 U5 R2 U1 R2 D1 R1 D5 L2`. 22 moves, 6 light left, 755 points banked including the 125-point mastery bonus.
 
@@ -461,7 +461,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,0) → (1,0) → (1,1) → (0,1); initial index 1. fading crossing (2,1).
 
-**Repair:** Repair footbridge at (1,2); R band, **400 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair footbridge at (1,2); R band, **2000 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U2 L6 D2 R1 D3 R5 U3`. 22 moves, 6 light left, 755 points banked including the 125-point mastery bonus.
 
@@ -539,7 +539,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (2,1) → (3,1) → (3,2) → (2,2); initial index 0. fading crossing (1,6).
 
-**Repair:** Clear rubble at (1,4); S band, **225 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear rubble at (1,4); S band, **1575 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `D1 L5 U1 L1 U2 R1 U2 R5 D4`. 22 moves, 6 light left, 755 points banked including the 125-point mastery bonus.
 
@@ -565,7 +565,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,5) → (1,5) → (1,6) → (0,6); initial index 0. fading crossing (2,1).
 
-**Repair:** Repair side bridge at (2,6); M band, **625 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair side bridge at (2,6); M band, **3700 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U2 L5 D6 R2 U1 R3 U3`. 22 moves, 6 light left, 755 points banked including the 125-point mastery bonus.
 
@@ -643,7 +643,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (5,4) → (6,4) → (6,5) → (5,5); initial index 1. fading crossing (6,4); two-light dark tile (3,6).
 
-**Repair:** Drain road at (2,6); R band, **500 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Drain road at (2,6); R band, **3275 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R3 D5 L3 D1 L2 U6 R2`. 22 moves, 5 light left, 870 points banked including the 150-point mastery bonus.
 
@@ -721,7 +721,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,0); two-light dark tile (0,1).
 
-**Repair:** Relight lamp at (0,1); S band, **300 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (0,1); S band, **2450 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `R1 U7 L7 D7 R6`. 28 moves, 5 light left, 870 points banked including the 150-point mastery bonus.
 
@@ -799,7 +799,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,3); two-light dark tile (4,6).
 
-**Repair:** Reopen tunnel at (6,4); M band, **750 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Reopen tunnel at (6,4); M band, **6350 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R4 D2 R1 D2 L1 D1 L5 U5 R1`. 22 moves, 5 light left, 870 points banked including the 150-point mastery bonus.
 
@@ -825,7 +825,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (4,0) → (5,0) → (5,1) → (4,1); initial index 2. fading crossing (6,2).
 
-**Repair:** Drain central road at (6,3); R band, **500 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Drain central road at (6,3); R band, **4875 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R2 U2 R1 U2 L1 U1 L5 D5 R3`. 22 moves, 5 light left, 870 points banked including the 150-point mastery bonus.
 
@@ -929,7 +929,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (5,0); two-light dark tile (0,1); switch (6,1); timed gate (6,0).
 
-**Repair:** Install latch at (6,0); R band, **600 points**; timed gate stays open after repair.
+**Repair:** Install latch at (6,0); R band, **5925 points**; timed gate stays open after repair.
 
 **Verified no-purchase full route:** `R1 U6 L6 D6 R5`. 24 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -981,7 +981,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (6,5) → (7,5) → (7,6) → (6,6); initial index 2. fading crossing (5,6); switch (4,6); timed gate (6,6).
 
-**Repair:** Clear rubble at (4,1); S band, **375 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear rubble at (4,1); S band, **4050 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `D2 R5 U5 L1 U1 L2 D1 L2 D3`. 22 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -1059,7 +1059,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (2,5) → (3,5) → (3,6) → (2,6); initial index 1. fading crossing (6,4).
 
-**Repair:** Repair side crossing at (1,5); M band, **875 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair side crossing at (1,5); M band, **10150 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R3 D5 L6 U2 R1 U3 R2`. 22 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -1085,7 +1085,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,3); two-light dark tile (3,0); switch (6,4); timed gate (6,2).
 
-**Repair:** Install gate latch at (6,2); R band, **600 points**; timed gate stays open after repair.
+**Repair:** Install gate latch at (6,2); R band, **7675 points**; timed gate stays open after repair.
 
 **Verified no-purchase full route:** `R4 U6 L5 D6 R1`. 22 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -1215,7 +1215,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (4,1) → (5,1) → (5,2) → (4,2); initial index 0. fading crossing (3,1); Echo Shadow active after first delivery.
 
-**Repair:** Open alley at (6,3); R band, **700 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Open alley at (6,3); R band, **9325 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U4 R5 D1 R1 D2 L1 D2 L5 U1`. 22 moves, 4 light left, 1100 points banked including the 200-point mastery bonus.
 
@@ -1241,7 +1241,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (5,0) → (6,0) → (6,1) → (5,1); initial index 0. fading crossing (6,3); two-light dark tile (3,1); switch (6,4); timed gate (6,2).
 
-**Repair:** Clear tower passage at (1,2); M band, **1000 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear tower passage at (1,2); M band, **13300 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R3 U5 L6 D2 R1 D3 R2`. 22 moves, 4 light left, 1100 points banked including the 200-point mastery bonus.
 
@@ -1319,7 +1319,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,2) → (1,2) → (1,3) → (0,3); initial index 2. fading crossing (4,7); two-light dark tile (0,4); Echo Shadow active after first delivery.
 
-**Repair:** Relight lamp at (0,4); S band, **450 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (0,4); S band, **6725 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `D5 L7 U6 R7 D1`. 26 moves, 4 light left, 1100 points banked including the 200-point mastery bonus.
 
@@ -1345,7 +1345,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,6) → (1,6) → (1,7) → (0,7); initial index 0. fading crossing (1,1); two-light dark tile (1,6); switch (2,1); timed gate (1,2).
 
-**Repair:** Repair side bridge at (2,6); R band, **700 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair side bridge at (2,6); R band, **11150 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U1 L5 D6 R2 U1 R3 U4`. 22 moves, 4 light left, 1100 points banked including the 200-point mastery bonus.
 
@@ -1423,7 +1423,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (4,1) → (5,1) → (5,2) → (4,2); initial index 0. fading crossing (1,4); two-light dark tile (3,1); thin ice (5,1); Echo Shadow active after first delivery.
 
-**Repair:** Build canal bridge at (1,5); M band, **1125 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Build canal bridge at (1,5); M band, **16925 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `L5 U2 R1 U3 R5 D5 L1`. 22 moves, 4 light left, 1215 points banked including the 225-point mastery bonus.
 
@@ -1501,7 +1501,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 2. fading crossing (4,1); two-light dark tile (1,3); switch (5,1); timed gate (3,1).
 
-**Repair:** Clear rubble at (2,1); S band, **525 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear rubble at (2,1); S band, **8450 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U4 L3 U1 L2 D6 R5 U1`. 22 moves, 4 light left, 1215 points banked including the 225-point mastery bonus.
 
@@ -1579,7 +1579,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (1,5) → (2,5) → (2,6) → (1,6); initial index 1. fading crossing (6,5); two-light dark tile (2,6); thin ice (1,5); Echo Shadow active after first delivery.
 
-**Repair:** Open shore gate at (1,4); R band, **800 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Open shore gate at (1,4); R band, **14800 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R2 D5 L5 U1 L1 U2 R1 U2 R3`. 22 moves, 4 light left, 1215 points banked including the 225-point mastery bonus.
 
@@ -1605,7 +1605,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (1,6); switch (1,5); timed gate (2,6).
 
-**Repair:** Build side bridge at (3,6); M band, **1125 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Build side bridge at (3,6); M band, **20950 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `L1 D5 R1 D1 R2 U1 R2 U5 L4`. 22 moves, 4 light left, 1215 points banked including the 225-point mastery bonus.
 
@@ -1709,7 +1709,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,4); two-light dark tile (4,1); switch (6,5); timed gate (6,3).
 
-**Repair:** Open gate at (6,2); R band, **900 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Open gate at (6,2); R band, **17050 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R4 U3 R1 U2 L6 D5 R1`. 22 moves, 3 light left, 1330 points banked including the 250-point mastery bonus.
 
@@ -1761,7 +1761,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (5,0) → (6,0) → (6,1) → (5,1); initial index 1. Second patrol (5,0) → (6,0) → (6,1) → (5,1); initial index 1. fading crossing (6,7); two-light dark tile (7,1); switch (4,7); timed gate (7,7); second patrol active after first delivery.
 
-**Repair:** Relight lamp at (7,1); S band, **600 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (7,1); S band, **11250 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `D2 R7 U6 L7 D4`. 26 moves, 3 light left, 1330 points banked including the 250-point mastery bonus.
 
@@ -1813,7 +1813,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,6) → (1,6) → (1,7) → (0,7); initial index 0. Second patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 0. fading crossing (1,1); two-light dark tile (1,6); switch (2,1); timed gate (1,2); second patrol active after first delivery.
 
-**Repair:** Repair side arch at (2,6); R band, **900 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair side arch at (2,6); R band, **18975 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U1 L5 D6 R2 U1 R3 U4`. 22 moves, 3 light left, 1330 points banked including the 250-point mastery bonus.
 
@@ -1865,7 +1865,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,1) → (1,1) → (1,2) → (0,2); initial index 1. fading crossing (6,2); two-light dark tile (2,1); switch (6,3); timed gate (6,1).
 
-**Repair:** Clear tower passage at (5,1); M band, **1250 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear tower passage at (5,1); M band, **27450 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R2 U6 L2 D1 L3 D5 R3`. 22 moves, 3 light left, 1330 points banked including the 250-point mastery bonus.
 
@@ -1943,7 +1943,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (1,5) → (2,5) → (2,6) → (1,6); initial index 0. fading crossing (6,5); two-light dark tile (2,6); thin ice (1,5); Echo Shadow active after first delivery.
 
-**Repair:** Repair arch at (4,6); R band, **1000 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair arch at (4,6); R band, **21525 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R2 D5 L1 D1 L2 U1 L2 U5 R3`. 22 moves, 3 light left, 1445 points banked including the 275-point mastery bonus.
 
@@ -2021,7 +2021,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,4); two-light dark tile (4,1); switch (6,5); timed gate (6,3).
 
-**Repair:** Drain road at (3,1); R band, **1000 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Drain road at (3,1); R band, **23125 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R4 U5 L2 U1 L2 D1 L1 D5 R1`. 22 moves, 3 light left, 1445 points banked including the 275-point mastery bonus.
 
@@ -2047,7 +2047,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. Second patrol (1,2) → (2,2) → (2,3) → (1,3); initial index 0. fading crossing (4,7); two-light dark tile (1,3); thin ice (1,1); Echo Shadow active after first delivery; second patrol active after first delivery.
 
-**Repair:** Relight lamp at (1,3); S band, **675 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (1,3); S band, **14800 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `D5 L6 U7 R6 D2`. 26 moves, 3 light left, 1445 points banked including the 275-point mastery bonus.
 
@@ -2099,7 +2099,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (6,3); two-light dark tile (4,6); thin ice (2,6); Echo Shadow active after first delivery.
 
-**Repair:** Reopen tunnel at (6,5); M band, **1375 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Reopen tunnel at (6,5); M band, **34075 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `R4 D3 R1 D2 L6 U5 R1`. 22 moves, 3 light left, 1445 points banked including the 275-point mastery bonus.
 
@@ -2125,7 +2125,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. Second patrol (6,1) → (7,1) → (7,2) → (6,2); initial index 2. fading crossing (3,6); two-light dark tile (6,4); switch (2,6); timed gate (4,6); second patrol active after first delivery.
 
-**Repair:** Clear central rubble at (6,3); R band, **1000 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Clear central rubble at (6,3); R band, **25350 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `D4 R5 U2 R1 U2 L1 U1 L5 D1`. 22 moves, 3 light left, 1445 points banked including the 275-point mastery bonus.
 
@@ -2229,7 +2229,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. Second patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (4,7); two-light dark tile (7,3); switch (2,7); timed gate (5,7); second patrol active after first delivery.
 
-**Repair:** Relight lamp at (7,3); S band, **750 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (7,3); S band, **17300 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `D5 R6 U7 L6 D2`. 26 moves, 2 light left, 1560 points banked including the 300-point mastery bonus.
 
@@ -2281,7 +2281,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 2. Second patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 2. fading crossing (4,1); two-light dark tile (1,3); switch (5,1); timed gate (3,1); second patrol active after first delivery.
 
-**Repair:** Repair bridge at (2,1); R band, **1100 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair bridge at (2,1); R band, **28875 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U4 L3 U1 L2 D6 R5 U1`. 22 moves, 2 light left, 1560 points banked including the 300-point mastery bonus.
 
@@ -2359,7 +2359,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (5,1) → (6,1) → (6,2) → (5,2); initial index 2. Second patrol (5,0) → (6,0) → (6,1) → (5,1); initial index 0. fading crossing (5,0); two-light dark tile (6,5); thin ice (6,6); Echo Shadow active after first delivery; second patrol active after first delivery.
 
-**Repair:** Restore beacon at (1,4); M band, **1500 points**; start capacity rises by 3 on this level.
+**Repair:** Restore beacon at (1,4); M band, **42250 points**; start capacity rises by 3 on this level.
 
 **Verified no-purchase full route:** `U4 R5 D7 L5 U3`. 24 moves, 2 light left, 1560 points banked including the 300-point mastery bonus.
 
@@ -2385,7 +2385,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. Second patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (4,1); switch (5,1); timed gate (3,1); second patrol active after first delivery.
 
-**Repair:** Open old tunnel at (1,3); M band, **1500 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Open old tunnel at (1,3); M band, **43125 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U4 L5 D1 L1 D2 R1 D2 R5 U1`. 22 moves, 2 light left, 1560 points banked including the 300-point mastery bonus.
 
@@ -2489,7 +2489,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (5,1); two-light dark tile (1,2); switch (6,1); timed gate (4,1).
 
-**Repair:** Repair side bridge at (2,1); R band, **1200 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Repair side bridge at (2,1); R band, **33950 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `U5 L3 U1 L2 D6 R5`. 22 moves, 2 light left, 1675 points banked including the 325-point mastery bonus.
 
@@ -2541,7 +2541,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. Second patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (0,4); two-light dark tile (4,7); switch (0,2); timed gate (0,5); second patrol active after first delivery.
 
-**Repair:** Relight lamp at (4,7); S band, **825 points**; dark tile costs 1 light after repair.
+**Repair:** Relight lamp at (4,7); S band, **22050 points**; dark tile costs 1 light after repair.
 
 **Verified no-purchase full route:** `L5 D7 R7 U7 L2`. 28 moves, 2 light left, 1675 points banked including the 325-point mastery bonus.
 
@@ -2593,7 +2593,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (6,4) → (7,4) → (7,5) → (6,5); initial index 2. Second patrol (6,3) → (7,3) → (7,4) → (6,4); initial index 1. fading crossing (2,6); two-light dark tile (6,5); switch (1,6); timed gate (3,6); second patrol active after first delivery.
 
-**Repair:** Reopen tunnel at (6,2); M band, **1625 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Reopen tunnel at (6,2); M band, **50375 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `D5 R5 U3 R1 U2 L6`. 22 moves, 2 light left, 1675 points banked including the 325-point mastery bonus.
 
@@ -2645,7 +2645,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 **Hazards:** first patrol (3,3) → (4,3) → (4,4) → (3,4); initial index 0. fading crossing (1,4); two-light dark tile (4,6); switch (1,3); timed gate (1,5).
 
-**Repair:** Restore final bridge at (5,6); M band, **1625 points**; opens the R tile; verified 2-move static all-house shortcut.
+**Repair:** Restore final bridge at (5,6); M band, **52275 points**; opens the R tile; verified 2-move static all-house shortcut.
 
 **Verified no-purchase full route:** `L3 D5 R3 D1 R2 U6 L2`. 22 moves, 2 light left, 1675 points banked including the 325-point mastery bonus.
 

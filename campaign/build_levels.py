@@ -35,10 +35,12 @@ def neighbors(p):
     return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
 
 
-def price(chapter, band):
-    return {'S': 150 + 75 * (chapter - 1),
-            'R': 300 + 100 * (chapter - 1),
-            'M': 500 + 125 * (chapter - 1)}[band]
+def price(number, band):
+    if number == 3:
+        return 150  # Let the first repair teach the action after two deliveries.
+    progress = number - 1
+    base = 200 + 40 * progress + 2 * progress * progress
+    return round(base * {'S': 1, 'R': 1.6, 'M': 2.2}[band] / 25) * 25
 
 
 def shortest_full(depot, homes, walls):
@@ -86,7 +88,7 @@ for number in range(1, 101):
     if number % 2 == 0:
         path = [path[0]] + path[:0:-1]
     length = len(path)
-    picks = [round(length * fraction) for fraction in (0.19, 0.48, 0.73)]
+    picks = [2, 5, 8] if number <= 5 else [round(length * fraction) for fraction in (0.19, 0.48, 0.73)]
     picks = sorted(set(picks))
     assert len(picks) == 3 and picks[0] >= 2 and picks[-1] < length - 2
     depot = path[0]
@@ -97,7 +99,8 @@ for number in range(1, 101):
     # Every board has its own wall pattern; the complete outer loop stays open.
     candidates = [[x, y] for y in range(8) for x in range(8) if key([x, y]) not in keep]
     rng.shuffle(candidates)
-    walls = {key(p) for p in candidates[:8 + min(7, chapter // 2) + number % 4]}
+    wall_count = number + 1 if number <= 5 else 8 + min(7, chapter // 2) + number % 4
+    walls = {key(p) for p in candidates[:wall_count]}
 
     repair = None
     band_match = re.search(r'\(([SRM])\)', repair_text)
@@ -121,7 +124,7 @@ for number in range(1, 101):
             top = max(score for score, _ in choices)
             p = rng.choice([p for score, p in choices if score == top])
         repair = {'tile': p, 'name': repair_text.rsplit('(', 1)[0].strip(),
-                  'band': band, 'cost': price(chapter, band)}
+                  'band': band, 'cost': price(number, band)}
 
     occupied_features = {key(depot), *(key(p) for p in homes)}
     def feature_near(fraction):
@@ -205,7 +208,7 @@ for number in range(1, 101):
         assert not any(p in homes for p in square)
         return square, 0
 
-    patrol, phase = make_patrol(number % 4 != 0)
+    patrol, phase = make_patrol(number > 2 and number % 4 != 0)
     patrol2, phase2 = make_patrol(True) if second else (None, None)
     for p in patrol + (patrol2 or []):
         walls.discard(key(p))
@@ -232,8 +235,8 @@ for number in range(1, 101):
     target_spare = 6 if chapter <= 2 else 5 if chapter <= 4 else 4 if chapter <= 6 else 3 if chapter <= 8 else 2
     cap = len(spine) - 1 + extra - 6 + target_spare
     cap = max(cap, picks[0] + 1)
-    if number == 1:
-        cap = max(cap, 16)
+    if number <= 5:
+        cap = max(cap, 23 if number <= 2 else 21)
     homes_data = [{'p': p, 'name': name, 'points': base + 30 * (chapter - 1)}
                   for p, name, base in zip(homes, ['Lantern Row', 'East Watch', 'The Mill'], [120, 180, 240])]
     level = {'n': number, 'chapter': chapter, 'brief': brief,
@@ -241,7 +244,7 @@ for number in range(1, 101):
              'repair': repair, 'fade': fade, 'dark': dark, 'switch': switch,
              'gate': gate, 'ice': ice, 'echo': echo, 'patrol': patrol,
              'phase': phase, 'patrol2': patrol2, 'phase2': phase2,
-             'cap': cap, 'spine': spine, 'required': 1 if number == 1 else 3 if number % 10 == 0 else 2,
+             'cap': cap, 'spine': spine, 'required': 1 if number <= 2 else 3 if number % 10 == 0 else 2,
              'bonus': 100 + 25 * (chapter - 1)}
     # Static checks protect the authored guarantee and map integrity.
     assert len(set(map(key, path))) == length
@@ -258,6 +261,8 @@ for number in range(1, 101):
 (ROOT / 'CAMPAIGN_LEVELS.json').write_text(json.dumps(levels, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 template = (ROOT / 'campaign' / 'campaign.template.html').read_text(encoding='utf-8')
 output = template.replace('/*__LEVEL_DATA__*/', 'const LEVELS=' + json.dumps(levels, ensure_ascii=False, separators=(',', ':')) + ';')
+output = output.replace('/*__ISOMETRIC_SCENE__*/', (ROOT / 'campaign' / 'isometric-scene.js').read_text(encoding='utf-8'))
 assert '/*__LEVEL_DATA__*/' not in output
+assert '/*__ISOMETRIC_SCENE__*/' not in output
 (ROOT / 'CAMPAIGN_100_LEVELS.html').write_text(output, encoding='utf-8')
 print(f'Built {len(levels)} distinct campaign levels')

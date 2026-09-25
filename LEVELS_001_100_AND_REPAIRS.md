@@ -7,10 +7,10 @@ Status: 100 playable browser levels now exist in [CAMPAIGN_100_LEVELS.html](CAMP
 1. Tap an adjacent safe tile. Each move spends 1 lantern light and advances the shadow one step.
 2. Deliver light to a house. It becomes visibly **DONE**, awards points **at risk**, and refills 2 light (up to the level's cap).
 3. Return to the depot to **bank** points. Being caught or running out of light loses only points still at risk.
-4. Spend banked points between attempts on a *permanent repair on that level's map*. The repaired tile stays open on retries and is visible before starting.
-5. Bank points from any 2 of 3 houses to clear a normal level. Deliver all 3 for a gold completion and a small mastery bonus. Levels 10, 20, …, 100 require all 3 houses as chapter finales. A player may bank one house and retry while learning; previously banked points stay in the wallet.
+4. Tap a marked repair tile to spend banked points on a permanent repair for that level. The repair applies immediately, including during a run, and remains on retries.
+5. Levels 1 and 2 need one house. Levels 3–9 need two of three houses. Deliver all three for a mastery bonus. Levels 10, 20, …, 100 require all three houses as chapter finales. A player may bank one house and retry while learning; previously banked points stay in the wallet.
 
-**No softlocks:** Every level must have a feasible two-house return route without spending. A required chapter finale must have a feasible three-house route before repairs. Repairs make safer, shorter, or higher-scoring routes possible; they never substitute for solving the shadow timing. If a player spends poorly, they can replay cleared levels for points. Show the shortest known *light cost* of a repair's new route before buying it, without exposing the hidden next-shadow tile.
+**No softlocks:** Levels 1–2 must have a feasible one-house return, later normal levels a feasible two-house return, and chapter finales a feasible three-house return before repairs. Repairs make safer, shorter, or higher-scoring routes possible; they never substitute for solving the shadow timing. If a player spends poorly, they can replay cleared levels for points. Show the shortest known *light cost* of a repair's new route before buying it, without exposing the hidden next-shadow tile.
 
 ## Points and rewards
 
@@ -18,19 +18,20 @@ Status: 100 playable browser levels now exist in [CAMPAIGN_100_LEVELS.html](CAMP
 - All three houses and a safe return award a **100 + 25 × (c − 1)** mastery bonus. This bonus is banked only on that successful return.
 - A result screen separates **deliveries**, **mastery bonus**, **banked this run**, **wallet**, and **best result**. Remaining light is a medal criterion, not spendable currency; the player should never confuse it with banked points.
 - Replays can earn points again, but the same house pays only once per run. This keeps a poor purchase from blocking progress. Before release, tune replay earnings against the first 20 levels to avoid farming a trivial level becoming the fastest strategy.
-- Repairs are purchased only from a map preview between runs. No purchase prompt appears mid-run, and a purchase never changes a live route unexpectedly.
+- The first two levels can be cleared by reaching the nearest house and returning in four moves. Levels 3–5 have a simple ten-move two-house route, few obstacles, and generous lantern capacity. Later levels introduce mechanics in stages.
+- A marked tile repairs immediately when the wallet covers its price. The game shows the point deduction and keeps the courier in place. An insufficient balance leaves the map unchanged and gives visual feedback, plus vibration where the phone browser supports it.
 
 ### Repair price rule
 
-Prices scale by chapter so late shortcuts remain meaningful. `c` is the chapter containing the level.
+Prices rise with the level number so repeated repairs cannot be funded by a single full delivery. For level `n`, let `p = n − 1` and `base = 200 + 40p + 2p²`; multiply by the band factor and round to the nearest 25 points. The introductory Level 3 Small repair costs 150 points.
 
-| Price band | Formula | Ch. 1 | Ch. 5 | Ch. 10 |
+| Price band | Multiplier | Level 10 | Level 50 | Level 100 |
 |---|---:|---:|---:|---:|
-| Small | 150 + 75 × (c − 1) | 150 | 450 | 825 |
-| Route | 300 + 100 × (c − 1) | 300 | 700 | 1,200 |
-| Major | 500 + 125 × (c − 1) | 500 | 1,000 | 1,625 |
+| Small | 1.0 | 725 | 6,950 | 23,750 |
+| Route | 1.6 | 1,150 | 11,150 | 38,025 |
+| Major | 2.2 | 1,600 | 15,325 | 52,275 |
 
-The purchase card must show the exact price, the tiles affected, and a before/after route sketch. A repaired tile stays repaired on that level. Buying one repair never silently buys another. For the first pass, offer at most two purchases on any map and typically one.
+The repair card shows the exact price and effect; the marked board tile is the direct purchase control. A repaired tile stays repaired on that level. Buying one repair never silently buys another. For the first pass, offer at most two purchases on any map and typically one.
 
 ## Obstacle catalogue
 
