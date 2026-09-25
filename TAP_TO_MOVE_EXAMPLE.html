@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14172a">
+  <title>Last Light Courier — Tap-to-move example</title>
+  <style>
+    :root { --cream:#faf0d9; --muted:#b6bbd0; --gold:#ffd184; --purple:#ccb5ff; --red:#ff8588; --mint:#a9e8c9; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--cream); font-family:Inter,Segoe UI,Arial,sans-serif; background:radial-gradient(ellipse at 45% -10%,#373555,#191d34 43%,#101322 80%); }
+    button { font:inherit; cursor:pointer; }
+    .shell { max-width:1180px; margin:auto; padding:28px 20px 38px; }
+    .eyebrow { color:var(--gold); font-size:11px; font-weight:900; letter-spacing:.18em; text-transform:uppercase; }
+    h1 { margin:6px 0; font:700 clamp(34px,4.5vw,55px)/1.05 Georgia,serif; letter-spacing:-.04em; }
+    .subtitle { margin:0; color:#c5c9d7; font-size:15px; line-height:1.45; }
+    .layout { display:grid; grid-template-columns:minmax(0,650px) minmax(290px,1fr); gap:20px; align-items:start; margin-top:21px; }
+    .card { border:1px solid #4d506a; border-radius:22px; background:linear-gradient(145deg,#282d47,#1b2038); box-shadow:0 20px 60px #08091570; }
+    .game { padding:19px; }
+    .gamehead { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:15px; }
+    .gamehead strong { font:700 21px Georgia,serif; }
+    .tag { border:1px solid #8c8495; border-radius:99px; padding:7px 10px; color:#e5d5e3; background:#39374d; font-size:11px; font-weight:900; white-space:nowrap; }
+    .stats { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px; margin-bottom:13px; }
+    .stat { border:1px solid #4c516c; border-radius:12px; background:#171d33; padding:10px 12px; min-height:65px; }
+    .stat label { display:block; color:#abb0c6; text-transform:uppercase; letter-spacing:.12em; font-weight:900; font-size:10px; }
+    .stat strong { display:inline-block; margin-top:4px; font-size:23px; font-variant-numeric:tabular-nums; }
+    .stat small { color:#aeb3c8; }
+    .bar { height:5px; margin-top:5px; background:#454a63; border-radius:10px; overflow:hidden; }
+    .bar span { display:block; width:100%; height:100%; background:linear-gradient(90deg,#ff9f66,#ffe291); transition:width .18s; }
+    .boardframe { padding:7px; border:1px solid #626985; border-radius:17px; background:#101729; }
+    .board { width:100%; aspect-ratio:1; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); overflow:hidden; border-radius:10px; }
+    .cell { position:relative; min-width:0; border:1px solid #ffffff15; display:grid; place-items:center; padding:0; color:inherit; background:#1d2537; }
+    .cell:nth-child(16n + 1),.cell:nth-child(16n + 3),.cell:nth-child(16n + 5),.cell:nth-child(16n + 7),.cell:nth-child(16n + 10),.cell:nth-child(16n + 12),.cell:nth-child(16n + 14),.cell:nth-child(16n + 16) { background:#242b3e; }
+    .cell.adjacent:hover { background:#5b4d55; }
+    .cell:focus-visible { z-index:8; outline:3px solid #fff0aa; outline-offset:-4px; }
+    .cell.wall { background:repeating-linear-gradient(135deg,#303a4e,#303a4e 6px,#283146 6px,#283146 12px); box-shadow:inset 0 0 0 1px #7d8599; cursor:default; }
+    .cell.bridge { background:#604d47; box-shadow:inset 0 0 0 2px #d7a96a; }
+    .cell.bridge.closed { background:#493d46; box-shadow:inset 0 0 0 2px #a88893; cursor:default; }
+    .cell.nextshadow { box-shadow:inset 0 0 0 3px #bb9ef2; }
+    .cell.danger { background:#8b434f; box-shadow:inset 0 0 0 3px #ff9d9b,0 0 20px #e9606a88; }
+    .cell.recommended { box-shadow:inset 0 0 0 3px #ffe190; }
+    .cell.caught { background:#964d5a; box-shadow:inset 0 0 0 4px #ff9d9b,0 0 25px #fa7389; }
+    .cell svg { width:66%; height:66%; max-width:49px; max-height:49px; filter:drop-shadow(0 3px 5px #06071299); }
+    .stack { display:flex; justify-content:center; align-items:center; width:100%; height:100%; }
+    .stack svg:not(:only-child) { width:50%; margin:-4%; }
+    .corner { position:absolute; right:2px; bottom:2px; z-index:3; padding:2px 4px; min-width:18px; border-radius:5px; color:#271b19; background:#ffd88d; font-size:9px; font-weight:900; line-height:1.1; }
+    .corner.closed { color:#fff1e8; background:#7f5c67; }
+    .nextmark { position:absolute; top:2px; left:2px; z-index:3; padding:2px 3px; border-radius:5px; color:#291e36; background:#d8c4ff; font-size:9px; font-weight:900; }
+    .bottom { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:10px 2px 0; color:#bfc4d5; font-size:11px; }
+    .legend { display:flex; flex-wrap:wrap; gap:6px 12px; }
+    .legend span::before { content:''; display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:3px; background:#ffe0a0; }
+    .legend .shadow::before { background:#c4aafa; }
+    .legend .dangerkey::before { background:#ff8183; }
+    .legend .crossing::before { background:#d5a166; }
+    .controls { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:16px; }
+    .controls button { min-height:48px; padding:10px; border:1px solid #7e7892; border-radius:11px; color:#f5e8dc; background:#41445e; font-size:12px; font-weight:900; }
+    .controls button.primary { color:#31252b; border-color:#ffe2b0; background:linear-gradient(135deg,#ffda98,#f7b878); }
+    .controls button:disabled { opacity:.5; cursor:not-allowed; }
+    .side { display:grid; gap:14px; }
+    .side .card { padding:19px; }
+    .side h2 { margin:0 0 8px; font:700 25px Georgia,serif; }
+    .side p { margin:0; color:#d0d2e0; font-size:14px; line-height:1.55; }
+    .callout { border-color:#9f8195; background:linear-gradient(145deg,#49394e,#292b45); }
+    .callout .label { color:#ffda99; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:.13em; }
+    .callout h2 { margin:7px 0 8px; }
+    .callout p { min-height:64px; }
+    .pulse { margin-top:12px; padding:10px 12px; border:1px solid #7a708c; border-radius:11px; color:#e8dff0; background:#1c2137; font-size:12px; line-height:1.45; }
+    .rules { display:grid; gap:11px; }
+    .rule { display:grid; grid-template-columns:32px 1fr; gap:10px; align-items:start; }
+    .rule b { display:grid; place-items:center; width:29px; height:29px; border-radius:8px; color:#33252a; background:#ffd28c; }
+    .rule span { color:#c9cddd; font-size:13px; line-height:1.5; }
+    .smallnote { margin:18px 0 0; color:#a3a8bb; font-size:12px; line-height:1.5; }
+    @media(max-width:850px) { .layout { grid-template-columns:1fr; } .side { grid-template-columns:1fr 1fr; } }
+    @media(max-width:610px) { .shell { padding:18px 12px 28px; } .game { padding:12px; } .gamehead strong { font-size:18px; } .stats { gap:5px; } .stat { padding:8px; min-height:61px; } .stat strong { font-size:20px; } .stat small { display:none; } .boardframe { padding:4px; } .side { grid-template-columns:1fr; } .controls button { font-size:11px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header><div class="eyebrow">Control study · direct tile movement</div><h1>Last Light Courier</h1><p class="subtitle">Tap a neighboring tile. The courier moves at once. The shadow moves with that tap.</p></header>
+    <main class="layout">
+      <section class="card game" aria-label="Tap-to-move board">
+        <div class="gamehead"><strong>The Crossing / Tap Example</strong><span class="tag">No Go button</span></div>
+        <div class="stats">
+          <div class="stat"><label>Lantern</label><strong id="light">16</strong><small> / 16</small><div class="bar"><span id="lightBar"></span></div></div>
+          <div class="stat"><label>At risk</label><strong id="pending">0</strong><small> pts</small></div>
+          <div class="stat"><label>Banked</label><strong id="banked">0</strong><small> pts</small></div>
+        </div>
+        <div class="boardframe"><div id="board" class="board" role="grid" aria-label="Tap an adjacent open tile to move one step"></div></div>
+        <div class="bottom"><div class="legend"><span>Suggested tap</span><span class="shadow">Shadow next</span><span class="dangerkey">Danger</span><span class="crossing">Fading crossing</span></div><span id="turns">0 moves</span></div>
+        <div class="controls"><button id="restart" type="button">Restart</button><button id="choice" type="button">Start at choice</button><button id="demo" class="primary" type="button">▶ Watch taps</button></div>
+      </section>
+      <aside class="side">
+        <section class="card callout" aria-live="polite"><div class="label" id="statusLabel">Your first move</div><h2 id="statusTitle">Tap the tile above you</h2><p id="statusText">Each adjacent tile tap is one committed move. There is no route drawing and no Go button. The gold outline suggests a path; you can choose another tile.</p><div class="pulse" id="pulse">The shadow wakes after the first house. Then its next tile is outlined purple before every move.</div></section>
+        <section class="card"><h2>What changes per tap</h2><div class="rules"><div class="rule"><b>1</b><span>The courier enters the tile you tapped and spends one light.</span></div><div class="rule"><b>2</b><span>The shadow advances one tile. If it reaches your tile, you are caught.</span></div><div class="rule"><b>3</b><span>Once used, the orange crossing counts down. When it closes, choose another road home.</span></div></div></section>
+        <section class="card"><h2>Try the crossing</h2><p>Press <b>Start at choice</b> to reach the first house quickly. The gate immediately to its right turns red because the shadow moves there next. Tap it to see a loss, or step up and back to change the timing.</p></section>
+      </aside>
+    </main>
+    <p class="smallnote">This is a separate control example, not a replacement for the two route-drawing previews. The board uses one authored layout and a deterministic shadow so you can compare the feel of each control scheme.</p>
+  </div>
+  <script>
+  (() => {
+    'use strict';
+    const depot=[1,6], bridge=[3,3];
+    const houses=[{p:[2,3],name:'Lantern Row',points:120},{p:[5,3],name:'East Watch',points:180},{p:[6,5],name:'The Mill',points:240}];
+    const walls=new Set(['3,1','3,2','3,5','3,6','4,1','4,6']);
+    const patrol=[[3,3],[4,3],[4,4],[3,4]];
+    const safePath=[[1,5],[1,4],[1,3],[2,3],[2,2],[2,3],[3,3],[4,3],[5,3],[5,4],[5,5],[6,5],[6,6],[6,7],[5,7],[4,7],[3,7],[2,7],[1,7],[1,6]];
+    const icons={
+      depot:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M9 30 32 10 55 30v26H9Z" fill="#5d8eaf" stroke="#b8ddf0" stroke-width="3"/><path d="M24 56V35h16v21" fill="#293f5a" stroke="#c3e8fa" stroke-width="2"/><circle cx="32" cy="26" r="4" fill="#ffe7a5"/></svg>',
+      house:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M9 30 32 11 55 30v26H9Z" fill="#856373" stroke="#ecc2a0" stroke-width="3"/><path d="M24 56V38h15v18" fill="#3e344c"/><path d="M14 25 32 8l18 17" fill="none" stroke="#f0c49a" stroke-width="5" stroke-linecap="round"/><path d="M44 37h7v8h-7" fill="#ffd787"/></svg>',
+      lit:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="35" r="28" fill="#ffcc6e" opacity=".18"/><path d="M9 30 32 11 55 30v26H9Z" fill="#a8715d" stroke="#ffe2a8" stroke-width="3"/><path d="M24 56V38h15v18" fill="#ffc371"/><path d="M14 25 32 8l18 17" fill="none" stroke="#ffe3ad" stroke-width="5"/><path d="M44 37h7v8h-7" fill="#fff2b7"/></svg>',
+      courier:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="31" cy="31" r="28" fill="#ffe3a2" opacity=".17"/><path d="M23 26c0-11 18-11 18 0v9H23Z" fill="#f9d28b" stroke="#fff0c3" stroke-width="2"/><path d="M22 34h20l4 20H18Z" fill="#d9816d" stroke="#ffe5bd" stroke-width="2"/><path d="M45 36h9v14h-9z" fill="#ffc95d" stroke="#fff2b6" stroke-width="2"/></svg>',
+      shadow:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25" fill="#9078d2" opacity=".18"/><path d="M15 45C7 25 22 10 35 17c13-4 22 10 14 27l-7-5-8 10-7-10-12 6Z" fill="#5e4a88" stroke="#c6b4f6" stroke-width="3"/><circle cx="26" cy="30" r="3" fill="#e8d7ff"/><circle cx="39" cy="30" r="3" fill="#e8d7ff"/></svg>',
+      wall:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 46 16 26l14 6 10-18 20 32v13H4Z" fill="#606b7c" stroke="#a0a8b5" stroke-width="2"/><path d="m20 31 8 7-6 7m21-20-8 12 9 9" fill="none" stroke="#353d4c" stroke-width="3"/></svg>'
+    };
+    const $=id=>document.getElementById(id), same=(a,b)=>a[0]===b[0]&&a[1]===b[1], key=p=>p.join(','), wait=ms=>new Promise(r=>setTimeout(r,ms));
+    let s, demoRunning=false, token=0, demoTarget=null;
+    function setStatus(label,title,text){$('statusLabel').textContent=label;$('statusTitle').textContent=title;$('statusText').textContent=text;}
+    function reset(){token++;demoRunning=false;demoTarget=null;s={pos:[...depot],light:16,pending:0,banked:0,delivered:new Set(),shadow:3,active:false,bridge:null,turns:0,finished:false,failed:false,guide:0,lost:0};setStatus('Your first move','Tap the tile above you','Each adjacent tile tap is one committed move. There is no route drawing and no Go button. The gold outline suggests a path; you can choose another tile.');render();}
+    function nextShadow(){return patrol[(s.shadow+1)%patrol.length];}
+    function render(){
+      let html='';
+      for(let y=0;y<8;y++)for(let x=0;x<8;x++){
+        const p=[x,y],id=key(p),home=houses.find(h=>same(h.p,p));
+        const wall=walls.has(id), crossing=same(p,bridge), closed=crossing&&s.bridge===0;
+        const adjacent=Math.abs(x-s.pos[0])+Math.abs(y-s.pos[1])===1;
+        const lit=home&&s.delivered.has(id), shadow=s.active&&same(p,patrol[s.shadow]);
+        const next=s.active&&same(p,nextShadow()), danger=next&&adjacent&&!lit;
+        const recommended=s.guide>=0&&safePath[s.guide]&&same(p,safePath[s.guide])&&adjacent;
+        const courier=same(p,s.pos), caught=s.failed&&courier;
+        const classes=['cell',wall?'wall':'',crossing?'bridge':'',closed?'closed':'',adjacent?'adjacent':'',next?'nextshadow':'',danger?'danger':'',recommended?'recommended':'',caught?'caught':''].filter(Boolean).join(' ');
+        const name=wall?'collapsed street':closed?'closed crossing':crossing?'fading crossing':home?(lit?'lit ':'dark ')+home.name:same(p,depot)?'depot':'open tile';
+        const badge=crossing?`<span class="corner ${closed?'closed':''}">${s.bridge===null?'OPEN':s.bridge===0?'CLOSED':s.bridge}</span>`:'';
+        html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${danger?', shadow collision next move':''}" ${wall||closed||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${badge}${next&&!shadow?'<span class="nextmark">NEXT</span>':''}</button>`;
+      }
+      $('board').innerHTML=html;
+      $('light').textContent=s.light;$('lightBar').style.width=(s.light/16*100)+'%';
+      $('pending').textContent=s.pending;$('banked').textContent=s.banked;$('turns').textContent=`${s.turns} move${s.turns===1?'':'s'}`;
+      $('demo').disabled=demoRunning;$('choice').disabled=demoRunning;
+      $('pulse').textContent=s.failed?`${s.lost} unbanked points lost. Restart or try the safe path.`:s.finished?`All ${s.banked} points are banked. You reached home with ${s.light} light.`:s.active?`Shadow next: purple NEXT tile. Crossing: ${s.bridge===null?'open until first use':s.bridge===0?'closed':s.bridge+' moves before it closes'}.`: 'The shadow wakes after the first house. Then its next tile is outlined purple before every move.';
+    }
+    function move(p,fromDemo=false){
+      if((demoRunning&&!fromDemo)||s.finished||s.failed)return false;
+      if(Math.abs(p[0]-s.pos[0])+Math.abs(p[1]-s.pos[1])!==1||walls.has(key(p)))return false;
+      if(same(p,bridge)&&s.bridge===0){setStatus('Road closed','The crossing has faded','The crossing has closed. Choose another street home.');return false;}
+      s.light--;s.turns++;
+      if(s.active)s.shadow=(s.shadow+1)%patrol.length;
+      const newlyUsedBridge=same(p,bridge)&&s.bridge===null;
+      s.pos=[...p];
+      if(newlyUsedBridge)s.bridge=5;
+      else if(s.bridge!==null&&s.bridge>0)s.bridge--;
+      const home=houses.find(h=>same(h.p,p)),lit=home&&s.delivered.has(key(p));
+      if(s.active&&same(p,patrol[s.shadow])&&!lit){s.failed=true;s.lost=s.pending;s.pending=0;setStatus('Caught by shadow','Both entered the same tile',`One tap moved the courier and shadow together. You lost ${s.lost} unbanked points.`);}
+      else if(home&&!lit){s.delivered.add(key(p));s.pending+=home.points;s.light=Math.min(16,s.light+2);s.active=true;setStatus('Delivery complete',`${home.name} is lit`,`+${home.points} points at risk. Two light restored. The shadow moves one tile on your next tap.`);}
+      else if(same(p,depot)&&s.delivered.size){s.banked+=s.pending;s.pending=0;s.finished=true;setStatus('Home safely','Points banked',`${s.banked} points secured with ${s.light} light remaining.`);}
+      else if(s.light<=0){s.failed=true;s.lost=s.pending;s.pending=0;setStatus('Lantern out','The road went dark',`${s.lost} unbanked points lost. Try a shorter path or return earlier.`);}
+      else if(s.bridge===0){setStatus('Crossing closed','Find another way home','The orange gate has faded. The lower road still leads back to the depot.');}
+      else if(s.active){setStatus('One tap, one turn','The shadow moved too','Your lantern spent one light. Look at the purple NEXT tile before choosing the next move.');}
+      if(s.guide>=0){if(safePath[s.guide]&&same(p,safePath[s.guide]))s.guide++;else s.guide=-1;}
+      render();return true;
+    }
+    async function playPath(path,stopAtChoice=false){
+      reset();demoRunning=true;const mine=token;
+      for(const p of path){if(mine!==token)return;demoTarget=p;render();await wait(230);if(mine!==token)return;move(p,true);await wait(230);if(s.failed||s.finished)break;}
+      if(mine!==token)return;demoRunning=false;demoTarget=null;render();
+      if(stopAtChoice&&!s.failed)setStatus('Your choice','Tap the red gate or step up','The tile right of the courier is red: the shadow will enter it on the same tap. Tap it to see a catch, or tap the tile above to change the timing.');
+    }
+    $('board').addEventListener('click',e=>{const c=e.target.closest('.cell');if(c)move([Number(c.dataset.x),Number(c.dataset.y)]);});
+    $('restart').addEventListener('click',reset);
+    $('choice').addEventListener('click',()=>playPath(safePath.slice(0,4),true));
+    $('demo').addEventListener('click',()=>playPath(safePath));
+    reset();
+  })();
+  </script>
+</body>
+</html>

@@ -3,6 +3,7 @@
 Status: design preview available; no Android game built or tested. Name provisional.
 
 Interactive design walkthroughs: [Level 01](LEVEL_01_DESIGN_PREVIEW.html) and [Level 02: The Crossing](LEVEL_02_DESIGN_PREVIEW.html). These are authored design studies, not production builds.
+Input comparison: [Tap-to-move example](TAP_TO_MOVE_EXAMPLE.html) uses one adjacent tile tap per turn with no Go button, plus a fading crossing. It is a separate control study; the input scheme remains a design decision.
 
 ## Shared assumptions
 
