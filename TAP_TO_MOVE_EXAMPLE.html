@@ -28,7 +28,13 @@
     .bar { height:5px; margin-top:5px; background:#454a63; border-radius:10px; overflow:hidden; }
     .bar span { display:block; width:100%; height:100%; background:linear-gradient(90deg,#ff9f66,#ffe291); transition:width .18s; }
     .boardframe { padding:7px; border:1px solid #626985; border-radius:17px; background:#101729; }
-    .board { width:100%; aspect-ratio:1; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); overflow:hidden; border-radius:10px; }
+    .board { position:relative; width:100%; aspect-ratio:1; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); overflow:hidden; border-radius:10px; }
+    .end-overlay { position:absolute; z-index:10; inset:0; display:grid; place-items:center; padding:18px; background:#101322c9; backdrop-filter:blur(3px); }
+    .end-card { width:min(100%,370px); padding:26px 22px; border:2px solid #ffbb91; border-radius:19px; background:linear-gradient(145deg,#513447,#27283e); box-shadow:0 20px 60px #080812bd; text-align:center; }
+    .end-icon { font-size:37px; line-height:1; }
+    .end-card h2 { margin:10px 0 8px; color:#ffdbab; font:700 clamp(29px,6vw,39px) Georgia,serif; }
+    .end-card p { margin:0 auto 20px; max-width:290px; color:#f0dfe4; font-size:14px; line-height:1.5; }
+    .end-card button { min-height:46px; padding:10px 22px; border:1px solid #ffe2b0; border-radius:10px; color:#31252b; background:linear-gradient(135deg,#ffda98,#f7b878); font-weight:900; }
     .cell { position:relative; min-width:0; border:1px solid #ffffff15; display:grid; place-items:center; padding:0; color:inherit; background:#1d2537; }
     .cell:nth-child(16n + 1),.cell:nth-child(16n + 3),.cell:nth-child(16n + 5),.cell:nth-child(16n + 7),.cell:nth-child(16n + 10),.cell:nth-child(16n + 12),.cell:nth-child(16n + 14),.cell:nth-child(16n + 16) { background:#242b3e; }
     .cell.safe-move:hover { background:#3b5c57; }
@@ -114,7 +120,7 @@
     const $=id=>document.getElementById(id), same=(a,b)=>a[0]===b[0]&&a[1]===b[1], key=p=>p.join(','), wait=ms=>new Promise(r=>setTimeout(r,ms));
     let s, demoRunning=false, token=0, demoTarget=null;
     function setStatus(label,title,text){$('statusLabel').textContent=label;$('statusTitle').textContent=title;$('statusText').textContent=text;}
-    function reset(){token++;demoRunning=false;demoTarget=null;s={pos:[...depot],light:16,pending:0,banked:0,delivered:new Set(),shadow:3,active:false,bridge:null,turns:0,finished:false,failed:false,guide:0,lost:0};setStatus('Your first move','Choose a green tile','Every green neighbor is a safe option. Tap one to move immediately; there is no Go button.');render();}
+    function reset(){token++;demoRunning=false;demoTarget=null;s={pos:[...depot],light:16,pending:0,banked:0,delivered:new Set(),shadow:3,active:false,bridge:null,turns:0,finished:false,failed:false,failureReason:null,guide:0,lost:0};setStatus('Your first move','Choose a green tile','Every green neighbor is a safe option. Tap one to move immediately; there is no Go button.');render();}
     function nextShadow(){return patrol[(s.shadow+1)%patrol.length];}
     function render(){
       let html='';
@@ -131,7 +137,9 @@
         const badge=crossing&&s.bridge!==null?`<span class="corner ${closed?'closed':''}">${closed?'CLOSED':s.bridge}</span>`:'';
         html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${danger?', blocked: shadow collision next move':safeMove?', safe move':''}" ${!safeMove||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${badge}</button>`;
       }
+      if(s.failed&&s.failureReason==='light')html+=`<div class="end-overlay" role="alert"><div class="end-card"><div class="end-icon" aria-hidden="true">✦</div><h2>Lantern out</h2><p>Your last light is gone. ${s.lost} unbanked points were lost. Try a shorter route or return to the depot sooner.</p><button id="overlayRestart" type="button">Restart level</button></div></div>`;
       $('board').innerHTML=html;
+      $('overlayRestart')?.addEventListener('click',reset);
       $('light').textContent=s.light;$('lightBar').style.width=(s.light/16*100)+'%';
       $('pending').textContent=s.pending;$('banked').textContent=s.banked;$('turns').textContent=`${s.turns} move${s.turns===1?'':'s'}`;
       $('demo').disabled=demoRunning;$('choice').disabled=demoRunning;
@@ -151,12 +159,12 @@
       if(newlyUsedBridge)s.bridge=5;
       else if(s.bridge!==null&&s.bridge>0)s.bridge--;
       const home=houses.find(h=>same(h.p,p)),lit=home&&s.delivered.has(key(p));
-      if(s.active&&same(p,patrol[s.shadow])&&!lit){s.failed=true;s.lost=s.pending;s.pending=0;setStatus('Caught by shadow','Both entered the same tile',`One tap moved the courier and shadow together. You lost ${s.lost} unbanked points.`);}
+      if(s.active&&same(p,patrol[s.shadow])&&!lit){s.failed=true;s.failureReason='shadow';s.lost=s.pending;s.pending=0;setStatus('Caught by shadow','Both entered the same tile',`One tap moved the courier and shadow together. You lost ${s.lost} unbanked points.`);}
       else if(home&&!lit){s.delivered.add(key(p));s.pending+=home.points;s.light=Math.min(16,s.light+2);s.active=true;setStatus('Delivery complete',`${home.name} is lit`,`+${home.points} points at risk. Two light restored. The shadow moves one tile on your next tap.`);}
       else if(same(p,depot)&&s.delivered.size){s.banked+=s.pending;s.pending=0;s.finished=true;setStatus('Home safely','Points banked',`${s.banked} points secured with ${s.light} light remaining.`);}
-      else if(s.light<=0){s.failed=true;s.lost=s.pending;s.pending=0;setStatus('Lantern out','The road went dark',`${s.lost} unbanked points lost. Try a shorter path or return earlier.`);}
+      else if(s.light<=0){s.failed=true;s.failureReason='light';s.lost=s.pending;s.pending=0;setStatus('Lantern out','The road went dark',`${s.lost} unbanked points lost. Try a shorter path or return earlier.`);}
       else if(s.bridge===0){setStatus('Crossing closed','Find another way home','The orange gate has faded. The lower road still leads back to the depot.');}
-      else if(s.active){setStatus('One tap, one turn','The shadow moved too','Your lantern spent one light. Look at the purple NEXT tile before choosing the next move.');}
+      else if(s.active){setStatus('One tap, one turn','The shadow moved too','Your lantern spent one light. Choose any green neighboring tile for your next move.');}
       if(s.guide>=0){if(safePath[s.guide]&&same(p,safePath[s.guide]))s.guide++;else s.guide=-1;}
       render();return true;
     }
