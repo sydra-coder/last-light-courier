@@ -1,11 +1,11 @@
 # Last Light Courier implementation plan
 
-Status: design preview available; no Android game built or tested. Name provisional.
+Status: a standalone browser campaign preview with 100 playable levels is available; no Android game built or tested. Name provisional.
 
 Interactive design walkthroughs: [Level 01 route-drawing study](LEVEL_01_DESIGN_PREVIEW.html) and [Level 02: The Crossing, tap to move](LEVEL_02_DESIGN_PREVIEW.html). Level 02 uses one adjacent tile tap per turn with no Go button, shows safe neighboring moves, and includes the fading crossing. The [earlier Level 02 route-drawing study](LEVEL_02_ROUTE_DRAWING_ARCHIVE.html) is retained for reference; tap to move is the selected direction. These are authored design studies, not production builds. The next playable level is not yet implemented.
 The [tap-to-move control example](TAP_TO_MOVE_EXAMPLE.html) mirrors the Level 02 interaction for comparison and review.
 
-Campaign expansion proposal: [100-level plan and repair economy](LEVELS_001_100_AND_REPAIRS.md). This reflects the later tap-to-move direction and proposes spendable banked points, persistent map repairs, and ten chapters. It supersedes the route-drawing and 20-light assumptions below for future design work, pending prototype playtests.
+Campaign preview: [Play all 100 levels](CAMPAIGN_100_LEVELS.html). Its generated level data is in [CAMPAIGN_LEVELS.json](CAMPAIGN_LEVELS.json), with the editable builder in `campaign/`. The [100-level plan and repair economy](LEVELS_001_100_AND_REPAIRS.md) supplies each level brief, chapter, and repair price. This reflects the later tap-to-move direction and supersedes the route-drawing and 20-light assumptions below for future design work, pending prototype playtests.
 
 ## Shared assumptions
 

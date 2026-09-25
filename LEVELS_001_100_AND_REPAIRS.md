@@ -1,6 +1,6 @@
 # Last Light Courier — 100-level campaign and repair economy
 
-Status: design proposal for the tap-to-move game. Numbers and layouts require prototype playtesting. No levels beyond the current previews are implemented.
+Status: 100 playable browser levels now exist in [CAMPAIGN_100_LEVELS.html](CAMPAIGN_100_LEVELS.html). Their layouts are generated from these briefs and have automated route checks; numbers, difficulty, and visual clarity still require player playtesting.
 
 ## Player loop
 
