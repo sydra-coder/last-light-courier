@@ -40,6 +40,7 @@
     .cell:focus-visible { outline:3px solid #ffe594; outline-offset:-4px; z-index:4; }
     .cell.onroute { background:#ffce6733; }
     .cell.collision { background:#ff666550; box-shadow:inset 0 0 0 3px var(--red); }
+    .cell.caught { background:#ef67665c; box-shadow:inset 0 0 0 4px #ff8a87,0 0 30px #ff5d74; z-index:5; }
     .cell.lit { background:#efb95e23; }
     .cell.depot { background:#6f98ba23; }
     .cell svg { width:70%; height:70%; max-width:50px; max-height:50px; filter:drop-shadow(0 3px 5px #080b17aa); }
@@ -49,6 +50,7 @@
     .ghostbadge { top:2px; bottom:auto; right:auto; left:2px; background:#c9b5ff; color:#221a36; }
     .collision .routebadge { background:#ff9c9b; }
     .routeoverlay { position:absolute; inset:0; z-index:2; pointer-events:none; width:100%; height:100%; overflow:visible; }
+    .boardalert { position:absolute; z-index:7; left:7%; right:7%; top:4%; padding:14px 18px; border:2px solid #ffc1b6; border-radius:14px; color:#fff5e7; background:#753841ee; box-shadow:0 12px 36px #090512bb; text-align:center; font-weight:900; font-size:clamp(16px,2vw,25px); letter-spacing:.04em; pointer-events:none; }
     .boardfoot { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#acb0c4; font-size:11px; margin:10px 2px 0; }
     .legend { display:flex; flex-wrap:wrap; gap:5px 12px; }
     .legend span::before { content:''; display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:50%; background:var(--gold); }
@@ -58,6 +60,7 @@
     .btn { border:1px solid #636780; color:#f6efd9; background:#2c324d; border-radius:12px; padding:13px 12px; font-weight:800; min-height:48px; }
     .btn:hover:not(:disabled) { filter:brightness(1.14); }
     .btn.go { background:linear-gradient(135deg,#ffc165,#f0a45d); border-color:#ffe4a9; color:#30221e; box-shadow:0 6px 18px #f1ac5c33; }
+    .btn.go.risky { background:linear-gradient(135deg,#ff8d84,#d96070); border-color:#ffc2b7; color:#321e2a; }
     .side { display:grid; gap:15px; }
     .intro { padding:20px; }
     .side h2 { margin:0 0 8px; font-family:Georgia,serif; font-size:26px; font-weight:700; letter-spacing:-.02em; }
@@ -73,6 +76,11 @@
     .preview { margin-top:12px; padding:10px 12px; border-radius:12px; background:#171b30bb; border:1px solid #6a6283; font-size:13px; line-height:1.5; }
     .preview.safe { border-color:#63a68b; color:#b7f2d5; }
     .preview.danger { border-color:#e87c81; color:#ffbbb9; }
+    .choicepanel { margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .choicepanel[hidden] { display:none; }
+    .choicepanel button { min-height:62px; border-radius:11px; padding:9px; font-size:13px; font-weight:900; line-height:1.3; }
+    .choicepanel .risk { background:#a64d62; color:white; border:1px solid #ffc1b9; }
+    .choicepanel .safe { background:#347465; color:white; border:1px solid #a8f1ce; }
     .tour { padding:18px 20px; }
     .tour .btn { width:100%; background:#51466c; border-color:#a28cb8; }
     .tour small { display:block; color:#aaabc0; margin-top:9px; line-height:1.45; }
@@ -95,7 +103,7 @@
     </header>
     <main class="layout">
       <section class="card game" aria-label="Level one board">
-        <div class="gamehead"><strong>The Hollow / First Delivery</strong><button class="topdemo" id="topDemoButton" type="button">▶ Watch sample run</button></div>
+        <div class="gamehead"><strong>The Hollow / First Delivery</strong><button class="topdemo" id="topDemoButton" type="button">▶ Play guided level</button></div>
         <div class="stats">
           <div class="stat"><label>Lantern</label><strong id="lightValue">20</strong><small> / 20 steps</small><div class="lighttrack"><span class="lightfill" id="lightFill"></span></div></div>
           <div class="stat"><label>At risk</label><strong id="pendingValue">0</strong><small> pts</small></div>
@@ -107,12 +115,12 @@
       </section>
       <aside class="side">
         <section class="card intro"><h2>Deliver the last light.</h2><p>Tap neighboring squares to draw a route, then press <b>Go</b>. Every step burns one light. Each house you reach adds points and refills four light.</p><div class="objective"><div class="spark">✦</div><div><strong>Your decision</strong><span>Keep travelling for a bigger score, or return to the blue depot to bank what you have.</span></div></div></section>
-        <section class="card narration" aria-live="polite"><div class="kicker" id="storyKicker">01 / Set out</div><h3 id="storyTitle">The village is waiting</h3><p id="storyText">The blue depot is your start and your safe return. Try the guided run, or draw a route to the nearest house yourself.</p><div class="preview" id="preview">Tap one neighboring tile to begin a route.</div></section>
-        <section class="card tour"><h2>See one complete run</h2><p>Watch the courier light all three houses, reject a route the shadow would intercept, and make it back to the depot.</p><button class="btn" type="button" id="demoButton" style="margin-top:14px">▶ Watch guided run</button><div class="steps" id="tourSteps"><span></span><span></span><span></span><span></span></div><small>The route preview checks the whole journey before you commit. Press Restart at any time to try the level yourself.</small></section>
-        <section class="card rules"><h2>What the symbols mean</h2><ol><li><b>Gold houses</b> need a delivery. Glowing houses have been lit.</li><li><b>Purple shadow</b> starts moving after the first delivery, one tile per courier step.</li><li><b>Red preview</b> means the shadow would catch that route. Undo and choose another path.</li><li><b>Blue depot</b> banks your unbanked points and completes the run.</li></ol></section>
+        <section class="card narration" aria-live="polite"><div class="kicker" id="storyKicker">01 / Set out</div><h3 id="storyTitle">The village is waiting</h3><p id="storyText">The blue depot is your start and your safe return. Try the guided level, or draw a route to the nearest house yourself.</p><div class="preview" id="preview">Tap one neighboring tile to begin a route.</div><div class="choicepanel" id="choicePanel" hidden><button class="risk" id="riskChoice" type="button">Risk the direct road<br>See the catch</button><button class="safe" id="safeChoice" type="button">Take the upper road<br>Keep delivering</button></div></section>
+        <section class="card tour"><h2>Make the route choice</h2><p>The guided level stops after the first delivery. Choose the direct road to see the shadow catch the courier, or take the upper road and continue home.</p><button class="btn" type="button" id="demoButton" style="margin-top:14px">▶ Play guided level</button><div class="steps" id="tourSteps"><span></span><span></span><span></span><span></span></div><small>Outside the guide, every tile is yours to choose. The red preview warns of a loss, but you can still press Go.</small></section>
+        <section class="card rules"><h2>What the symbols mean</h2><ol><li><b>Gold houses</b> need a delivery. Glowing houses have been lit.</li><li><b>Purple shadow</b> starts moving after the first delivery, one tile per courier step.</li><li><b>Red preview</b> warns that the shadow would catch you. You can risk it or redraw the route.</li><li><b>Blue depot</b> banks your unbanked points and completes the run.</li></ol></section>
       </aside>
     </main>
-    <p class="note">Design study, not a finished game or Android build. This demo uses one authored layout and a visible four-tile shadow patrol. For this level, houses refill light; points are banked at the depot.</p>
+    <p class="note">Design study, not a finished game or Android build. This level uses one authored layout and a visible four-tile shadow patrol. Your route changes when and where the courier meets the shadow. Houses refill light; points are banked at the depot.</p>
   </div>
   <script>
   (() => {
@@ -131,30 +139,30 @@
     const same = (a,b) => a[0]===b[0] && a[1]===b[1];
     const key = p => p.join(',');
     const wait = ms => new Promise(resolve => setTimeout(resolve,ms));
-    let runToken = 0, busy = false, demo = false, demoStage = 0;
+    let runToken = 0, busy = false, demo = false, demoStage = 0, awaitingChoice = false, choiceResolve = null;
     let s;
 
-    function initial() { return {pos:[...depot],light:20,delivered:new Set(),pending:0,banked:0,shadow:0,active:false,route:[],finished:false,failed:false}; }
+    function initial() { return {pos:[...depot],light:20,delivered:new Set(),pending:0,banked:0,shadow:0,active:false,route:[],finished:false,failed:false,failureReason:'',lostPoints:0}; }
     function story(kicker,title,body) { $('storyKicker').textContent=kicker; $('storyTitle').textContent=title; $('storyText').textContent=body; }
-    function reset() { runToken++; busy=false; demo=false; demoStage=0; s=initial(); story('01 / Set out','The village is waiting','The blue depot is your start and your safe return. Try the guided run, or draw a route to the nearest house yourself.'); render(); }
+    function reset() { runToken++; if(choiceResolve) choiceResolve(null); choiceResolve=null; awaitingChoice=false; $('choicePanel').hidden=true; busy=false; demo=false; demoStage=0; s=initial(); story('01 / Set out','The village is waiting','The blue depot is your start and your safe return. Try the guided level, or draw a route to the nearest house yourself.'); render(); }
     function advance(t,next) {
       t.light--;
       if(t.active) t.shadow=(t.shadow+1)%patrol.length;
       t.pos=[...next];
       const home=houses.find(h=>same(h.p,next));
       const lit=home && t.delivered.has(key(home.p));
-      if(t.active && same(patrol[t.shadow],next) && !lit) { t.failed=true; return {kind:'shadow'}; }
+      if(t.active && same(patrol[t.shadow],next) && !lit) { t.failed=true; t.failureReason='shadow'; t.lostPoints=t.pending; t.pending=0; return {kind:'shadow'}; }
       if(home && !lit) {
         t.delivered.add(key(home.p)); t.pending+=home.points; t.light=Math.min(20,t.light+4); t.active=true;
         return {kind:'house',home};
       }
       if(same(next,depot) && t.delivered.size>0) { t.banked+=t.pending; t.pending=0; t.finished=true; return {kind:'bank'}; }
-      if(t.light<=0) { t.failed=true; return {kind:'dark'}; }
+      if(t.light<=0) { t.failed=true; t.failureReason='dark'; t.lostPoints=t.pending; t.pending=0; return {kind:'dark'}; }
       return {kind:'move'};
     }
     function previewRoute() {
       if(!s.route.length) return null;
-      const t={pos:[...s.pos],light:s.light,delivered:new Set(s.delivered),pending:s.pending,banked:s.banked,shadow:s.shadow,active:s.active,finished:false,failed:false};
+      const t={pos:[...s.pos],light:s.light,delivered:new Set(s.delivered),pending:s.pending,banked:s.banked,shadow:s.shadow,active:s.active,finished:false,failed:false,failureReason:'',lostPoints:0};
       const shadows=[]; let danger=-1, reason='', event=null;
       for(let i=0;i<s.route.length;i++) {
         event=advance(t,s.route[i]); shadows.push(t.active ? [...patrol[t.shadow]] : null);
@@ -172,11 +180,12 @@
         const pos=[x,y], id=key(pos), home=houses.find(h=>same(h.p,pos));
         const isDepot=same(pos,depot), isLit=home && s.delivered.has(id), isCourier=same(pos,s.pos), isShadow=s.active && same(pos,patrol[s.shadow]);
         const routeNo=routeMap.get(id), collision=p && p.danger>=0 && same(pos,s.route[p.danger]);
-        const cls=['cell',isDepot?'depot':'',isLit?'lit':'',routeNo?'onroute':'',collision?'collision':''].filter(Boolean).join(' ');
+        const cls=['cell',isDepot?'depot':'',isLit?'lit':'',routeNo?'onroute':'',collision?'collision':'',s.failed&&same(pos,s.pos)?'caught':''].filter(Boolean).join(' ');
         const name=isDepot?'depot':home?(isLit?'lit ':'dark ')+home.name:'empty square';
-        html+=`<button class="${cls}" role="gridcell" type="button" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${routeNo?', route step '+routeNo:''}" ${busy||s.finished||s.failed?'disabled':''}><span class="stack">${isDepot?icons.depot:''}${home?icons[isLit?'lit':'house']:''}${isShadow?icons.shadow:''}${isCourier?icons.courier:''}</span>${routeNo?`<span class="routebadge">${routeNo}</span>`:''}${ghostMap.has(id)&&!isShadow?`<span class="ghostbadge">${ghostMap.get(id)}</span>`:''}</button>`;
+        html+=`<button class="${cls}" role="gridcell" type="button" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${routeNo?', route step '+routeNo:''}" ${busy||awaitingChoice||s.finished||s.failed?'disabled':''}><span class="stack">${isDepot?icons.depot:''}${home?icons[isLit?'lit':'house']:''}${isShadow?icons.shadow:''}${isCourier?icons.courier:''}</span>${routeNo?`<span class="routebadge">${routeNo}</span>`:''}${ghostMap.has(id)&&!isShadow?`<span class="ghostbadge">${ghostMap.get(id)}</span>`:''}</button>`;
       }
       board.innerHTML=html;
+      if(s.failed) board.insertAdjacentHTML('beforeend',`<div class="boardalert">${s.failureReason==='shadow'?'CAUGHT BY THE SHADOW':'THE LANTERN WENT DARK'}</div>`);
       if(s.route.length) {
         const pts=[s.pos,...s.route].map(v=>`${(v[0]+.5)*12.5},${(v[1]+.5)*12.5}`).join(' ');
         board.insertAdjacentHTML('beforeend',`<svg class="routeoverlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${p.danger>=0?'#ff8285':'#ffda8d'}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1.4 1.4"/></svg>`);
@@ -186,29 +195,31 @@
       $('pendingValue').textContent=s.pending;
       $('bankedValue').textContent=s.banked;
       $('deliveryCount').textContent=`${s.delivered.size} of 3 houses lit`;
-      $('undoButton').disabled=busy||!s.route.length;
-      $('goButton').disabled=busy||!s.route.length||!!(p&&p.danger>=0)||s.finished||s.failed;
-      $('goButton').textContent=s.route.length?`Go · ${s.route.length} step${s.route.length===1?'':'s'}`:'Go';
+      $('undoButton').disabled=busy||awaitingChoice||!s.route.length;
+      $('goButton').disabled=busy||awaitingChoice||!s.route.length||s.finished||s.failed;
+      $('goButton').classList.toggle('risky',!!(p&&p.danger>=0));
+      $('goButton').textContent=s.route.length?`${p&&p.danger>=0?'Risk it':'Go'} · ${s.route.length} step${s.route.length===1?'':'s'}`:'Go';
       $('demoButton').disabled=busy||demo;
       $('topDemoButton').disabled=busy||demo;
       [...$('tourSteps').children].forEach((el,i)=>el.classList.toggle('done',i<demoStage));
       const box=$('preview'); box.className='preview';
       if(s.finished) { box.textContent=`Round complete · ${s.banked} points banked with ${s.light} light left.`; box.classList.add('safe'); }
-      else if(s.failed) { box.textContent='The light went out. Restart this same level to try a different route.'; box.classList.add('danger'); }
+      else if(s.failed) { box.textContent=s.failureReason==='shadow'?`The shadow caught you. ${s.lostPoints} unbanked points lost. Restart to choose another route.`:`The lantern went dark. ${s.lostPoints} unbanked points lost. Restart to choose another route.`; box.classList.add('danger'); }
       else if(!p) box.textContent=s.active?'Tap adjacent tiles. Small purple numbers show where the shadow will move during your proposed route.':'Tap one neighboring tile to begin a route.';
-      else if(p.danger>=0) { box.textContent=p.reason==='shadow'?`Unsafe at step ${p.danger+1}. The shadow reaches the red tile at the same time. Undo and change course.`:p.reason==='dark'?`Too long: the lantern runs out at step ${p.danger+1}. Choose a shorter route or visit a house first.`:`The depot ends the round at step ${p.danger+1}. End your route there or choose another path.`; box.classList.add('danger'); }
+      else if(p.danger>=0) { box.textContent=p.reason==='shadow'?`Unsafe at step ${p.danger+1}. The shadow reaches the red tile at the same time. Press Risk it to see the catch, or Undo to change course.`:p.reason==='dark'?`The lantern runs out at step ${p.danger+1}. Press Risk it to see the loss, or choose a shorter route.`:`The depot ends the round at step ${p.danger+1}. End your route there or choose another path.`; box.classList.add('danger'); }
       else { box.textContent=`Preview: ${p.spent} light spent · ${p.light} light after route · ${p.delivered-s.delivered.size} new delivery${p.delivered-s.delivered.size===1?'':'ies'} · ${p.pending} points at risk${p.event?.kind==='bank'?' → banked at depot':''}.`; box.classList.add('safe'); }
     }
     function addTile(pos) {
-      if(busy||s.finished||s.failed) return;
+      if(busy||awaitingChoice||s.finished||s.failed) return;
       const last=s.route.length?s.route[s.route.length-1]:s.pos;
       if(s.route.length && same(pos,s.route[s.route.length-2]||s.pos)) { s.route.pop(); render(); return; }
+      if(s.route.some(v=>same(v,depot))) return;
       if(Math.abs(pos[0]-last[0])+Math.abs(pos[1]-last[1])!==1) return;
       if(s.route.length>=24 || s.route.length>=s.light+12) return;
       s.route.push(pos); render();
     }
     async function executeRoute(fromDemo=false) {
-      const p=previewRoute(); if(busy||!p||p.danger>=0||s.finished||s.failed) return;
+      const p=previewRoute(); if(busy||awaitingChoice||!p||s.finished||s.failed) return;
       busy=true; render(); const token=runToken, path=s.route.map(v=>[...v]);
       for(const pos of path) {
         if(token!==runToken) return;
@@ -217,8 +228,8 @@
         const event=advance(s,pos);
         if(event.kind==='house') story('Delivery complete',`${event.home.name} is lit`,`+${event.home.points} points are now at risk. Four light returned to your lantern. ${s.delivered.size===1?'The shadow has awakened; preview its patrol before your next trip.':'Decide whether to keep delivering or return to the depot.'}`);
         if(event.kind==='bank') story('Level complete','You brought the light home',`${s.banked} points banked. You reached the depot with ${s.light} light left. Restart to try a different route.`);
-        if(event.kind==='dark') story('Lantern out','The road went dark','The light reached zero before you got home. Restart to try a shorter route.');
-        if(event.kind==='shadow') story('Caught by shadow','The route was intercepted','A route preview should reveal this collision before you press Go. Restart to try another path.');
+        if(event.kind==='dark') story('Lantern out','The road went dark',`The light reached zero before you got home. ${s.lostPoints} unbanked points were lost. Restart to try a shorter route.`);
+        if(event.kind==='shadow') story('Caught by shadow','The shadow caught the courier',`Both reached the red tile on the same step. ${s.lostPoints} unbanked points were lost. Restart and choose another path.`);
         render(); if(s.finished||s.failed) break;
       }
       if(token!==runToken) return;
@@ -232,8 +243,15 @@
       demoStage=1; render();
       if(!await planned([[1,5],[1,4],[1,3],[2,3]],'01 / Draw a route','Four steps to Willow Cottage','The gold line is your proposed route. The preview says four light will be spent; the house will refill four when you arrive.')) return;
       await executeRoute(true); if(!alive()) return;
-      demoStage=2; render();
-      if(!await planned([[3,3],[4,3],[5,3],[5,2]],'02 / Read the shadow','The direct route is unsafe','The purple shadow moves one tile with each courier step. It intercepts the direct route at step one, so Go is blocked.',2200)) return;
+      demoStage=2; awaitingChoice=true; $('choicePanel').hidden=false;
+      story('02 / Your choice','Which road will you take?','The shadow is at the middle crossroads. The direct road is shorter to see, but its first tile is where the shadow moves next. Choose a road and watch what happens.'); render();
+      const decision=await new Promise(resolve=>{ choiceResolve=resolve; });
+      if(!alive()||!decision) return;
+      awaitingChoice=false; choiceResolve=null; $('choicePanel').hidden=true; render();
+      if(decision==='risky') {
+        if(!await planned([[3,3],[4,3],[5,3],[5,2]],'02 / Risk the direct road','The shadow will meet you','The red first tile and purple number 1 predict the catch. The courier will move there anyway, so you can see the loss.',1700)) return;
+        await executeRoute(true); demo=false; render(); return;
+      }
       if(!await planned([[2,2],[3,2],[4,2],[5,2]],'02 / Choose another road','Skirt the northern edge','The alternate four-step route stays clear of every projected shadow position.',1400)) return;
       await executeRoute(true); if(!alive()) return;
       demoStage=3; render();
@@ -250,6 +268,8 @@
     $('goButton').addEventListener('click',()=>executeRoute(false));
     $('demoButton').addEventListener('click',guidedRun);
     $('topDemoButton').addEventListener('click',guidedRun);
+    $('riskChoice').addEventListener('click',()=>{ if(awaitingChoice&&choiceResolve) choiceResolve('risky'); });
+    $('safeChoice').addEventListener('click',()=>{ if(awaitingChoice&&choiceResolve) choiceResolve('safe'); });
     reset();
   })();
   </script>

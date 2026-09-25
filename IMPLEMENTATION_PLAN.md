@@ -29,6 +29,7 @@ The player draws a route **one segment at a time** on a compact grid. Light is b
 3. Deliver to 3 houses. Each house gives points and a small light refill. After each delivery, one telegraphed hazard activates on the map.
 4. Return to the depot to bank all points. If the light reaches zero, the round ends and only previously banked points count.
 5. Keep hazard behavior deterministic for a given seed. Hazards must be visible before the player commits a route.
+6. Show a collision forecast, but let the player commit a warned route. The courier can be caught when the shadow and courier enter the same tile on the same step; route choice changes that outcome.
 
 The first prototype uses only one hazard: a moving shadow that advances one cell whenever the courier moves. Do not add combat, inventory, or a story campaign until the route-and-return decision is fun.
 
