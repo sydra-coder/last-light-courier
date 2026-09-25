@@ -31,7 +31,7 @@ const FEEDBACK=(()=>{
     try{if(window.CourierAndroid?.haptic){window.CourierAndroid.haptic(kind);return}if(matchMedia('(pointer:coarse)').matches&&typeof navigator.vibrate==='function')navigator.vibrate(vibrations[kind])}catch(_){}
   }
   function emit(kind){history.push(kind);if(history.length>40)history.shift();sound(kind);haptic(kind)}
-  function labels(){const s=$('menuSound'),h=$('menuHaptics');if(s)s.textContent='Sound: '+(save.soundOn===false?'Off':'On');if(h)h.textContent='Vibration: '+(save.hapticsOn===false?'Off':'On')}
+  function labels(){refreshSettingsIcons()}
   function toggleSound(){save.soundOn=save.soundOn===false;persist();labels();if(save.soundOn)tone(660,.1,0,'sine',.03)}
   function toggleHaptics(){save.hapticsOn=save.hapticsOn===false;persist();labels();if(save.hapticsOn)haptic('house')}
   return {emit,preview:sound,unlock,labels,toggleSound,toggleHaptics,history:()=>[...history]};
