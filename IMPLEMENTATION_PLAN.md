@@ -2,7 +2,7 @@
 
 Status: design preview available; no Android game built or tested. Name provisional.
 
-Interactive one-level walkthrough: [LEVEL_01_DESIGN_PREVIEW.html](LEVEL_01_DESIGN_PREVIEW.html). This is a fixed design study, not a production build.
+Interactive design walkthroughs: [Level 01](LEVEL_01_DESIGN_PREVIEW.html) and [Level 02: The Crossing](LEVEL_02_DESIGN_PREVIEW.html). These are authored design studies, not production builds.
 
 ## Shared assumptions
 
@@ -60,6 +60,10 @@ One 8x8 board style, depot, 3 house icons, courier marker, shadow marker, 5 UI i
 - **Too little agency:** If the correct route is obvious, add a second delivery choice or a visible optional reward before adding hazards.
 - **Unfair loss:** Simulate hazards along the entire previewed route, not just at its endpoint.
 - **Go/no-go after prototype:** In 5–8 fresh-player tests, most players should understand delivery and return after one tutorial round, and at least several should choose an immediate retry without prompting. Record actual round times and confusion points rather than assuming the target is met.
+
+### Level 02 difficulty study
+
+The Crossing tests a tighter light budget: 16 starting light, +2 per delivery, six blocked streets, and the same one-shadow rule. A three-house route is possible with only two light left if the player changes the shadow timing at the gate and returns by the lower road. Early return banks a smaller score. These values are design experiments, not locked production rules.
 
 ### Schedule estimate
 
