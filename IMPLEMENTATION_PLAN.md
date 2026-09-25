@@ -1,6 +1,8 @@
 # Last Light Courier implementation plan
 
-Status: design only; no game built or tested. Name provisional.
+Status: design preview available; no Android game built or tested. Name provisional.
+
+Interactive one-level walkthrough: [LEVEL_01_DESIGN_PREVIEW.html](LEVEL_01_DESIGN_PREVIEW.html). This is a fixed design study, not a production build.
 
 ## Shared assumptions
 
