@@ -42,6 +42,9 @@
     .cell.wall { background:repeating-linear-gradient(135deg,#303a4e,#303a4e 6px,#283146 6px,#283146 12px); box-shadow:inset 0 0 0 1px #7d8599; cursor:default; }
     .cell.bridge { background:#604d47; box-shadow:inset 0 0 0 2px #d7a96a; }
     .cell.bridge.closed { background:#493d46; box-shadow:inset 0 0 0 2px #a88893; cursor:default; }
+    .cell.lit-home { background:radial-gradient(circle at center,#81673e,#534b3c 70%); box-shadow:inset 0 0 0 2px #ffdb8c,0 0 18px #ffca6a66; }
+    .cell.lit-home.safe-move { box-shadow:inset 0 0 0 3px #9de9c4,0 0 18px #ffca6a66; }
+    .done-badge { position:absolute; z-index:4; top:3px; left:3px; padding:2px 4px; border-radius:5px; color:#302219; background:#ffe4a6; font-size:9px; font-weight:900; line-height:1.1; box-shadow:0 1px 5px #16111b99; }
     .cell.safe-move { box-shadow:inset 0 0 0 3px #9de9c4; }
     .cell.safe-move::after { content:''; position:absolute; right:5px; top:5px; width:8px; height:8px; border-radius:50%; background:#a9f3cd; box-shadow:0 0 8px #8de4bd; pointer-events:none; }
     .cell.danger { background:#8b434f; box-shadow:inset 0 0 0 3px #ff9d9b,0 0 20px #e9606a88; }
@@ -56,6 +59,7 @@
     .legend span::before { content:''; display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:3px; background:#a9e8c9; }
     .legend .dangerkey::before { background:#ff8183; }
     .legend .crossing::before { background:#d5a166; }
+    .legend .completed::before { background:#ffe4a6; }
     .controls { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:16px; }
     .controls button { min-height:48px; padding:10px; border:1px solid #7e7892; border-radius:11px; color:#f5e8dc; background:#41445e; font-size:12px; font-weight:900; }
     .controls button.primary { color:#31252b; border-color:#ffe2b0; background:linear-gradient(135deg,#ffda98,#f7b878); }
@@ -90,7 +94,7 @@
           <div class="stat"><label>Banked</label><strong id="banked">0</strong><small> pts</small></div>
         </div>
         <div class="boardframe"><div id="board" class="board" role="grid" aria-label="Tap an adjacent open tile to move one step"></div></div>
-        <div class="bottom"><div class="legend"><span>Safe move</span><span class="dangerkey">Blocked by shadow</span><span class="crossing">Fading crossing</span></div><span id="turns">0 moves</span></div>
+        <div class="bottom"><div class="legend"><span>Safe move</span><span class="dangerkey">Blocked by shadow</span><span class="crossing">Fading crossing</span><span class="completed">House done</span></div><span id="turns">0 moves</span></div>
         <div class="controls"><button id="restart" type="button">Restart</button><button id="choice" type="button">Start at choice</button><button id="demo" class="primary" type="button">▶ Watch taps</button></div>
       </section>
       <aside class="side">
@@ -132,10 +136,10 @@
         const next=s.active&&same(p,nextShadow()), danger=next&&adjacent&&!lit;
         const safeMove=adjacent&&!wall&&!closed&&!danger;
         const courier=same(p,s.pos), caught=s.failed&&courier;
-        const classes=['cell',wall?'wall':'',crossing?'bridge':'',closed?'closed':'',safeMove?'safe-move':'',danger?'danger':'',caught?'caught':''].filter(Boolean).join(' ');
+        const classes=['cell',wall?'wall':'',crossing?'bridge':'',closed?'closed':'',lit?'lit-home':'',safeMove?'safe-move':'',danger?'danger':'',caught?'caught':''].filter(Boolean).join(' ');
         const name=wall?'collapsed street':closed?'closed crossing':crossing?'fading crossing':home?(lit?'lit ':'dark ')+home.name:same(p,depot)?'depot':'open tile';
         const badge=crossing&&s.bridge!==null?`<span class="corner ${closed?'closed':''}">${closed?'CLOSED':s.bridge}</span>`:'';
-        html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${danger?', blocked: shadow collision next move':safeMove?', safe move':''}" ${!safeMove||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${badge}</button>`;
+        html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${lit?', delivery complete':''}${danger?', blocked: shadow collision next move':safeMove?', safe move':''}" ${!safeMove||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${lit?'<span class="done-badge">✓ DONE</span>':''}${badge}</button>`;
       }
       if(s.failed&&s.failureReason==='light')html+=`<div class="end-overlay" role="alert"><div class="end-card"><div class="end-icon" aria-hidden="true">✦</div><h2>Lantern out</h2><p>Your last light is gone. ${s.lost} unbanked points were lost. Try a shorter route or return to the depot sooner.</p><button id="overlayRestart" type="button">Restart level</button></div></div>`;
       $('board').innerHTML=html;
