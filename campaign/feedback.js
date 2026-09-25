@@ -34,5 +34,5 @@ const FEEDBACK=(()=>{
   function labels(){const s=$('menuSound'),h=$('menuHaptics');if(s)s.textContent='Sound: '+(save.soundOn===false?'Off':'On');if(h)h.textContent='Vibration: '+(save.hapticsOn===false?'Off':'On')}
   function toggleSound(){save.soundOn=save.soundOn===false;persist();labels();if(save.soundOn)tone(660,.1,0,'sine',.03)}
   function toggleHaptics(){save.hapticsOn=save.hapticsOn===false;persist();labels();if(save.hapticsOn)haptic('house')}
-  return {emit,unlock,labels,toggleSound,toggleHaptics,history:()=>[...history]};
+  return {emit,preview:sound,unlock,labels,toggleSound,toggleHaptics,history:()=>[...history]};
 })();
