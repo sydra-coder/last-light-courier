@@ -34,7 +34,10 @@
     .end-icon { font-size:37px; line-height:1; }
     .end-card h2 { margin:10px 0 8px; color:#ffdbab; font:700 clamp(29px,6vw,39px) Georgia,serif; }
     .end-card p { margin:0 auto 20px; max-width:290px; color:#f0dfe4; font-size:14px; line-height:1.5; }
-    .end-card button { min-height:46px; padding:10px 22px; border:1px solid #ffe2b0; border-radius:10px; color:#31252b; background:linear-gradient(135deg,#ffda98,#f7b878); font-weight:900; }
+    .end-actions { display:flex; justify-content:center; gap:9px; flex-wrap:wrap; }
+    .end-card button,.end-card a { display:inline-grid; place-items:center; min-height:46px; padding:10px 18px; border:1px solid #ffe2b0; border-radius:10px; color:#31252b; background:linear-gradient(135deg,#ffda98,#f7b878); font-weight:900; text-decoration:none; }
+    .end-card .secondary { color:#f4e9e3; border-color:#8e7e91; background:#4d455e; }
+    .end-card.complete { border-color:#ffe2a6; background:linear-gradient(145deg,#4b423a,#292b43); }
     .cell { position:relative; min-width:0; border:1px solid #ffffff15; display:grid; place-items:center; padding:0; color:inherit; background:#1d2537; }
     .cell:nth-child(16n + 1),.cell:nth-child(16n + 3),.cell:nth-child(16n + 5),.cell:nth-child(16n + 7),.cell:nth-child(16n + 10),.cell:nth-child(16n + 12),.cell:nth-child(16n + 14),.cell:nth-child(16n + 16) { background:#242b3e; }
     .cell.safe-move:hover { background:#3b5c57; }
@@ -142,6 +145,10 @@
         html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${lit?', delivery complete':''}${danger?', blocked: shadow collision next move':safeMove?', safe move':''}" ${!safeMove||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${lit?'<span class="done-badge">✓ DONE</span>':''}${badge}</button>`;
       }
       if(s.failed&&s.failureReason==='light')html+=`<div class="end-overlay" role="alert"><div class="end-card"><div class="end-icon" aria-hidden="true">✦</div><h2>Lantern out</h2><p>Your last light is gone. ${s.lost} unbanked points were lost. Try a shorter route or return to the depot sooner.</p><button id="overlayRestart" type="button">Restart level</button></div></div>`;
+      if(s.finished){
+        const allDelivered=s.delivered.size===houses.length;
+        html+=`<div class="end-overlay" role="alert"><div class="end-card complete"><div class="end-icon" aria-hidden="true">✦</div><h2>${allDelivered?'Level complete!':'Run complete'}</h2><p>${s.banked} points banked. ${allDelivered?`All ${houses.length} houses are lit, and you made it home with ${s.light} light left.`:`You returned safely with ${s.delivered.size} of ${houses.length} houses lit. Try for all three to move to the next level.`}</p><div class="end-actions">${allDelivered?'<a id="nextLevel" href="last-light-courier-level-02.html">Next level preview →</a>':''}<button class="secondary" id="overlayRestart" type="button">Play again</button></div></div></div>`;
+      }
       $('board').innerHTML=html;
       $('overlayRestart')?.addEventListener('click',reset);
       $('light').textContent=s.light;$('lightBar').style.width=(s.light/16*100)+'%';
