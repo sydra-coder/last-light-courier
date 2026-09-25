@@ -31,25 +31,23 @@
     .board { width:100%; aspect-ratio:1; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); overflow:hidden; border-radius:10px; }
     .cell { position:relative; min-width:0; border:1px solid #ffffff15; display:grid; place-items:center; padding:0; color:inherit; background:#1d2537; }
     .cell:nth-child(16n + 1),.cell:nth-child(16n + 3),.cell:nth-child(16n + 5),.cell:nth-child(16n + 7),.cell:nth-child(16n + 10),.cell:nth-child(16n + 12),.cell:nth-child(16n + 14),.cell:nth-child(16n + 16) { background:#242b3e; }
-    .cell.adjacent:hover { background:#5b4d55; }
+    .cell.safe-move:hover { background:#3b5c57; }
     .cell:focus-visible { z-index:8; outline:3px solid #fff0aa; outline-offset:-4px; }
     .cell.wall { background:repeating-linear-gradient(135deg,#303a4e,#303a4e 6px,#283146 6px,#283146 12px); box-shadow:inset 0 0 0 1px #7d8599; cursor:default; }
     .cell.bridge { background:#604d47; box-shadow:inset 0 0 0 2px #d7a96a; }
     .cell.bridge.closed { background:#493d46; box-shadow:inset 0 0 0 2px #a88893; cursor:default; }
-    .cell.nextshadow { box-shadow:inset 0 0 0 3px #bb9ef2; }
+    .cell.safe-move { box-shadow:inset 0 0 0 3px #9de9c4; }
+    .cell.safe-move::after { content:''; position:absolute; right:5px; top:5px; width:8px; height:8px; border-radius:50%; background:#a9f3cd; box-shadow:0 0 8px #8de4bd; pointer-events:none; }
     .cell.danger { background:#8b434f; box-shadow:inset 0 0 0 3px #ff9d9b,0 0 20px #e9606a88; }
-    .cell.recommended { box-shadow:inset 0 0 0 3px #ffe190; }
     .cell.caught { background:#964d5a; box-shadow:inset 0 0 0 4px #ff9d9b,0 0 25px #fa7389; }
     .cell svg { width:66%; height:66%; max-width:49px; max-height:49px; filter:drop-shadow(0 3px 5px #06071299); }
     .stack { display:flex; justify-content:center; align-items:center; width:100%; height:100%; }
     .stack svg:not(:only-child) { width:50%; margin:-4%; }
     .corner { position:absolute; right:2px; bottom:2px; z-index:3; padding:2px 4px; min-width:18px; border-radius:5px; color:#271b19; background:#ffd88d; font-size:9px; font-weight:900; line-height:1.1; }
     .corner.closed { color:#fff1e8; background:#7f5c67; }
-    .nextmark { position:absolute; top:2px; left:2px; z-index:3; padding:2px 3px; border-radius:5px; color:#291e36; background:#d8c4ff; font-size:9px; font-weight:900; }
     .bottom { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:10px 2px 0; color:#bfc4d5; font-size:11px; }
     .legend { display:flex; flex-wrap:wrap; gap:6px 12px; }
-    .legend span::before { content:''; display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:3px; background:#ffe0a0; }
-    .legend .shadow::before { background:#c4aafa; }
+    .legend span::before { content:''; display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:3px; background:#a9e8c9; }
     .legend .dangerkey::before { background:#ff8183; }
     .legend .crossing::before { background:#d5a166; }
     .controls { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:16px; }
@@ -76,7 +74,7 @@
 </head>
 <body>
   <div class="shell">
-    <header><div class="eyebrow">Control study · direct tile movement</div><h1>Last Light Courier</h1><p class="subtitle">Tap a neighboring tile. The courier moves at once. The shadow moves with that tap.</p></header>
+    <header><div class="eyebrow">Control study · chess-style move choices</div><h1>Last Light Courier</h1><p class="subtitle">Every safe adjacent move is highlighted. Tap one and the courier moves at once.</p></header>
     <main class="layout">
       <section class="card game" aria-label="Tap-to-move board">
         <div class="gamehead"><strong>The Crossing / Tap Example</strong><span class="tag">No Go button</span></div>
@@ -86,16 +84,16 @@
           <div class="stat"><label>Banked</label><strong id="banked">0</strong><small> pts</small></div>
         </div>
         <div class="boardframe"><div id="board" class="board" role="grid" aria-label="Tap an adjacent open tile to move one step"></div></div>
-        <div class="bottom"><div class="legend"><span>Suggested tap</span><span class="shadow">Shadow next</span><span class="dangerkey">Danger</span><span class="crossing">Fading crossing</span></div><span id="turns">0 moves</span></div>
+        <div class="bottom"><div class="legend"><span>Safe move</span><span class="dangerkey">Blocked by shadow</span><span class="crossing">Fading crossing</span></div><span id="turns">0 moves</span></div>
         <div class="controls"><button id="restart" type="button">Restart</button><button id="choice" type="button">Start at choice</button><button id="demo" class="primary" type="button">▶ Watch taps</button></div>
       </section>
       <aside class="side">
-        <section class="card callout" aria-live="polite"><div class="label" id="statusLabel">Your first move</div><h2 id="statusTitle">Tap the tile above you</h2><p id="statusText">Each adjacent tile tap is one committed move. There is no route drawing and no Go button. The gold outline suggests a path; you can choose another tile.</p><div class="pulse" id="pulse">The shadow wakes after the first house. Then its next tile is outlined purple before every move.</div></section>
-        <section class="card"><h2>What changes per tap</h2><div class="rules"><div class="rule"><b>1</b><span>The courier enters the tile you tapped and spends one light.</span></div><div class="rule"><b>2</b><span>The shadow advances one tile. If it reaches your tile, you are caught.</span></div><div class="rule"><b>3</b><span>Once used, the orange crossing counts down. When it closes, choose another road home.</span></div></div></section>
-        <section class="card"><h2>Try the crossing</h2><p>Press <b>Start at choice</b> to reach the first house quickly. The gate immediately to its right turns red because the shadow moves there next. Tap it to see a loss, or step up and back to change the timing.</p></section>
+        <section class="card callout" aria-live="polite"><div class="label" id="statusLabel">Your first move</div><h2 id="statusTitle">Choose a green tile</h2><p id="statusText">The green outlines show every safe adjacent move, like legal moves in chess. Tap one to move immediately. There is no Go button.</p><div class="pulse" id="pulse">After the first house, any adjacent tile the shadow would occupy next is red and cannot be tapped.</div></section>
+        <section class="card"><h2>What changes per tap</h2><div class="rules"><div class="rule"><b>1</b><span>Choose any green neighboring tile. The courier enters it and spends one light.</span></div><div class="rule"><b>2</b><span>The shadow advances one tile. A move that would collide with it is unavailable.</span></div><div class="rule"><b>3</b><span>Once used, the orange crossing counts down. When it closes, choose another road home.</span></div></div></section>
+        <section class="card"><h2>Try the crossing</h2><p>Press <b>Start at choice</b> to reach the first house quickly. The gate to its right is red and blocked because the shadow would enter it next. The other green neighbors remain available; step up and back to change the timing.</p></section>
       </aside>
     </main>
-    <p class="smallnote">This is a separate control example, not a replacement for the two route-drawing previews. The board uses one authored layout and a deterministic shadow so you can compare the feel of each control scheme.</p>
+    <p class="smallnote">This is a separate control example, not a replacement for the two route-drawing previews. The board uses one authored layout and deterministic shadow. It shows safe move options instead of revealing the shadow's future tile.</p>
   </div>
   <script>
   (() => {
@@ -116,7 +114,7 @@
     const $=id=>document.getElementById(id), same=(a,b)=>a[0]===b[0]&&a[1]===b[1], key=p=>p.join(','), wait=ms=>new Promise(r=>setTimeout(r,ms));
     let s, demoRunning=false, token=0, demoTarget=null;
     function setStatus(label,title,text){$('statusLabel').textContent=label;$('statusTitle').textContent=title;$('statusText').textContent=text;}
-    function reset(){token++;demoRunning=false;demoTarget=null;s={pos:[...depot],light:16,pending:0,banked:0,delivered:new Set(),shadow:3,active:false,bridge:null,turns:0,finished:false,failed:false,guide:0,lost:0};setStatus('Your first move','Tap the tile above you','Each adjacent tile tap is one committed move. There is no route drawing and no Go button. The gold outline suggests a path; you can choose another tile.');render();}
+    function reset(){token++;demoRunning=false;demoTarget=null;s={pos:[...depot],light:16,pending:0,banked:0,delivered:new Set(),shadow:3,active:false,bridge:null,turns:0,finished:false,failed:false,guide:0,lost:0};setStatus('Your first move','Choose a green tile','Every green neighbor is a safe option. Tap one to move immediately; there is no Go button.');render();}
     function nextShadow(){return patrol[(s.shadow+1)%patrol.length];}
     function render(){
       let html='';
@@ -126,23 +124,26 @@
         const adjacent=Math.abs(x-s.pos[0])+Math.abs(y-s.pos[1])===1;
         const lit=home&&s.delivered.has(id), shadow=s.active&&same(p,patrol[s.shadow]);
         const next=s.active&&same(p,nextShadow()), danger=next&&adjacent&&!lit;
-        const recommended=s.guide>=0&&safePath[s.guide]&&same(p,safePath[s.guide])&&adjacent;
+        const safeMove=adjacent&&!wall&&!closed&&!danger;
         const courier=same(p,s.pos), caught=s.failed&&courier;
-        const classes=['cell',wall?'wall':'',crossing?'bridge':'',closed?'closed':'',adjacent?'adjacent':'',next?'nextshadow':'',danger?'danger':'',recommended?'recommended':'',caught?'caught':''].filter(Boolean).join(' ');
+        const classes=['cell',wall?'wall':'',crossing?'bridge':'',closed?'closed':'',safeMove?'safe-move':'',danger?'danger':'',caught?'caught':''].filter(Boolean).join(' ');
         const name=wall?'collapsed street':closed?'closed crossing':crossing?'fading crossing':home?(lit?'lit ':'dark ')+home.name:same(p,depot)?'depot':'open tile';
-        const badge=crossing?`<span class="corner ${closed?'closed':''}">${s.bridge===null?'OPEN':s.bridge===0?'CLOSED':s.bridge}</span>`:'';
-        html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${danger?', shadow collision next move':''}" ${wall||closed||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${badge}${next&&!shadow?'<span class="nextmark">NEXT</span>':''}</button>`;
+        const badge=crossing&&s.bridge!==null?`<span class="corner ${closed?'closed':''}">${closed?'CLOSED':s.bridge}</span>`:'';
+        html+=`<button class="${classes}" type="button" role="gridcell" data-x="${x}" data-y="${y}" aria-label="Column ${x+1}, row ${y+1}: ${name}${danger?', blocked: shadow collision next move':safeMove?', safe move':''}" ${!safeMove||demoRunning||s.finished||s.failed?'disabled':''}><span class="stack">${wall?icons.wall:''}${same(p,depot)?icons.depot:''}${home?icons[lit?'lit':'house']:''}${shadow?icons.shadow:''}${courier?icons.courier:''}</span>${badge}</button>`;
       }
       $('board').innerHTML=html;
       $('light').textContent=s.light;$('lightBar').style.width=(s.light/16*100)+'%';
       $('pending').textContent=s.pending;$('banked').textContent=s.banked;$('turns').textContent=`${s.turns} move${s.turns===1?'':'s'}`;
       $('demo').disabled=demoRunning;$('choice').disabled=demoRunning;
-      $('pulse').textContent=s.failed?`${s.lost} unbanked points lost. Restart or try the safe path.`:s.finished?`All ${s.banked} points are banked. You reached home with ${s.light} light.`:s.active?`Shadow next: purple NEXT tile. Crossing: ${s.bridge===null?'open until first use':s.bridge===0?'closed':s.bridge+' moves before it closes'}.`: 'The shadow wakes after the first house. Then its next tile is outlined purple before every move.';
+      $('pulse').textContent=s.failed?`${s.lost} unbanked points lost. Restart or try the safe path.`:s.finished?`All ${s.banked} points are banked. You reached home with ${s.light} light.`:s.active?`Green tiles are safe next moves. Red tiles are blocked by the shadow. Crossing: ${s.bridge===null?'untouched':s.bridge===0?'closed':s.bridge+' moves before it closes'}.`: 'The shadow wakes after the first house. Green outlines show all safe adjacent moves.';
     }
     function move(p,fromDemo=false){
       if((demoRunning&&!fromDemo)||s.finished||s.failed)return false;
       if(Math.abs(p[0]-s.pos[0])+Math.abs(p[1]-s.pos[1])!==1||walls.has(key(p)))return false;
       if(same(p,bridge)&&s.bridge===0){setStatus('Road closed','The crossing has faded','The crossing has closed. Choose another street home.');return false;}
+      const targetHome=houses.find(h=>same(h.p,p));
+      const targetLit=targetHome&&s.delivered.has(key(p));
+      if(s.active&&same(p,nextShadow())&&!targetLit)return false;
       s.light--;s.turns++;
       if(s.active)s.shadow=(s.shadow+1)%patrol.length;
       const newlyUsedBridge=same(p,bridge)&&s.bridge===null;
@@ -163,7 +164,7 @@
       reset();demoRunning=true;const mine=token;
       for(const p of path){if(mine!==token)return;demoTarget=p;render();await wait(230);if(mine!==token)return;move(p,true);await wait(230);if(s.failed||s.finished)break;}
       if(mine!==token)return;demoRunning=false;demoTarget=null;render();
-      if(stopAtChoice&&!s.failed)setStatus('Your choice','Tap the red gate or step up','The tile right of the courier is red: the shadow will enter it on the same tap. Tap it to see a catch, or tap the tile above to change the timing.');
+      if(stopAtChoice&&!s.failed)setStatus('Your choice','Choose any green neighbor','The gate to the right is red and blocked: the shadow would enter it next. The green tiles are legal moves. Step up and back to change the timing.');
     }
     $('board').addEventListener('click',e=>{const c=e.target.closest('.cell');if(c)move([Number(c.dataset.x),Number(c.dataset.y)]);});
     $('restart').addEventListener('click',reset);
