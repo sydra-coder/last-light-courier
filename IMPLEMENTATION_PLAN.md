@@ -37,6 +37,7 @@ The first prototype uses only one hazard: a moving shadow that advances one cell
 
 - Large cells and a reachable bottom action button; no precise drag gesture required.
 - Drawn route shows expected light use, destination value, and shadow collision in distinct colors and symbols.
+- Start each level preview with a short, skippable visual intro for the route, light budget, banking, and shadow. Show the shadow and courier entering the same tile in a before-and-after diagram; allow the intro to be reopened at the decision point.
 - A short animation shows each move and delivery; allow speed-up after the tutorial.
 - Failure card explains exactly why the run ended and offers instant retry with the same seed.
 

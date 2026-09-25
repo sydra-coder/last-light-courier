@@ -93,6 +93,48 @@
     .note { max-width:1200px; margin:20px auto 0; color:#989db4; font-size:12px; line-height:1.5; }
     @media(max-width:860px) { .layout { grid-template-columns:1fr; } .side { grid-template-columns:repeat(2,1fr); } .intro,.narration { grid-column:span 1; } .tour,.rules { grid-column:span 1; } }
     @media(max-width:610px) { .shell { padding:20px 12px 28px; } .mast { display:block; } .pill { display:inline-block; margin-top:13px; } .game { padding:12px; } .stats { gap:5px; } .stat { padding:8px; min-height:64px; } .stat strong { font-size:19px; } .stat small { display:none; } .boardwrap { padding:4px; } .side { display:grid; grid-template-columns:1fr; } .intro,.narration,.tour,.rules { grid-column:auto; } .boardfoot { display:block; } .boardfoot>span { display:block; margin-top:5px; } .cell svg { width:78%; height:78%; } }
+
+    .headbuttons { display:flex; gap:6px; align-items:center; }
+    .introhelp { border:1px solid #82788e; border-radius:8px; padding:7px 9px; background:#343448; color:#f3e9d9; font-size:11px; font-weight:800; white-space:nowrap; }
+    body.intro-active { overflow:hidden; }
+    .intro-overlay { position:fixed; inset:0; z-index:50; display:grid; place-items:center; overflow:auto; padding:18px; background:#090c1be8; backdrop-filter:blur(8px); }
+    .intro-overlay[hidden] { display:none; }
+    .intro-card { width:min(760px,100%); max-height:min(92vh,920px); overflow:auto; border:1px solid #9b8b9e; border-radius:24px; padding:26px; color:#f8f0da; background:linear-gradient(145deg,#323049,#1c2139); box-shadow:0 24px 100px #000b; }
+    .intro-top { display:flex; justify-content:space-between; align-items:start; gap:15px; }
+    .intro-label { color:#ffd78a; font-size:11px; font-weight:900; letter-spacing:.18em; text-transform:uppercase; }
+    .intro-skip { border:1px solid #777489; color:#e1dbe6; background:#282a40; border-radius:9px; padding:8px 10px; font-size:12px; white-space:nowrap; }
+    .intro-card h2 { margin:10px 0 8px; font:700 clamp(28px,4vw,42px)/1.06 Georgia,serif; letter-spacing:-.035em; }
+    .intro-copy { margin:0; max-width:640px; color:#e0deeb; font-size:16px; line-height:1.55; }
+    .intro-stage { min-height:190px; margin:22px 0; padding:20px; display:grid; place-items:center; border:1px solid #6a6782; border-radius:17px; background:radial-gradient(circle at center,#3b3a58,#232740 70%); }
+    .intro-stage svg { width:52px; height:52px; }
+    .intro-scene { width:100%; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .intro-symbol { min-width:84px; display:grid; justify-items:center; gap:7px; color:#e8e3ec; font-size:12px; font-weight:800; text-align:center; }
+    .intro-symbol .round { width:74px; height:74px; display:grid; place-items:center; border-radius:18px; border:1px solid #8e8290; background:#4c4559; }
+    .intro-arrow { color:#ffd890; font-size:28px; font-weight:900; }
+    .intro-frame { display:grid; justify-items:center; gap:8px; min-width:215px; }
+    .intro-frame strong { color:#ffe0a5; font-size:12px; text-transform:uppercase; letter-spacing:.12em; }
+    .intro-track { display:grid; grid-template-columns:repeat(3,54px); gap:6px; }
+    .intro-tile { width:54px; height:54px; display:flex; align-items:center; justify-content:center; border:1px solid #73728e; border-radius:9px; background:#252c43; }
+    .intro-tile svg { width:40px; height:40px; }
+    .intro-tile.both { background:#a34859; border:2px solid #ff9c93; box-shadow:0 0 20px #f26f72aa; }
+    .intro-tile.both svg { width:28px; height:28px; margin:-4px; }
+    .intro-mini-caption { color:#c0bbce; font-size:12px; text-align:center; }
+    .intro-patrol-note { display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:wrap; width:100%; padding-top:10px; border-top:1px solid #555b75; color:#d9d3e7; font-size:12px; text-align:center; }
+    .intro-patrol-note strong { color:#ffe0a5; text-transform:uppercase; letter-spacing:.1em; }
+    .intro-patrol-note span { color:#d3bfff; font-weight:900; letter-spacing:.06em; }
+    .intro-metrics { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .intro-metric { min-width:145px; padding:17px; border:1px solid #7b728f; border-radius:14px; background:#34384f; text-align:center; }
+    .intro-metric strong { display:block; color:#ffe0a1; font-size:28px; }
+    .intro-metric span { color:#d4d2e0; font-size:12px; }
+    .intro-dots { display:flex; justify-content:center; gap:7px; margin-bottom:18px; }
+    .intro-dots span { width:23px; height:5px; border-radius:5px; background:#67657e; }
+    .intro-dots span.active { background:#ffcf76; }
+    .intro-actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+    .intro-actions button { border-radius:11px; border:1px solid #928b9f; min-height:44px; padding:10px 16px; color:#fff6e4; background:#474862; font-weight:800; }
+    .intro-actions button.primary { color:#2f2530; background:#ffd187; border-color:#ffe7b5; }
+    .intro-actions button[hidden] { display:none; }
+    .intro-actions button:disabled { opacity:.4; }
+    @media(max-width:610px) { .intro-card { padding:19px; max-height:94vh; } .intro-copy { font-size:14px; } .intro-stage { margin:16px 0; padding:13px; min-height:165px; } .intro-scene { gap:6px; } .intro-symbol { min-width:62px; } .intro-symbol .round { width:58px; height:58px; } .intro-stage svg { width:42px; height:42px; } .intro-frame { min-width:145px; } .intro-track { grid-template-columns:repeat(3,40px); gap:3px; } .intro-tile { width:40px; height:40px; } .intro-tile svg { width:31px; height:31px; } .intro-tile.both svg { width:21px; height:21px; margin:-3px; } .intro-metric { min-width:90px; padding:10px; } .intro-metric strong { font-size:22px; } .intro-actions { justify-content:stretch; } .intro-actions button { flex:1; } }
   </style>
 </head>
 <body>
@@ -103,7 +145,7 @@
     </header>
     <main class="layout">
       <section class="card game" aria-label="Level one board">
-        <div class="gamehead"><strong>The Hollow / First Delivery</strong><button class="topdemo" id="topDemoButton" type="button">▶ Play guided level</button></div>
+        <div class="gamehead"><strong>The Hollow / First Delivery</strong><div class="headbuttons"><button class="introhelp" id="introHelpButton" type="button">ⓘ Intro</button><button class="topdemo" id="topDemoButton" type="button">▶ Play guided level</button></div></div>
         <div class="stats">
           <div class="stat"><label>Lantern</label><strong id="lightValue">20</strong><small> / 20 steps</small><div class="lighttrack"><span class="lightfill" id="lightFill"></span></div></div>
           <div class="stat"><label>At risk</label><strong id="pendingValue">0</strong><small> pts</small></div>
@@ -121,6 +163,22 @@
       </aside>
     </main>
     <p class="note">Design study, not a finished game or Android build. This level uses one authored layout and a visible four-tile shadow patrol. Your route changes when and where the courier meets the shadow. Houses refill light; points are banked at the depot.</p>
+  </div>
+
+  <div class="intro-overlay" id="introOverlay" role="dialog" aria-modal="true" aria-labelledby="introTitle" hidden>
+    <div class="intro-card">
+      <div class="intro-top"><div class="intro-label" id="introLabel">WELCOME · 1 OF 4</div><button class="intro-skip" id="introSkipButton" type="button">Skip intro</button></div>
+      <h2 id="introTitle"></h2>
+      <p class="intro-copy" id="introCopy"></p>
+      <div class="intro-stage" id="introStage" aria-hidden="true"></div>
+      <div class="intro-dots" id="introDots" aria-hidden="true"></div>
+      <div class="intro-actions">
+        <button id="introBackButton" type="button">Back</button>
+        <button class="primary" id="introNextButton" type="button">Next →</button>
+        <button id="introFreeButton" type="button" hidden>Try the board</button>
+        <button class="primary" id="introGuidedButton" type="button" hidden>Play guided level →</button>
+      </div>
+    </div>
   </div>
   <script>
   (() => {
@@ -141,6 +199,38 @@
     const wait = ms => new Promise(resolve => setTimeout(resolve,ms));
     let runToken = 0, busy = false, demo = false, demoStage = 0, awaitingChoice = false, choiceResolve = null;
     let s;
+
+    const introConfig = {"startLight": 20, "refill": 4, "walls": false};
+    const introSlides = [
+      {label:'THE STORY',title:'Carry light into the dark',copy:'You begin at the blue depot. Reach the gold houses to light them, then return to the depot to secure your points.'},
+      {label:'THE ROUTE',title:'Draw first. Move when ready.',copy:'Tap neighboring squares one at a time. Undo any uncommitted step, then press Go. The shadow does not move while you are planning.'},
+      {label:'THE SHADOW',title:'It takes a step when you do',copy:'The shadow wakes after your first delivery. Every courier step moves it one square on its visible patrol. If you both enter the same square, the run ends and unbanked points are lost. A glowing delivered house is safe.'},
+      {label:'YOUR CHOICE',title:'Spend light or bank early',copy:`You start with ${introConfig.startLight} light. Each step costs one; each new house restores ${introConfig.refill}. The preview marks a collision red, but you can still risk it. Return to the depot to bank points${introConfig.walls?', and avoid the striped collapsed streets':''}.`}
+    ];
+    let introIndex = 0;
+    function introVisual(index) {
+      if(index===0) return `<div class="intro-scene"><div class="intro-symbol"><div class="round">${icons.depot}</div>Start at depot</div><span class="intro-arrow">→</span><div class="intro-symbol"><div class="round">${icons.house}</div>Light houses</div><span class="intro-arrow">→</span><div class="intro-symbol"><div class="round">${icons.depot}</div>Return to bank</div></div>`;
+      if(index===1) return `<div class="intro-scene"><div class="intro-symbol"><div class="round">${icons.courier}</div>Courier</div><span class="intro-arrow">→</span><div class="intro-symbol"><div class="round">1</div>Tap a tile</div><span class="intro-arrow">→</span><div class="intro-symbol"><div class="round">2</div>Tap the next</div><span class="intro-arrow">→</span><div class="intro-symbol"><div class="round">GO</div>Commit route</div></div>`;
+      if(index===2) return `<div class="intro-scene"><div class="intro-frame"><strong>Before a step</strong><div class="intro-track"><div class="intro-tile">${icons.courier}</div><div class="intro-tile"></div><div class="intro-tile">${icons.shadow}</div></div><div class="intro-mini-caption">Courier and shadow approach</div></div><span class="intro-arrow">→</span><div class="intro-frame"><strong>After one step</strong><div class="intro-track"><div class="intro-tile"></div><div class="intro-tile both">${icons.courier}${icons.shadow}</div><div class="intro-tile"></div></div><div class="intro-mini-caption">Same square = caught</div></div></div>`;
+      return `<div class="intro-metrics"><div class="intro-metric"><strong>${introConfig.startLight}</strong><span>Starting light</span></div><div class="intro-metric"><strong>+${introConfig.refill}</strong><span>Per delivery</span></div><div class="intro-metric"><strong>⌂</strong><span>Depot banks score</span></div></div>`;
+    }
+    function renderIntro() {
+      const slide=introSlides[introIndex];
+      $('introLabel').textContent=`${slide.label} · ${introIndex+1} OF ${introSlides.length}`;
+      $('introTitle').textContent=slide.title;
+      $('introCopy').textContent=slide.copy;
+      $('introStage').innerHTML=introVisual(introIndex);
+      if(introIndex===2) $('introStage').insertAdjacentHTML('beforeend','<div class="intro-patrol-note"><strong>Patrol repeats</strong><span>1 → 2 → 3 → 4 → 1</span><small>It waits while you plan.</small></div>');
+      $('introDots').innerHTML=introSlides.map((_,i)=>`<span class="${i===introIndex?'active':''}"></span>`).join('');
+      $('introBackButton').disabled=introIndex===0;
+      const last=introIndex===introSlides.length-1;
+      $('introNextButton').hidden=last;
+      $('introFreeButton').hidden=!last;
+      $('introGuidedButton').hidden=!last;
+    }
+    function openIntro() { introIndex=0; $('introOverlay').hidden=false; document.body.classList.add('intro-active'); renderIntro(); $('introNextButton').focus(); }
+    function closeIntro() { $('introOverlay').hidden=true; document.body.classList.remove('intro-active'); $('introHelpButton').focus(); }
+
 
     function initial() { return {pos:[...depot],light:20,delivered:new Set(),pending:0,banked:0,shadow:0,active:false,route:[],finished:false,failed:false,failureReason:'',lostPoints:0}; }
     function story(kicker,title,body) { $('storyKicker').textContent=kicker; $('storyTitle').textContent=title; $('storyText').textContent=body; }
@@ -201,6 +291,7 @@
       $('goButton').textContent=s.route.length?`${p&&p.danger>=0?'Risk it':'Go'} · ${s.route.length} step${s.route.length===1?'':'s'}`:'Go';
       $('demoButton').disabled=busy||demo;
       $('topDemoButton').disabled=busy||demo;
+      $('introHelpButton').disabled=busy||(demo&&!awaitingChoice);
       [...$('tourSteps').children].forEach((el,i)=>el.classList.toggle('done',i<demoStage));
       const box=$('preview'); box.className='preview';
       if(s.finished) { box.textContent=`Round complete · ${s.banked} points banked with ${s.light} light left.`; box.classList.add('safe'); }
@@ -270,7 +361,16 @@
     $('topDemoButton').addEventListener('click',guidedRun);
     $('riskChoice').addEventListener('click',()=>{ if(awaitingChoice&&choiceResolve) choiceResolve('risky'); });
     $('safeChoice').addEventListener('click',()=>{ if(awaitingChoice&&choiceResolve) choiceResolve('safe'); });
+
+    $('introHelpButton').addEventListener('click',openIntro);
+    $('introSkipButton').addEventListener('click',closeIntro);
+    $('introBackButton').addEventListener('click',()=>{ if(introIndex>0){introIndex--;renderIntro();} });
+    $('introNextButton').addEventListener('click',()=>{ if(introIndex<introSlides.length-1){introIndex++;renderIntro();} });
+    $('introFreeButton').addEventListener('click',closeIntro);
+    $('introGuidedButton').addEventListener('click',()=>{closeIntro();guidedRun();});
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('introOverlay').hidden) closeIntro(); });
     reset();
+    openIntro();
   })();
   </script>
 </body>
