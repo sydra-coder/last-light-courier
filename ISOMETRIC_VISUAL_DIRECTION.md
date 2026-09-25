@@ -2,11 +2,13 @@
 
 ## Decision
 
-Use **Sample 2: Isometric Village** from `THREE_MOVEMENT_SAMPLES.html` as the visual reference for the game. This selects the camera angle and presentation only.
+Use **Sample 2: Isometric Village** from `THREE_MOVEMENT_SAMPLES.html` as the default visual reference. Players can also select **Storybook Overhead** or **Night Pursuit** from the main menu or while playing. The choice changes the board presentation only and is saved on the device.
 
 ## Keep the established game rules
 
 Retain the current tap-to-move gameplay, legal move highlighting, shadow behavior and collision rules, lights, points, banking, obstacles, tutorials, and level layouts. The sample's echo-shadow behavior is a demonstration inside the comparison page; it is **not** a requested rule change. Do not copy its simplified 5 × 5 map or movement logic into the campaign.
+
+The Night Pursuit sample's chasing shadow is also a demonstration. The campaign uses its existing patrol and Echo Shadow rules in all three views. Switching views during a run keeps the courier's tile, shadow phase, light, points, and completed houses.
 
 ## Visual treatment
 
@@ -21,6 +23,6 @@ Retain the current tap-to-move gameplay, legal move highlighting, shadow behavio
 
 ## Reference and scope
 
-Open `THREE_MOVEMENT_SAMPLES.html` and view **Isometric Village** for the intended angle, raised tile treatment, and village mood. The comparison page is a concept preview; the full game's board size, content, user interface, and behavior remain governed by the current campaign implementation and design documents.
+Open `THREE_MOVEMENT_SAMPLES.html` to compare the three visual directions. The comparison page is a concept preview; the full game's board size, content, user interface, and behavior remain governed by the current campaign implementation and design documents.
 
 This is a design handoff. No gameplay or shadow logic change is authorized by this decision.
