@@ -917,7 +917,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 ```text
     01234567
-0   .B...g..
+0   .B...fg.
 1   d.....s#
 2   ..#.##A.
 3   ........
@@ -927,9 +927,9 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   ......##
 ```
 
-**Hazards:** first patrol (2,0) → (3,0) → (3,1) → (2,1); initial index 1. fading crossing (5,0); two-light dark tile (0,1); switch (6,1); timed gate (5,0).
+**Hazards:** first patrol (2,0) → (3,0) → (3,1) → (2,1); initial index 1. fading crossing (5,0); two-light dark tile (0,1); switch (6,1); timed gate (6,0).
 
-**Repair:** Install latch at (5,0); R band, **600 points**; timed gate stays open after repair.
+**Repair:** Install latch at (6,0); R band, **600 points**; timed gate stays open after repair.
 
 **Verified no-purchase full route:** `R1 U6 L6 D6 R5`. 24 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -1027,11 +1027,11 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 3   ..##...#
 4   .A.##...
 5   .s...#.#
-6   ......d#
-7   .g...B..
+6   .g....d#
+7   .f...B..
 ```
 
-**Hazards:** first patrol (5,6) → (6,6) → (6,7) → (5,7); initial index 1. fading crossing (1,7); two-light dark tile (6,6); switch (1,5); timed gate (1,7).
+**Hazards:** first patrol (5,6) → (6,6) → (6,7) → (5,7); initial index 1. fading crossing (1,7); two-light dark tile (6,6); switch (1,5); timed gate (1,6).
 
 **Repair:** none on this board.
 
@@ -1075,17 +1075,17 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
     01234567
 0   ...d.B..
 1   #C......
-2   ........
-3   ...##.g#
+2   ......g.
+3   ...##.f#
 4   ......s#
 5   ....#...
 6   #.D...A#
 7   .#......
 ```
 
-**Hazards:** first patrol (4,0) → (5,0) → (5,1) → (4,1); initial index 1. fading crossing (6,3); two-light dark tile (3,0); switch (6,4); timed gate (6,3).
+**Hazards:** first patrol (4,0) → (5,0) → (5,1) → (4,1); initial index 1. fading crossing (6,3); two-light dark tile (3,0); switch (6,4); timed gate (6,2).
 
-**Repair:** Install gate latch at (6,3); R band, **600 points**; timed gate stays open after repair.
+**Repair:** Install gate latch at (6,2); R band, **600 points**; timed gate stays open after repair.
 
 **Verified no-purchase full route:** `R4 U6 L5 D6 R1`. 22 moves, 5 light left, 985 points banked including the 175-point mastery bonus.
 
@@ -1126,7 +1126,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 ```text
     01234567
 0   .#.#.#.#
-1   ...gs.A.
+1   ..gfs.A.
 2   ........
 3   .B.##...
 4   #......D
@@ -1135,7 +1135,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   ....#..#
 ```
 
-**Hazards:** first patrol (1,3) → (2,3) → (2,4) → (1,4); initial index 0. fading crossing (3,1); switch (4,1); timed gate (3,1).
+**Hazards:** first patrol (1,3) → (2,3) → (2,4) → (1,4); initial index 0. fading crossing (3,1); switch (4,1); timed gate (2,1).
 
 **Repair:** none on this board.
 
@@ -1183,11 +1183,11 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 3   D....#..
 4   .....#B.
 5   ..#..#..
-6   .A.sg...
+6   .A.sfg..
 7   ....#.#.
 ```
 
-**Hazards:** first patrol (6,4) → (7,4) → (7,5) → (6,5); initial index 0. fading crossing (4,6); two-light dark tile (6,2); switch (3,6); timed gate (4,6).
+**Hazards:** first patrol (6,4) → (7,4) → (7,5) → (6,5); initial index 0. fading crossing (4,6); two-light dark tile (6,2); switch (3,6); timed gate (5,6).
 
 **Repair:** none on this board.
 
@@ -1386,8 +1386,8 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 ```text
     01234567
 0   ##.#.#..
-1   .sA.....
-2   g.....D.
+1   gsA.....
+2   f.....D.
 3   ...#...#
 4   ...#.#..
 5   .....#..
@@ -1395,7 +1395,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   .d...C.#
 ```
 
-**Hazards:** first patrol (1,6) → (2,6) → (2,7) → (1,7); initial index 1. fading crossing (0,2); two-light dark tile (1,7); switch (1,1); timed gate (0,2).
+**Hazards:** first patrol (1,6) → (2,6) → (2,7) → (1,7); initial index 1. fading crossing (0,2); two-light dark tile (1,7); switch (1,1); timed gate (0,1).
 
 **Repair:** none on this board.
 
@@ -1439,15 +1439,15 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
     01234567
 0   ..#...#.
 1   sA....D.
-2   ...#.#..
-3   g#...#..
+2   g..#.#..
+3   f#...#..
 4   ...##...
 5   ....##..
 6   .#......
 7   B.....C.
 ```
 
-**Hazards:** first patrol (2,6) → (3,6) → (3,7) → (2,7); initial index 1. fading crossing (0,3); switch (0,1); timed gate (0,3).
+**Hazards:** first patrol (2,6) → (3,6) → (3,7) → (2,7); initial index 1. fading crossing (0,3); switch (0,1); timed gate (0,2).
 
 **Repair:** none on this board.
 
@@ -1541,8 +1541,8 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 ```text
     01234567
-0   .sA....#
-1   g##...D.
+0   gsA....#
+1   f##...D.
 2   ..#.#...
 3   ..#..#..
 4   ........
@@ -1551,7 +1551,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   .#.##...
 ```
 
-**Hazards:** first patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 0. fading crossing (0,1); two-light dark tile (1,6); switch (1,0); timed gate (0,1).
+**Hazards:** first patrol (0,3) → (1,3) → (1,4) → (0,4); initial index 0. fading crossing (0,1); two-light dark tile (1,6); switch (1,0); timed gate (0,0).
 
 **Repair:** none on this board.
 
@@ -2065,13 +2065,13 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 1   ....D...
 2   A#...#..
 3   s....##.
-4   ......#C
-5   g.......
+4   g.....#C
+5   f.......
 6   ...B....
 7   ##.###..
 ```
 
-**Hazards:** first patrol (4,5) → (5,5) → (5,6) → (4,6); initial index 0. Second patrol (1,5) → (2,5) → (2,6) → (1,6); initial index 1. fading crossing (0,5); switch (0,3); timed gate (0,5); second patrol active after first delivery.
+**Hazards:** first patrol (4,5) → (5,5) → (5,6) → (4,6); initial index 0. Second patrol (1,5) → (2,5) → (2,6) → (1,6); initial index 1. fading crossing (0,5); switch (0,3); timed gate (0,4); second patrol active after first delivery.
 
 **Repair:** none on this board.
 
@@ -2165,8 +2165,8 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 
 ```text
     01234567
-0   ..sA....
-1   .g...#.D
+0   .gsA....
+1   .f...#.D
 2   ........
 3   ..#.#.#.
 4   ..#.#...
@@ -2175,7 +2175,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   ###..#..
 ```
 
-**Hazards:** first patrol (0,1) → (1,1) → (1,2) → (0,2); initial index 0. fading crossing (1,1); two-light dark tile (2,6); switch (2,0); timed gate (1,1).
+**Hazards:** first patrol (0,1) → (1,1) → (1,2) → (0,2); initial index 0. fading crossing (1,1); two-light dark tile (2,6); switch (2,0); timed gate (1,0).
 
 **Repair:** none on this board.
 
@@ -2322,7 +2322,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 ```text
     01234567
 0   .#..#..#
-1   g.sA....
+1   fgsA....
 2   .###.#.D
 3   ........
 4   .....#..
@@ -2331,7 +2331,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   .......#
 ```
 
-**Hazards:** first patrol (2,6) → (3,6) → (3,7) → (2,7); initial index 0. fading crossing (0,1); two-light dark tile (1,6); switch (2,1); timed gate (0,1).
+**Hazards:** first patrol (2,6) → (3,6) → (3,7) → (2,7); initial index 0. fading crossing (0,1); two-light dark tile (1,6); switch (2,1); timed gate (1,1).
 
 **Repair:** none on this board.
 
@@ -2426,7 +2426,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 ```text
     01234567
 0   .....##.
-1   B...g.sA
+1   B...fgsA
 2   ......#.
 3   d.....#.
 4   ...##...
@@ -2435,7 +2435,7 @@ In chapter c (1–10), houses A/B/C award 120/180/240 + 30×(c−1) each. The al
 7   #....#.#
 ```
 
-**Hazards:** first patrol (2,1) → (3,1) → (3,2) → (2,2); initial index 0. Second patrol (3,0) → (4,0) → (4,1) → (3,1); initial index 0. fading crossing (4,1); two-light dark tile (0,3); switch (6,1); timed gate (4,1); second patrol active after first delivery.
+**Hazards:** first patrol (2,1) → (3,1) → (3,2) → (2,2); initial index 0. Second patrol (3,0) → (4,0) → (4,1) → (3,1); initial index 0. fading crossing (4,1); two-light dark tile (0,3); switch (6,1); timed gate (5,1); second patrol active after first delivery.
 
 **Repair:** none on this board.
 

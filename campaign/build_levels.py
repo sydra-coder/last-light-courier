@@ -62,6 +62,7 @@ def shortest_full(depot, homes, walls):
 
 
 levels = []
+seen_layouts = set()
 for number in range(1, 101):
     rng = random.Random(0x5A17 + number * 1709)
     chapter = (number - 1) // 10 + 1
@@ -122,11 +123,19 @@ for number in range(1, 101):
         repair = {'tile': p, 'name': repair_text.rsplit('(', 1)[0].strip(),
                   'band': band, 'cost': price(chapter, band)}
 
-    fade = path[round(length * .32)] if chapter >= 2 else None
-    dark = path[round(length * .57)] if (chapter >= 3 and (number % 3 != 0 or number == 81)) or (repair and 'lamp' in repair['name'].lower()) else None
-    switch = path[round(length * .25)] if chapter >= 4 and (number % 2 == 0 or number == 31) else None
-    gate = path[round(length * .34)] if switch else None
-    ice = path[round(length * .64)] if chapter >= 6 and number % 2 == 1 else None
+    occupied_features = {key(depot), *(key(p) for p in homes)}
+    def feature_near(fraction):
+        target = round(length * fraction)
+        choices = sorted(range(length), key=lambda i: (abs(i - target), i))
+        tile = next(path[i] for i in choices if key(path[i]) not in occupied_features)
+        occupied_features.add(key(tile))
+        return tile
+
+    fade = feature_near(.32) if chapter >= 2 else None
+    dark = feature_near(.57) if (chapter >= 3 and (number % 3 != 0 or number == 81)) or (repair and 'lamp' in repair['name'].lower()) else None
+    switch = feature_near(.25) if chapter >= 4 and (number % 2 == 0 or number == 31) else None
+    gate = feature_near(.34) if switch else None
+    ice = feature_near(.64) if chapter >= 6 and number % 2 == 1 else None
     echo = chapter >= 5 and number % 2 == 1
     second = chapter >= 7 and (number % 3 != 1 or number == 61)
     if repair:
@@ -176,8 +185,7 @@ for number in range(1, 101):
             for dy in (0, -1):
                 ax, ay = anchor[0] + dx, anchor[1] + dy
                 if 0 <= ax <= 6 and 0 <= ay <= 6:
-                    square = [[ax, ay], [ax + 1, ay], [ax + 1, ay + 1], [ax, ay + 1]]
-                    squares.append(square)
+                    squares.append([[ax, ay], [ax + 1, ay], [ax + 1, ay + 1], [ax, ay + 1]])
         if prefer_crossing:
             rng.shuffle(squares)
         else:
@@ -190,9 +198,7 @@ for number in range(1, 101):
                 if all(spine[step] != square[(phase + step - activation) % 4]
                        for step in range(activation + 1, len(spine))):
                     return square, phase
-        # Interior patrol has no contact with the guaranteed outer route.
-        square = [[3, 3], [4, 3], [4, 4], [3, 4]]
-        return square, 0
+        return [[3, 3], [4, 3], [4, 4], [3, 4]], 0
 
     patrol, phase = make_patrol(number % 4 != 0)
     patrol2, phase2 = make_patrol(True) if second else (None, None)
@@ -237,7 +243,11 @@ for number in range(1, 101):
     assert all(abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1 for a, b in zip(spine, spine[1:]))
     assert all(key(p) not in walls for p in spine)
     assert repair is None or (key(repair['tile']) in walls) == (repair['effect'] == 'open')
-    assert len({json.dumps(x, sort_keys=True) for x in levels} | {json.dumps(level, sort_keys=True)}) == number
+    static_tiles = [depot, *homes, *(p for p in (fade, dark, switch, gate, ice) if p)]
+    assert len({key(p) for p in static_tiles}) == len(static_tiles), f'overlapping board features on level {number}'
+    layout = json.dumps([depot, homes, sorted(walls), fade, dark, switch, gate, ice, patrol, patrol2], sort_keys=True)
+    assert layout not in seen_layouts, f'duplicate layout on level {number}'
+    seen_layouts.add(layout)
     levels.append(level)
 
 (ROOT / 'CAMPAIGN_LEVELS.json').write_text(json.dumps(levels, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
