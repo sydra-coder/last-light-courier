@@ -7,6 +7,8 @@ The [tap-to-move control example](TAP_TO_MOVE_EXAMPLE.html) mirrors the Level 02
 
 Campaign preview: [Play all 100 levels](CAMPAIGN_100_LEVELS.html). The home menu offers Continue, Play Level 1, Choose level, and How to play; completed runs offer Restart, Next level, Main menu, and Level map. Its generated level data is in [CAMPAIGN_LEVELS.json](CAMPAIGN_LEVELS.json), with the editable builder in `campaign/`. The [100-level plan and repair economy](LEVELS_001_100_AND_REPAIRS.md) supplies each level brief, chapter, and repair price. This reflects the later tap-to-move direction and supersedes the route-drawing and 20-light assumptions below for future design work, pending prototype playtests.
 
+For design work in another task, use the [complete 100-level handoff](CAMPAIGN_100_LEVEL_HANDOFF.md): every map, objective, house value, hazard coordinate, repair price, and verified full-delivery route is listed there. The JSON remains the machine-readable authority.
+
 ## Shared assumptions
 
 - Android first, portrait orientation, offline single player, one-finger controls, 2–10 minute rounds.

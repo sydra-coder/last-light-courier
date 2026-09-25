@@ -123,12 +123,12 @@ for number in range(1, 101):
                   'band': band, 'cost': price(chapter, band)}
 
     fade = path[round(length * .32)] if chapter >= 2 else None
-    dark = path[round(length * .57)] if (chapter >= 3 and number % 3 != 0) or (repair and 'lamp' in repair['name'].lower()) else None
-    switch = path[round(length * .25)] if chapter >= 4 and number % 2 == 0 else None
+    dark = path[round(length * .57)] if (chapter >= 3 and (number % 3 != 0 or number == 81)) or (repair and 'lamp' in repair['name'].lower()) else None
+    switch = path[round(length * .25)] if chapter >= 4 and (number % 2 == 0 or number == 31) else None
     gate = path[round(length * .34)] if switch else None
     ice = path[round(length * .64)] if chapter >= 6 and number % 2 == 1 else None
     echo = chapter >= 5 and number % 2 == 1
-    second = chapter >= 7 and number % 3 != 1
+    second = chapter >= 7 and (number % 3 != 1 or number == 61)
     if repair:
         label = repair['name'].lower()
         if 'lamp' in label:
