@@ -37,7 +37,22 @@
     .end-actions { display:flex; justify-content:center; gap:9px; flex-wrap:wrap; }
     .end-card button,.end-card a { display:inline-grid; place-items:center; min-height:46px; padding:10px 18px; border:1px solid #ffe2b0; border-radius:10px; color:#31252b; background:linear-gradient(135deg,#ffda98,#f7b878); font-weight:900; text-decoration:none; }
     .end-card .secondary { color:#f4e9e3; border-color:#8e7e91; background:#4d455e; }
-    .end-card.complete { border-color:#ffe2a6; background:linear-gradient(145deg,#4b423a,#292b43); }
+    .end-overlay:has(.complete) { animation:finishFade .45s ease-out both; }
+    .end-card.complete { position:relative; overflow:hidden; border-color:#ffe2a6; background:radial-gradient(circle at 50% 0%,#5d534b,#292b43 72%); box-shadow:0 20px 60px #080812bd,0 0 30px #ffd17a40; animation:finishPop .65s cubic-bezier(.2,1.4,.4,1) both; }
+    .finish-spark { position:absolute; color:#ffe49d; font-size:18px; animation:sparkFall 2s ease-in-out infinite; pointer-events:none; }
+    .finish-spark:nth-child(1) { left:10%; top:10%; animation-delay:.1s; }.finish-spark:nth-child(2) { right:10%; top:12%; animation-delay:.6s; }.finish-spark:nth-child(3) { left:14%; bottom:15%; animation-delay:1.1s; }.finish-spark:nth-child(4) { right:14%; bottom:18%; animation-delay:1.6s; }
+    .finish-stars { position:relative; display:flex; justify-content:center; gap:4px; margin:5px 0 15px; color:#777186; font-size:31px; line-height:1; }
+    .finish-stars span.earned { color:#ffd36f; text-shadow:0 0 13px #ffd06f99; animation:starPop .42s backwards; animation-delay:calc(.36s + var(--i)*.12s); }
+    .finish-rating-note { margin:-9px 0 13px; color:#cfc4d2; font-size:10px; }
+    .finish-score { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:0 0 12px; }
+    .finish-score div { padding:9px 5px; border:1px solid #887f8c; border-radius:10px; background:#1c2135ad; }
+    .finish-score strong { display:block; color:#ffe4a8; font-size:23px; font-variant-numeric:tabular-nums; }
+    .finish-score small { color:#d5cbd8; font-size:10px; text-transform:uppercase; letter-spacing:.07em; }
+    @keyframes finishFade { from { opacity:0; } to { opacity:1; } }
+    @keyframes finishPop { from { opacity:0; transform:translateY(26px) scale(.82); } to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes starPop { from { opacity:0; transform:scale(.2) rotate(-28deg); } to { opacity:1; transform:scale(1) rotate(0); } }
+    @keyframes sparkFall { 0%,100% { opacity:0; transform:translateY(-8px) rotate(0); } 45% { opacity:1; transform:translateY(5px) rotate(35deg); } }
+    @media(prefers-reduced-motion:reduce) { .end-overlay:has(.complete),.end-card.complete,.finish-stars span.earned,.finish-spark { animation:none; } }
     .cell { position:relative; min-width:0; border:1px solid #ffffff15; display:grid; place-items:center; padding:0; color:inherit; background:#1d2537; }
     .cell:nth-child(16n + 1),.cell:nth-child(16n + 3),.cell:nth-child(16n + 5),.cell:nth-child(16n + 7),.cell:nth-child(16n + 10),.cell:nth-child(16n + 12),.cell:nth-child(16n + 14),.cell:nth-child(16n + 16) { background:#242b3e; }
     .cell.safe-move:hover { background:#3b5c57; }
@@ -83,6 +98,7 @@
     .smallnote { margin:18px 0 0; color:#a3a8bb; font-size:12px; line-height:1.5; }
     @media(max-width:850px) { .layout { grid-template-columns:1fr; } .side { grid-template-columns:1fr 1fr; } }
     @media(max-width:610px) { .shell { padding:18px 12px 28px; } .game { padding:12px; } .gamehead strong { font-size:18px; } .stats { gap:5px; } .stat { padding:8px; min-height:61px; } .stat strong { font-size:20px; } .stat small { display:none; } .boardframe { padding:4px; } .side { grid-template-columns:1fr; } .controls button { font-size:11px; } }
+    @media(max-width:610px) { .end-overlay:has(.complete) { position:fixed; z-index:100; } }
   </style>
 </head>
 <body>
@@ -116,6 +132,7 @@
     const walls=new Set(['3,1','3,2','3,5','3,6','4,1','4,6']);
     const patrol=[[3,3],[4,3],[4,4],[3,4]];
     const safePath=[[1,5],[1,4],[1,3],[2,3],[2,2],[2,3],[3,3],[4,3],[5,3],[5,4],[5,5],[6,5],[6,6],[6,7],[5,7],[4,7],[3,7],[2,7],[1,7],[1,6]];
+    const bestSteps=[0,8,14,14,16,20,18,20];
     const icons={
       depot:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M9 30 32 10 55 30v26H9Z" fill="#5d8eaf" stroke="#b8ddf0" stroke-width="3"/><path d="M24 56V35h16v21" fill="#293f5a" stroke="#c3e8fa" stroke-width="2"/><circle cx="32" cy="26" r="4" fill="#ffe7a5"/></svg>',
       house:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M9 30 32 11 55 30v26H9Z" fill="#856373" stroke="#ecc2a0" stroke-width="3"/><path d="M24 56V38h15v18" fill="#3e344c"/><path d="M14 25 32 8l18 17" fill="none" stroke="#f0c49a" stroke-width="5" stroke-linecap="round"/><path d="M44 37h7v8h-7" fill="#ffd787"/></svg>',
@@ -147,7 +164,10 @@
       if(s.failed&&s.failureReason==='light')html+=`<div class="end-overlay" role="alert"><div class="end-card"><div class="end-icon" aria-hidden="true">✦</div><h2>Lantern out</h2><p>Your last light is gone. ${s.lost} unbanked points were lost. Try a shorter route or return to the depot sooner.</p><button id="overlayRestart" type="button">Restart level</button></div></div>`;
       if(s.finished){
         const allDelivered=s.delivered.size===houses.length;
-        html+=`<div class="end-overlay" role="alert"><div class="end-card complete"><div class="end-icon" aria-hidden="true">✦</div><h2>${allDelivered?'Level complete!':'Run complete'}</h2><p>${s.banked} points banked. ${allDelivered?`All ${houses.length} houses are lit, and you made it home with ${s.light} light left.`:`You returned safely with ${s.delivered.size} of ${houses.length} houses lit. Try for all three to move to the next level.`}</p><div class="end-actions">${allDelivered?'<a id="nextLevel" href="last-light-courier-level-02.html">Next level preview →</a>':''}<button class="secondary" id="overlayRestart" type="button">Play again</button></div></div></div>`;
+        const mask=houses.reduce((bits,home,i)=>bits|(s.delivered.has(key(home.p))?1<<i:0),0);
+        const best=bestSteps[mask],extra=Math.max(0,s.turns-best),rating=Math.max(1,5-extra);
+        const stars=Array.from({length:5},(_,i)=>`<span style="--i:${i}" class="${i<rating?'earned':''}" aria-hidden="true">★</span>`).join('');
+        html+=`<div class="end-overlay" role="alert"><div class="end-card complete"><span class="finish-spark">✦</span><span class="finish-spark">✦</span><span class="finish-spark">✦</span><span class="finish-spark">✦</span><h2>${allDelivered?'Level complete!':'Run complete'}</h2><div class="finish-stars" aria-label="${rating} out of 5 stars">${stars}</div><div class="finish-rating-note">${rating}/5 stars · one star less per extra step</div><div class="finish-score"><div><strong>${s.turns}</strong><small>Your steps</small></div><div><strong>${best}</strong><small>Shortest safe route</small></div></div><p>${s.banked} points banked. ${extra===0?'You matched the shortest route!':`${extra} extra step${extra===1?'':'s'} taken.`} ${allDelivered?`All ${houses.length} houses are lit.`:`You returned safely with ${s.delivered.size} of ${houses.length} houses lit. Try for all three to move to the next level.`}</p><div class="end-actions">${allDelivered?'<a id="nextLevel" href="last-light-courier-level-02.html">Next level preview →</a>':''}<button class="secondary" id="overlayRestart" type="button">Play again</button></div></div></div>`;
       }
       $('board').innerHTML=html;
       $('overlayRestart')?.addEventListener('click',reset);
