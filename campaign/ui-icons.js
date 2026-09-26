@@ -1,5 +1,6 @@
 // One icon family for the menu, game controls, and result actions.
 const UI_ICONS={
+  settings:'<path d="m9 3-1 3-3 1-2 3 2 2v3l3 1 1 3h4l1-3 3-1v-3l2-2-2-3-3-1-1-3z"/><circle cx="11" cy="11" r="3"/>',
   continue:'<path d="M5 12h13m-5-5 5 5-5 5"/><path d="M4 5v14"/>',
   levelOne:'<path d="M6 21V3m0 1h12l-2.5 4L18 12H6"/><path d="M11 16h2m-1-1v5"/>',
   menu:'<path d="M3 11.5 12 4l9 7.5V21H3z"/><path d="M9 21v-7h6v7"/>',
@@ -19,5 +20,6 @@ function refreshSettingsIcons(){setIcon('menuSound',save.soundOn===false?'mute':
 function setupNavigationIcons(){for(const [id,name,label] of [
   ['menuContinue','continue','Continue journey'],['menuLevelOne','levelOne','Play Level 1'],['menuChoose','map','Choose level'],['menuHow','help','How to play'],
   ['menu','menu','Main menu'],['retry','restart','Restart level'],['help','help','How to play'],['levels','map','Choose level']
+  ,['menuSettings','settings','Settings'],['gameSettings','settings','Settings']
 ])setIcon(id,name,label);refreshSettingsIcons()}
 function enhanceOverlayIcons(){const actions={restart:['restart','Restart level'],next:['next','Next level'],menu:['menu','Main menu'],map:['map','Choose level'],start:['continue','Start level']};for(const button of document.querySelectorAll('#board .overlayActions button')){const action=actions[button.dataset.action];if(action)setButtonIcon(button,...action)}}

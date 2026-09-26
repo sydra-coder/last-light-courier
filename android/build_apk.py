@@ -19,7 +19,7 @@ ANDROID_JAR = SDK / "platforms" / "android-36" / "android.jar"
 BUILD = ROOT / "android" / "build"
 STAGE = BUILD / "stage"
 OUTPUTS = BUILD / "outputs"
-NAME = "Last-Light-Courier-0.1.2-phone-test.apk"
+NAME = "Last-Light-Courier-0.1.3-phone-test.apk"
 
 
 def run(*args: object) -> None:
@@ -57,7 +57,7 @@ def main() -> None:
     run(BUILD_TOOLS / "aapt2.exe", "compile", "--dir", resources, "-o", compiled)
     run(BUILD_TOOLS / "aapt2.exe", "link", "-o", unsigned, "-I", ANDROID_JAR,
         "--manifest", manifest, "--min-sdk-version", "26", "--target-sdk-version", "34",
-        "--version-code", "3", "--version-name", "0.1.2", "--java", STAGE / "generated", compiled)
+        "--version-code", "4", "--version-name", "0.1.3", "--java", STAGE / "generated", compiled)
     with zipfile.ZipFile(unsigned, "a", compression=zipfile.ZIP_DEFLATED) as archive:
         for file in (STAGE / "assets").rglob("*"):
             if file.is_file():
