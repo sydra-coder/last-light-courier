@@ -11,9 +11,10 @@ const ROUTE_SOLVER=(()=>{
     const signature=s=>[key(s.pos),s.mask,s.phase,s.phase2,s.fade,s.ice,s.gate,...s.trail.map(key)].join('|');
     seen.set(signature(start),start.light);
     function blocked(p,s){if(!s.active)return false;for(const [patrol,phase] of [[level.patrol,s.phase],[level.patrol2,s.phase2]])if(patrol&&(eq(p,patrol[phase])||eq(p,patrol[(phase+1)%patrol.length])))return true;return !!(level.echo&&s.trail.some(q=>eq(q,p)))}
+    function hasExit(s){const [x,y]=s.pos,size=level.grid||8;return [[x+1,y],[x-1,y],[x,y+1],[x,y-1]].some(p=>p[0]>=0&&p[1]>=0&&p[0]<size&&p[1]<size&&!walls.has(key(p))&&!(eq(p,level.fade)&&s.fade===0)&&!(eq(p,level.ice)&&s.ice===0)&&!(eq(p,level.gate)&&s.gate<=0&&!(bought&&repair?.effect==='latch'))&&!blocked(p,s))}
     while(head<queue.length){
       const parent=head,s=queue[head++];
-      if(s.steps&&eq(s.pos,level.depot)&&count(s.mask)>=level.required){
+      if(s.steps&&(options.goal==='nextHouse'?s.mask!==start.mask&&hasExit(s):eq(s.pos,level.depot)&&count(s.mask)>=level.required)){
         const route=[];let index=parent;while(index>=0){const item=queue[index];route.push({p:item.pos,light:item.light,mask:item.mask,phase:item.phase,phase2:item.phase2,fade:item.fade,ice:item.ice,gate:item.gate,active:item.active,trail:item.trail});index=item.parent}
         route.reverse();return {status:'solved',steps:s.steps,route,explored:head};
       }
@@ -23,7 +24,7 @@ const ROUTE_SOLVER=(()=>{
         if(p[0]<0||p[1]<0||p[0]>=size||p[1]>=size||walls.has(key(p))||eq(p,level.fade)&&s.fade===0||eq(p,level.ice)&&s.ice===0||eq(p,level.gate)&&s.gate<=0&&!(bought&&repair?.effect==='latch')||blocked(p,s))continue;
         const hi=level.homes.findIndex(h=>eq(h.p,p)),bit=hi<0?0:1<<hi,fresh=!!bit&&!(s.mask&bit),mask=s.mask|bit,home=eq(p,level.depot)&&mask;
         // Returning to the depot ends the actual run, so partial banking cannot be traversed.
-        if(home&&count(mask)<level.required)continue;
+        if(home&&(options.goal==='nextHouse'||count(mask)<level.required))continue;
         const light=Math.min(capacity,s.light-(eq(p,level.dark)&&!(bought&&repair?.effect==='lamp')?2:1)+(fresh?2:0));
         if(light<=0&&!fresh&&!home)continue;
         const next={pos:p,mask,light,active:s.active||fresh,phase:s.active?(s.phase+1)%level.patrol.length:s.phase,phase2:s.active&&level.patrol2?(s.phase2+1)%level.patrol2.length:s.phase2,
