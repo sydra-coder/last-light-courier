@@ -139,8 +139,8 @@ for number in range(1, 101):
     switch = feature_near(.25) if chapter >= 4 and (number % 2 == 0 or number == 31) else None
     gate = feature_near(.34) if switch else None
     ice = feature_near(.64) if chapter >= 6 and number % 2 == 1 else None
-    echo = chapter >= 5 and number % 2 == 1
-    second = chapter >= 7 and (number % 3 != 1 or number == 61)
+    echo = number >= 41
+    second = number >= 61
     if repair:
         label = repair['name'].lower()
         if 'lamp' in label:
@@ -181,7 +181,7 @@ for number in range(1, 101):
             spine = path[:i] + detour + path[i + 1:] + [depot]
     # A shadow patrol touches the known route on some boards. Choose a phase
     # that allows at least one full delivery route before repairs.
-    def make_patrol(prefer_crossing):
+    def make_patrol(prefer_crossing, excluded=None):
         anchor = path[round(length * rng.uniform(.35, .65))]
         squares = []
         for dx in (0, -1):
@@ -193,7 +193,11 @@ for number in range(1, 101):
             rng.shuffle(squares)
         else:
             squares.sort(key=lambda sq: sum(key(p) in keep for p in sq))
+        if excluded:
+            squares += [[[x,y],[x+1,y],[x+1,y+1],[x,y+1]] for y in range(7) for x in range(7)]
         for square in squares:
+            if excluded and set(map(key,square)) & set(map(key,excluded)):
+                continue
             if repair and repair['effect'] == 'open' and repair['tile'] in square:
                 continue
             if any(p in homes for p in square):
@@ -209,7 +213,8 @@ for number in range(1, 101):
         return square, 0
 
     patrol, phase = make_patrol(number > 2 and number % 4 != 0)
-    patrol2, phase2 = make_patrol(True) if second else (None, None)
+    patrol2, phase2 = make_patrol(True, patrol) if second else (None, None)
+    assert not patrol2 or not set(map(key,patrol)) & set(map(key,patrol2)), f'patrol overlap on {number}'
     for p in patrol + (patrol2 or []):
         walls.discard(key(p))
     if repair and repair['effect'] == 'open':
@@ -258,6 +263,10 @@ for number in range(1, 101):
     seen_layouts.add(layout)
     levels.append(level)
 
+from extended_levels import build_extended
+levels.extend(build_extended(price))
+assert len(levels) == 200
+assert all((1+bool(b['patrol2'])+bool(b['echo'])) >= (1+bool(a['patrol2'])+bool(a['echo'])) for a,b in zip(levels,levels[1:]))
 (ROOT / 'CAMPAIGN_LEVELS.json').write_text(json.dumps(levels, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 template = (ROOT / 'campaign' / 'campaign.template.html').read_text(encoding='utf-8')
 output = template.replace('/*__LEVEL_DATA__*/', 'const LEVELS=' + json.dumps(levels, ensure_ascii=False, separators=(',', ':')) + ';')

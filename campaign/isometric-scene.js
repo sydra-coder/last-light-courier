@@ -1,12 +1,12 @@
 // Raised village renderer. Game rules and hit targets stay in campaign.template.html.
 const ISO=(()=>{
-  const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d');
+  const canvas=document.getElementById('scene');let ctx=canvas.getContext('2d');
   const W=800,H=600,tw=46,th=29,depth=9;
   let mode='isometric';
-  const project=p=>mode==='isometric'?[400+(p[0]-p[1])*47,70+(p[0]+p[1])*32]:[155+p[0]*70,55+p[1]*70];
-  function cellStyle(p){const [x,y]=project(p),iso=mode==='isometric',w=iso?92:69,h=iso?58:69;return 'left:'+((x-w/2)/W*100)+'%;top:'+((y-h/2)/H*100)+'%;width:'+(w/W*100)+'%;height:'+(h/H*100)+'%;z-index:'+(iso?p[0]+p[1]+1:1)}
+  const project=p=>mode==='isometric'?[400+(p[0]-p[1])*47,70+(p[0]+p[1])*32-32*((level.grid||8)-8)]:[155+p[0]*70-35*((level.grid||8)-8),55+p[1]*70-35*((level.grid||8)-8)];
+  function cellStyle(p){const point=project(p),scale=8/(level.grid||8),x=400+(point[0]-400)*scale,y=300+(point[1]-300)*scale,iso=mode==='isometric',w=(iso?92:69)*scale,h=(iso?58:69)*scale;return 'left:'+((x-w/2)/W*100)+'%;top:'+((y-h/2)/H*100)+'%;width:'+(w/W*100)+'%;height:'+(h/H*100)+'%;z-index:'+(iso?p[0]+p[1]+1:1)}
   let travel=null,repairFlash=null,pending=false;
-  function size(){const ratio=Math.min(devicePixelRatio||1,2);const w=Math.round(W*ratio),h=Math.round(H*ratio);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}ctx.setTransform(ratio,0,0,ratio,0,0)}
+  function size(){const ratio=Math.min(devicePixelRatio||1,2);const w=Math.round(W*ratio),h=Math.round(H*ratio);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}const scale=8/(level.grid||8);ctx.setTransform(ratio*scale,0,0,ratio*scale,ratio*400*(1-scale),ratio*300*(1-scale))}
   function line(x1,y1,x2,y2,color,width=2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
   function ellipse(x,y,rx,ry,color){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
   function rect(x,y,w,h,r,fill,stroke,width=1){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke()}}
@@ -57,10 +57,10 @@ const ISO=(()=>{
     if(safe)ellipse(x+23,y-23,4,4,'#c4ffe0');if(danger)ellipse(x+23,y-23,4,4,'#ffa9b1');
   }
   function drawFlat(now){
-    size();ctx.clearRect(0,0,W,H);const night=mode==='night',bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    size();ctx.clearRect(-W,-H,3*W,3*H);const night=mode==='night',bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);
     for(let i=0;i<48;i++)ellipse((i*173+59)%W,(i*97+31)%H,1.2,1.2,night?'#c5a7e755':'#fff0d32a');
     const walls=activeWalls(),objects=[];
-    for(let y=0;y<8;y++)for(let x=0;x<8;x++){
+    for(let y=0;y<(level.grid||8);y++)for(let x=0;x<(level.grid||8);x++){
       const p=[x,y],[cx,cy]=project(p),id=k(p),wall=walls.has(id),feature=featureAt(p),hi=homeIndex(p),lit=hi>=0&&!!(state.mask&(1<<hi)),adj=Math.abs(x-state.pos[0])+Math.abs(y-state.pos[1])===1,safe=adj&&legal(p),danger=adj&&open(p)&&!safe&&!state.done&&!state.failed;
       flatTile(cx,cy,p,wall,feature,lit,safe,danger);
       const repairTile=level.repair&&eq(p,level.repair.tile),name=level.repair?.name.toLowerCase()||'';
@@ -85,10 +85,10 @@ const ISO=(()=>{
   function schedule(){if(!pending){pending=true;requestAnimationFrame(frame)}}
   function draw(now=performance.now()){
     if(mode!=='isometric'){drawFlat(now);return}
-    size();ctx.clearRect(0,0,W,H);const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    size();ctx.clearRect(-W,-H,3*W,3*H);const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);
     for(let i=0;i<45;i++)ellipse((i*173+59)%W,(i*97+31)%H,1.2,1.2,'#fff0d31d');
     const walls=activeWalls(),objects=[];
-    for(let sum=0;sum<=14;sum++)for(let y=0;y<8;y++){const x=sum-y;if(x<0||x>7)continue;const p=[x,y],[cx,cy]=project(p),id=k(p),wall=walls.has(id),feature=featureAt(p),hi=homeIndex(p),lit=hi>=0&&!!(state.mask&(1<<hi)),adj=Math.abs(x-state.pos[0])+Math.abs(y-state.pos[1])===1,safe=adj&&legal(p),danger=adj&&open(p)&&!safe&&!state.done&&!state.failed;tile(cx,cy,p,wall,feature,lit,safe,danger);
+    for(let sum=0;sum<=2*((level.grid||8)-1);sum++)for(let y=0;y<(level.grid||8);y++){const x=sum-y;if(x<0||x>=(level.grid||8))continue;const p=[x,y],[cx,cy]=project(p),id=k(p),wall=walls.has(id),feature=featureAt(p),hi=homeIndex(p),lit=hi>=0&&!!(state.mask&(1<<hi)),adj=Math.abs(x-state.pos[0])+Math.abs(y-state.pos[1])===1,safe=adj&&legal(p),danger=adj&&open(p)&&!safe&&!state.done&&!state.failed;tile(cx,cy,p,wall,feature,lit,safe,danger);
       const repairTile=level.repair&&eq(p,level.repair.tile),name=level.repair?.name.toLowerCase()||'';
       if(wall)objects.push({y:cy,draw:()=>repairTile&&(name.includes('crate')||name.includes('debris'))?crates(cx,cy):repairTile&&(name.includes('bridge')||name.includes('crossing'))?bridge(cx,cy,true):rubble(cx,cy)});
       else if(hi>=0)objects.push({y:cy,draw:()=>house(cx,cy,lit)});
@@ -106,5 +106,6 @@ const ISO=(()=>{
     if(repairFlash){const age=now-repairFlash.start;if(age<750){const [rx,ry]=project(repairFlash.tile);ctx.save();ctx.globalAlpha=1-age/750;ctx.strokeStyle='#ffe2a1';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(rx,ry,15+age/9,8+age/15,0,0,Math.PI*2);ctx.stroke();for(let i=0;i<7;i++){const a=i*Math.PI*2/7,dist=6+age/14;rect(rx+Math.cos(a)*dist,ry+Math.sin(a)*dist*.55-age/28,5,4,1,i%2?'#e8bb7f':'#a6a5a0')}ctx.restore()}else repairFlash=null}
     if(moving||repairFlash)schedule();
   }
-  return {project,cellStyle,mode:()=>mode,setMode:value=>{if(['overhead','isometric','night'].includes(value)){mode=value;travel=null;repairFlash=null;draw()}},render:()=>draw(),cancel:()=>{travel=null;repairFlash=null},move:(from,to,shadowFrom,shadowTo,shadow2From,shadow2To)=>{travel={from,to,shadowFrom,shadowTo,shadow2From,shadow2To,start:performance.now()};draw()},repair:tile=>{repairFlash={tile,start:performance.now()};draw()}};
+  function legend(target,key){const previous=ctx;ctx=target.getContext('2d');ctx.clearRect(0,0,80,70);ctx.save();ctx.translate(40,43);ctx.scale(.7,.7);if(key==='house'||key==='depot')house(0,0,false,key==='depot');else if(key==='shadow'||key==='echo')shadow(0,0,key==='echo');else if(key==='repair')crates(0,0);else featureArt(0,0,key,key==='gate');ctx.restore();ctx=previous;}
+  return {legend,project,cellStyle,mode:()=>mode,setMode:value=>{if(['overhead','isometric','night'].includes(value)){mode=value;travel=null;repairFlash=null;draw()}},render:()=>draw(),cancel:()=>{travel=null;repairFlash=null},move:(from,to,shadowFrom,shadowTo,shadow2From,shadow2To)=>{travel={from,to,shadowFrom,shadowTo,shadow2From,shadow2To,start:performance.now()};draw()},repair:tile=>{repairFlash={tile,start:performance.now()};draw()}};
 })();

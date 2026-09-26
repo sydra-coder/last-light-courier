@@ -1,4 +1,4 @@
-# Last Light Courier — 100-level summary
+# Last Light Courier — 200-level summary
 
 Minimum moves means a legal route that lights at least the required houses and returns to the depot. It includes light costs, patrol timing, Echo Shadow, gates and temporary crossings. With repair assumes the listed repair is already purchased. Shadow count includes the Echo; shadows activate after the first delivery.
 
@@ -45,62 +45,162 @@ Minimum moves means a legal route that lights at least the required houses and r
 | 39 | 2 of 3 | 16 | 16 | 1 | 10150 | Patrol | Repair side crossing |
 | 40 | 3 of 3 | 22 | 22 | 1 | 7675 | Patrol | Install gate latch |
 | 41 | 2 of 3 | 20 | — | 2 | — | Patrol + Echo | None |
-| 42 | 2 of 3 | 18 | — | 1 | — | Patrol | None |
+| 42 | 2 of 3 | 18 | — | 2 | — | Patrol + Echo | None |
 | 43 | 2 of 3 | 24 | — | 2 | — | Patrol + Echo | None |
-| 44 | 2 of 3 | 18 | — | 1 | — | Patrol | None |
+| 44 | 2 of 3 | 18 | — | 2 | — | Patrol + Echo | None |
 | 45 | 2 of 3 | 18 | 18 | 2 | 9325 | Patrol + Echo | Open alley |
-| 46 | 2 of 3 | 16 | 16 | 1 | 13300 | Patrol | Clear tower passage |
+| 46 | 2 of 3 | 16 | 16 | 2 | 13300 | Patrol + Echo | Clear tower passage |
 | 47 | 2 of 3 | 18 | — | 2 | — | Patrol + Echo | None |
-| 48 | 2 of 3 | 22 | — | 1 | — | Patrol | None |
+| 48 | 2 of 3 | 24 | — | 2 | — | Patrol + Echo | None |
 | 49 | 2 of 3 | 24 | 24 | 2 | 6725 | Patrol + Echo | Relight lamp |
-| 50 | 3 of 3 | 22 | 20 | 1 | 11150 | Patrol | Repair side bridge |
+| 50 | 3 of 3 | 22 | 20 | 2 | 11150 | Patrol + Echo | Repair side bridge |
 | 51 | 2 of 3 | 20 | — | 2 | — | Patrol + Echo | None |
-| 52 | 2 of 3 | 20 | — | 1 | — | Patrol | None |
+| 52 | 2 of 3 | 20 | — | 2 | — | Patrol + Echo | None |
 | 53 | 2 of 3 | 18 | 18 | 2 | 16925 | Patrol + Echo | Build canal bridge |
-| 54 | 2 of 3 | 22 | — | 1 | — | Patrol | None |
+| 54 | 2 of 3 | 24 | — | 2 | — | Patrol + Echo | None |
 | 55 | 2 of 3 | 20 | — | 2 | — | Patrol + Echo | None |
-| 56 | 2 of 3 | 18 | 18 | 1 | 8450 | Patrol | Clear rubble |
+| 56 | 2 of 3 | 20 | 20 | 2 | 8450 | Patrol + Echo | Clear rubble |
 | 57 | 2 of 3 | 18 | — | 2 | — | Patrol + Echo | None |
-| 58 | 2 of 3 | 22 | — | 1 | — | Patrol | None |
+| 58 | 2 of 3 | 22 | — | 2 | — | Patrol + Echo | None |
 | 59 | 2 of 3 | 20 | 18 | 2 | 14800 | Patrol + Echo | Open shore gate |
-| 60 | 3 of 3 | 22 | 20 | 1 | 20950 | Patrol | Build side bridge |
+| 60 | 3 of 3 | 22 | 20 | 2 | 20950 | Patrol + Echo | Build side bridge |
 | 61 | 2 of 3 | 24 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 62 | 2 of 3 | 18 | — | 2 | — | Patrol + Second patrol | None |
+| 62 | 2 of 3 | 18 | — | 3 | — | Patrol + Second patrol + Echo | None |
 | 63 | 2 of 3 | 18 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 64 | 2 of 3 | 18 | 18 | 1 | 17050 | Patrol | Open gate |
-| 65 | 2 of 3 | 20 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 66 | 2 of 3 | 22 | 22 | 2 | 11250 | Patrol + Second patrol | Relight lamp |
-| 67 | 2 of 3 | 20 | — | 2 | — | Patrol + Echo | None |
-| 68 | 2 of 3 | 16 | 16 | 2 | 18975 | Patrol + Second patrol | Repair side arch |
+| 64 | 2 of 3 | 18 | 18 | 3 | 17050 | Patrol + Second patrol + Echo | Open gate |
+| 65 | 2 of 3 | 24 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 66 | 2 of 3 | 22 | 22 | 3 | 11250 | Patrol + Second patrol + Echo | Relight lamp |
+| 67 | 2 of 3 | 20 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 68 | 2 of 3 | 16 | 16 | 3 | 18975 | Patrol + Second patrol + Echo | Repair side arch |
 | 69 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 70 | 3 of 3 | 22 | 22 | 1 | 27450 | Patrol | Clear tower passage |
+| 70 | 3 of 3 | 22 | 22 | 3 | 27450 | Patrol + Second patrol + Echo | Clear tower passage |
 | 71 | 2 of 3 | 20 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 72 | 2 of 3 | 26 | — | 2 | — | Patrol + Second patrol | None |
-| 73 | 2 of 3 | 22 | 20 | 2 | 21525 | Patrol + Echo | Repair arch |
-| 74 | 2 of 3 | 20 | — | 2 | — | Patrol + Second patrol | None |
+| 72 | 2 of 3 | 28 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 73 | 2 of 3 | 22 | 20 | 3 | 21525 | Patrol + Second patrol + Echo | Repair arch |
+| 74 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
 | 75 | 2 of 3 | 26 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 76 | 2 of 3 | 18 | 18 | 1 | 23125 | Patrol | Drain road |
+| 76 | 2 of 3 | 18 | 18 | 3 | 23125 | Patrol + Second patrol + Echo | Drain road |
 | 77 | 2 of 3 | 22 | 22 | 3 | 14800 | Patrol + Second patrol + Echo | Relight lamp |
-| 78 | 2 of 3 | 18 | — | 2 | — | Patrol + Second patrol | None |
-| 79 | 2 of 3 | 18 | 18 | 2 | 34075 | Patrol + Echo | Reopen tunnel |
-| 80 | 3 of 3 | 22 | 20 | 2 | 25350 | Patrol + Second patrol | Clear central rubble |
+| 78 | 2 of 3 | 18 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 79 | 2 of 3 | 18 | 18 | 3 | 34075 | Patrol + Second patrol + Echo | Reopen tunnel |
+| 80 | 3 of 3 | 22 | 20 | 3 | 25350 | Patrol + Second patrol + Echo | Clear central rubble |
 | 81 | 2 of 3 | 24 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 82 | 2 of 3 | 20 | — | 1 | — | Patrol | None |
+| 82 | 2 of 3 | 20 | — | 3 | — | Patrol + Second patrol + Echo | None |
 | 83 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 84 | 2 of 3 | 22 | 22 | 2 | 17300 | Patrol + Second patrol | Relight lamp |
-| 85 | 2 of 3 | 22 | — | 2 | — | Patrol + Echo | None |
-| 86 | 2 of 3 | 18 | 18 | 2 | 28875 | Patrol + Second patrol | Repair bridge |
+| 84 | 2 of 3 | 22 | 22 | 3 | 17300 | Patrol + Second patrol + Echo | Relight lamp |
+| 85 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 86 | 2 of 3 | 20 | 20 | 3 | 28875 | Patrol + Second patrol + Echo | Repair bridge |
 | 87 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 88 | 2 of 3 | 18 | — | 1 | — | Patrol | None |
+| 88 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
 | 89 | 2 of 3 | 20 | 20 | 3 | 42250 | Patrol + Second patrol + Echo | Restore beacon |
-| 90 | 3 of 3 | 22 | 20 | 2 | 43125 | Patrol + Second patrol | Open old tunnel |
-| 91 | 2 of 3 | 26 | — | 2 | — | Patrol + Echo | None |
-| 92 | 2 of 3 | 22 | — | 2 | — | Patrol + Second patrol | None |
+| 90 | 3 of 3 | 22 | 20 | 3 | 43125 | Patrol + Second patrol + Echo | Open old tunnel |
+| 91 | 2 of 3 | 26 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 92 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
 | 93 | 2 of 3 | 20 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 94 | 2 of 3 | 18 | 18 | 1 | 33950 | Patrol | Repair side bridge |
-| 95 | 2 of 3 | 24 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 96 | 2 of 3 | 26 | 26 | 2 | 22050 | Patrol + Second patrol | Relight lamp |
-| 97 | 2 of 3 | 22 | — | 2 | — | Patrol + Echo | None |
-| 98 | 2 of 3 | 18 | 18 | 2 | 50375 | Patrol + Second patrol | Reopen tunnel |
+| 94 | 2 of 3 | 20 | 20 | 3 | 33950 | Patrol + Second patrol + Echo | Repair side bridge |
+| 95 | 2 of 3 | 26 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 96 | 2 of 3 | 26 | 26 | 3 | 22050 | Patrol + Second patrol + Echo | Relight lamp |
+| 97 | 2 of 3 | 22 | — | 3 | — | Patrol + Second patrol + Echo | None |
+| 98 | 2 of 3 | 20 | 20 | 3 | 50375 | Patrol + Second patrol + Echo | Reopen tunnel |
 | 99 | 2 of 3 | 26 | — | 3 | — | Patrol + Second patrol + Echo | None |
-| 100 | 3 of 3 | 22 | 20 | 1 | 52275 | Patrol | Restore final bridge |
+| 100 | 3 of 3 | 22 | 20 | 3 | 52275 | Patrol + Second patrol + Echo | Restore final bridge |
+| 101 | 4 of 4 | 30 | 30 | 3 | 38725 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 102 | 4 of 4 | 32 | 28 | 3 | 39425 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 103 | 4 of 4 | 32 | 32 | 3 | 40150 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 104 | 4 of 4 | 34 | 34 | 3 | 40850 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 105 | 4 of 4 | 38 | 38 | 3 | 41575 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 106 | 4 of 4 | 36 | 36 | 3 | 42325 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 107 | 4 of 4 | 34 | 34 | 3 | 43050 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 108 | 4 of 4 | 32 | 32 | 3 | 43800 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 109 | 4 of 4 | 28 | 28 | 3 | 44550 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 110 | 4 of 4 | 36 | 36 | 3 | 45325 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 111 | 4 of 4 | 34 | 34 | 3 | 46075 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 112 | 4 of 4 | 38 | 38 | 3 | 46850 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 113 | 4 of 4 | 36 | 36 | 3 | 47625 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 114 | 4 of 4 | 32 | 32 | 3 | 48425 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 115 | 4 of 4 | 34 | 34 | 3 | 49200 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 116 | 4 of 4 | 34 | 34 | 3 | 50000 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 117 | 4 of 4 | 38 | 38 | 3 | 50800 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 118 | 4 of 4 | 36 | 36 | 3 | 51625 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 119 | 4 of 4 | 38 | 38 | 3 | 52425 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 120 | 4 of 4 | 32 | 32 | 3 | 53250 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 121 | 5 of 5 | 40 | 40 | 3 | 54075 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 122 | 5 of 5 | 46 | 46 | 3 | 54925 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 123 | 5 of 5 | 38 | 38 | 3 | 55750 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 124 | 5 of 5 | 42 | 38 | 3 | 56600 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 125 | 5 of 5 | 42 | 42 | 3 | 57450 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 126 | 5 of 5 | 42 | 40 | 3 | 58325 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 127 | 5 of 5 | 38 | 32 | 3 | 59175 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 128 | 5 of 5 | 36 | 36 | 3 | 60050 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 129 | 5 of 5 | 42 | 42 | 3 | 60950 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 130 | 5 of 5 | 44 | 44 | 3 | 61825 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 131 | 5 of 5 | 42 | 36 | 3 | 62725 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 132 | 5 of 5 | 38 | 38 | 3 | 63625 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 133 | 5 of 5 | 34 | 34 | 3 | 64525 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 134 | 5 of 5 | 40 | 40 | 3 | 65425 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 135 | 5 of 5 | 40 | 40 | 3 | 66350 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 136 | 5 of 5 | 36 | 36 | 3 | 67275 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 137 | 5 of 5 | 40 | 40 | 3 | 68200 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 138 | 5 of 5 | 40 | 40 | 3 | 69150 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 139 | 5 of 5 | 44 | 44 | 3 | 70100 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 140 | 5 of 5 | 42 | 42 | 3 | 71050 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 141 | 6 of 6 | 72 | 72 | 3 | 72000 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 142 | 6 of 6 | 80 | 80 | 3 | 72975 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 143 | 6 of 6 | 72 | 72 | 3 | 73925 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 144 | 6 of 6 | 72 | 72 | 3 | 74900 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 145 | 6 of 6 | 72 | 72 | 3 | 75900 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 146 | 6 of 6 | 70 | 70 | 3 | 76875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 147 | 6 of 6 | 66 | 66 | 3 | 77875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 148 | 6 of 6 | 80 | 76 | 3 | 78875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 149 | 6 of 6 | 76 | 76 | 3 | 79875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 150 | 6 of 6 | 76 | 74 | 3 | 80900 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 151 | 6 of 6 | 74 | 68 | 3 | 81925 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 152 | 6 of 6 | 66 | 66 | 3 | 82950 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 153 | 6 of 6 | 74 | 74 | 3 | 83975 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 154 | 6 of 6 | 76 | 68 | 3 | 85025 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 155 | 6 of 6 | 78 | 76 | 3 | 86075 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 156 | 6 of 6 | 74 | 74 | 3 | 87125 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 157 | 6 of 6 | 74 | 74 | 3 | 88175 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 158 | 6 of 6 | 78 | 78 | 3 | 89250 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 159 | 6 of 6 | 74 | 74 | 3 | 90325 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 160 | 6 of 6 | 70 | 70 | 3 | 91400 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 161 | 7 of 7 | 84 | 84 | 3 | 92475 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 162 | 7 of 7 | 80 | 68 | 3 | 93575 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 163 | 7 of 7 | 80 | 80 | 3 | 94675 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 164 | 7 of 7 | 84 | 84 | 3 | 95775 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 165 | 7 of 7 | 86 | 86 | 3 | 96875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 166 | 7 of 7 | 76 | 76 | 3 | 98000 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 167 | 7 of 7 | 90 | 90 | 3 | 99125 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 168 | 7 of 7 | 72 | 68 | 3 | 100250 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 169 | 7 of 7 | 74 | 74 | 3 | 101400 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 170 | 7 of 7 | 80 | 80 | 3 | 102525 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 171 | 7 of 7 | 80 | 80 | 3 | 103675 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 172 | 7 of 7 | 86 | 82 | 3 | 104825 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 173 | 7 of 7 | 90 | 90 | 3 | 106000 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 174 | 7 of 7 | 78 | 78 | 3 | 107175 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 175 | 7 of 7 | 82 | 82 | 3 | 108350 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 176 | 7 of 7 | 74 | 74 | 3 | 109525 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 177 | 7 of 7 | 80 | 80 | 3 | 110700 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 178 | 7 of 7 | 84 | 82 | 3 | 111900 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 179 | 7 of 7 | 80 | 80 | 3 | 113100 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 180 | 7 of 7 | 88 | 82 | 3 | 114300 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 181 | 8 of 8 | 124 | 124 | 3 | 115525 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 182 | 8 of 8 | 134 | 134 | 3 | 116750 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 183 | 8 of 8 | 132 | 118 | 3 | 117975 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 184 | 8 of 8 | 130 | 130 | 3 | 119200 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 185 | 8 of 8 | 136 | 136 | 3 | 120425 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 186 | 8 of 8 | 122 | 122 | 3 | 121675 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 187 | 8 of 8 | 126 | 126 | 3 | 122925 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 188 | 8 of 8 | 130 | 130 | 3 | 124200 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 189 | 8 of 8 | 126 | 126 | 3 | 125450 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 190 | 8 of 8 | 130 | 130 | 3 | 126725 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 191 | 8 of 8 | 132 | 128 | 3 | 128000 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 192 | 8 of 8 | 124 | 124 | 3 | 129275 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 193 | 8 of 8 | 126 | 126 | 3 | 130575 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 194 | 8 of 8 | 136 | 136 | 3 | 131875 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 195 | 8 of 8 | 130 | 130 | 3 | 133175 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 196 | 8 of 8 | 116 | 116 | 3 | 134475 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 197 | 8 of 8 | 134 | 134 | 3 | 135800 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 198 | 8 of 8 | 128 | 128 | 3 | 137125 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 199 | 8 of 8 | 130 | 130 | 3 | 138450 | Patrol + Second patrol + Echo | Reopen delivery passage |
+| 200 | 8 of 8 | 122 | 116 | 3 | 139775 | Patrol + Second patrol + Echo | Reopen delivery passage |
