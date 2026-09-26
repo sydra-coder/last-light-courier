@@ -1,5 +1,6 @@
 // One icon family for the menu, game controls, and result actions.
 const UI_ICONS={
+  repair:'<path d="M14 6a5 5 0 0 0-6 6L3 17l4 4 5-5a5 5 0 0 0 6-6l-3 3-4-4 3-3z"/>',
   settings:'<path d="m9 3-1 3-3 1-2 3 2 2v3l3 1 1 3h4l1-3 3-1v-3l2-2-2-3-3-1-1-3z"/><circle cx="11" cy="11" r="3"/>',
   continue:'<path d="M5 12h13m-5-5 5 5-5 5"/><path d="M4 5v14"/>',
   levelOne:'<path d="M6 21V3m0 1h12l-2.5 4L18 12H6"/><path d="M11 16h2m-1-1v5"/>',
