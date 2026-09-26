@@ -273,6 +273,7 @@ output = template.replace('/*__LEVEL_DATA__*/', 'const LEVELS=' + json.dumps(lev
 output = output.replace('/*__ISOMETRIC_SCENE__*/', (ROOT / 'campaign' / 'isometric-scene.js').read_text(encoding='utf-8'))
 output = output.replace('/*__FEEDBACK_CODE__*/', (ROOT / 'campaign' / 'feedback.js').read_text(encoding='utf-8'))
 output = output.replace('/*__UI_ICONS__*/', (ROOT / 'campaign' / 'ui-icons.js').read_text(encoding='utf-8'))
+output = output.replace('/*__ROUTE_SOLVER__*/', (ROOT / 'campaign' / 'route-solver.js').read_text(encoding='utf-8'))
 assert '/*__LEVEL_DATA__*/' not in output
 assert '/*__ISOMETRIC_SCENE__*/' not in output
 assert '/*__FEEDBACK_CODE__*/' not in output

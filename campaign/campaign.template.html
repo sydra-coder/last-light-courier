@@ -103,6 +103,7 @@ function move(p){if(!legal(p))return false;const wasNear=shadowNear(),cost=eq(p,
 function endIfNoMoves(){if(state.done||state.failed||state.help)return false;const [x,y]=state.pos;if([[x+1,y],[x-1,y],[x,y+1],[x,y-1]].some(legal))return false;state.failed=true;state.reason='No valid moves left';state.lost=state.pending;state.pending=0;FEEDBACK.emit('failure');setStatus('Route blocked','No valid moves left',state.lost+' unbanked points lost. Restart and choose a different route.');return true}
 function popcount(mask){let count=0;while(mask){count+=mask&1;mask>>>=1}return count}
 const routeCache=new Map();
+/*__ROUTE_SOLVER__*/
 function minimumForLevel(n,bought=false){const previous=level,target=LEVELS[n-1],old=save.repairs[n];level=target;save.repairs[n]=bought;try{const results=[];for(let mask=1;mask<(1<<target.homes.length);mask++)if(popcount(mask)>=target.required){const value=shortestSafeRoute(mask);if(value!==null)results.push(value)}return results.length?Math.min(...results):null}finally{level=previous;if(old===undefined)delete save.repairs[n];else save.repairs[n]=old}}
 function shortestSafeRoute(targetMask){
   const cacheKey=level.n+':'+targetMask+':'+repaired();if(routeCache.has(cacheKey))return routeCache.get(cacheKey);
@@ -213,7 +214,7 @@ $('bottomNav').addEventListener('click',e=>{const button=e.target.closest('[data
 for(const [name,icon] of [['play','continue'],['levels','map'],['legend','help'],['repairs','repair']]){const button=document.querySelector('[data-screen="'+name+'"]');button.innerHTML=iconSvg(icon)+'<span>'+button.textContent+'</span>'}
 showScreen('play');
 setupNavigationIcons();
-window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history};
+window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,hintRoute:()=>ROUTE_SOLVER.solve(level,structuredClone(state),{repaired:repaired()}),getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history};
 window.CourierApp={back:()=>{if(document.body.dataset.screen!=='play'&&$('legendHelp').hidden&&$('settingsPanel').hidden){showScreen('play');return true}if(!$('legendHelp').hidden){closeLegendHelp();return true}if(!$('settingsPanel').hidden){$('settingsPanel').hidden=true;return true}if(!$('levelPicker').hidden){backPicker();return true}if(!$('mainMenu').hidden)return false;if(state.help){state.help=false;render();return true}showMenu();return true}};
 const requested=Number(new URLSearchParams(location.search).get('level'));const hasLevel=Number.isInteger(requested)&&requested>=1&&requested<=LEVELS.length;choose(hasLevel?requested:1);switchView(save.viewMode||'isometric');if(!hasLevel)showMenu();
 })();
