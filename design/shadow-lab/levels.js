@@ -1,0 +1,10 @@
+(function(root){
+ const levels=[
+  {id:1,name:'Hunter',milestone:501,light:20,map:['#########','#.......#','#.......#','#D.....H#','#.......#','#.......#','#########'],start:[5,1],brief:'The Hunter takes one step toward your current position every second turn. Watch its next tile, use a side lane, and avoid a straight chase.',tip:'The Hunter closes vertical distance first, then horizontal distance, on even turns.'},
+  {id:2,name:'Leech',milestone:521,light:16,map:['#########','#.......#','#.......#','#D..L..H#','#.......#','#.......#','#########'],start:[4,1],brief:'The Leech reaches the recharge house on turn six and extinguishes it. Deliveries stay credited; relight the house before banking.',tip:'Visit the recharge house on the way out. Return after the drain and step onto it again to relight it.'},
+  {id:3,name:'Sentinel',milestone:551,light:25,map:['#########','#.......#','#.#####.#','#D..S..H#','#.#####.#','#.......#','#########'],start:[4,3],brief:'The Sentinel never moves, but its visible 3×3 influence makes the center crossing unsafe. Plan a route around its area.',tip:'The upper or lower outer lane remains open. Its influence is a hazard footprint, not a movement range.'},
+  {id:4,name:'Spawner',milestone:1201,light:27,map:['#########','#...N...#','#.......#','#D.....H#','#.......#','#.......#','#########'],start:[4,1],brief:'At turn five, an unattended nest spawns a smaller shadow on the center road. Reach the nest and seal it to stop the spawn.',tip:'Get beside N by turn four, then use Seal nest. A spawned minion can also be cleared by sealing the nest.'},
+  {id:5,name:'Merge / Split',milestone:1251,light:20,map:['#########','#.......#','#.......#','#D.....H#','#.......#','#.......#','#########'],start:[4,1],brief:'Two shadows merge in the center on turns four to six, then split back to the outer lanes. Time the crossing and return.',tip:'The merged form blocks a 3×3 center area. The phase schedule is fixed and shown before you move.'}
+ ];
+ root.SHADOW_LEVELS=levels;if(typeof module!=='undefined')module.exports=levels;
+})(typeof window!=='undefined'?window:globalThis);

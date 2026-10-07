@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Last Light Courier · layered audio review</title>
+<style>
+:root{color-scheme:dark;--gold:#ffd49a;--ink:#f4ecdf;--muted:#c0bdcb}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#554462,#181c31 55%,#101524);color:var(--ink);font:16px/1.45 system-ui,sans-serif}main{max-width:860px;margin:auto;padding:28px 18px 60px}h1,h2{font-family:Georgia,serif}h1{font-size:clamp(32px,6vw,50px);line-height:1.1;margin:6px 0 12px}h2{font-size:23px;margin:0 0 10px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:.19em;text-transform:uppercase;font-weight:800}.intro,.hint{color:var(--muted)}.hint{font-size:14px}.card{padding:20px;margin-top:15px;border:1px solid #77738e;border-radius:18px;background:#282b42d9;box-shadow:0 12px 30px #090c1866}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1}button,select{border:1px solid #aea2af;background:#46445f;color:var(--ink);font:inherit;border-radius:10px;padding:10px;min-height:44px;cursor:pointer}button:hover,select:hover{border-color:var(--gold)}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}button.primary{background:#f1c385;color:#282336;font-weight:800}label{display:block;font-weight:700}select{display:block;width:100%;margin-top:6px}.field{margin-top:14px}input[type=range]{accent-color:var(--gold);width:100%;margin-top:12px}output{color:var(--gold);font-variant-numeric:tabular-nums}.scene button{font-size:14px}small{font-size:13px}.status{min-height:24px;color:var(--gold)}@media(max-width:610px){.grid{grid-template-columns:1fr}}
+</style>
+<main><p class="eyebrow">Audio concept · character + shadow + world</p><h1>Hear the whole route</h1><p class="intro">Choose a courier and shadow, start the mix, then move the shadow and lantern controls. The chapter bed, character signature, haunting shadow texture, and low-light pulse respond together. These are procedural review sounds, not final game recordings.</p>
+<section class="card"><div class="row"><button class="primary" id="start">Start full mix</button><button id="mute" aria-pressed="false">Mute</button><button id="courierOnly">Hear courier alone</button><button id="shadowOnly">Hear shadow alone</button></div><p id="status" class="status" role="status">Tap a button to unlock browser audio.</p><div class="field"><label for="volume">Master volume <output id="volumeOut">65%</output></label><input id="volume" type="range" min="0" max="100" value="65"></div><label><input id="gentle" type="checkbox"> Gentle mix <small class="hint">Quieter shadow and slower critical lantern pulse.</small></label></section>
+<section class="card"><h2>Choose the identities</h2><div class="grid"><div><label for="courier">Courier</label><select id="courier"></select><p id="courierDesc" class="hint"></p></div><div><label for="shadowSkin">Shadow appearance</label><select id="shadowSkin"></select><p id="shadowDesc" class="hint"></p></div></div><div class="field"><label for="chapter">Chapter music</label><select id="chapter"><option value="0">1 · First Deliveries</option><option value="1">3 · Waterline</option><option value="2">5 · Echo District</option><option value="3">9 · Blackout</option><option value="4">20 · Last Journey</option></select></div><p class="hint">The courier signature plays at route start and at spacious intervals. The shadow identity sounds only when an active shadow is close. Choosing a different identity takes effect immediately in this review page.</p></section>
+<section class="card"><h2>Change the situation</h2><div class="grid"><div><label for="distance">Nearest active shadow · <output id="distanceOut">asleep / far</output></label><input id="distance" type="range" min="0" max="6" value="6"><p class="hint">6 is far or asleep. Move toward 0 to bring in the haunting layer.</p></div><div><label for="light">Lantern remaining · <output id="lightOut">100%</output></label><input id="light" type="range" min="0" max="100" value="100"><p class="hint">Pressure enters at 45%, rises at 25%, and peaks at 10%.</p></div></div><div class="row scene"><button data-scene="safe">Safe route</button><button data-scene="near">Shadow near</button><button data-scene="tense">Low light + shadow</button><button data-scene="critical">Last light</button></div><div class="row" style="margin-top:10px"><button id="delivery">House delivery</button><button id="complete">Completion</button><button id="failure">Failure</button></div></section>
+<section class="card"><h2>Review boundary</h2><p class="hint">All 18 couriers and 19 shadow looks are selectable. They share six courier instrument families and five shadow texture families, with individual pitch/rhythm contours. Cosmetic holiday outfits are not yet sonified. This page does not alter the playable game or its sound setting.</p></section></main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const courierNames=['Ember Scout','Moss Ranger','Canal Pilot','Bell Messenger','Winter Warden','Patchwork Runner','Rooftop Finch','Clockwork Porter','Willow Guide','Harbor Skipper','Ash Cartographer','Dawn Baker','Foxglove Courier','Bluebird Runner','Lantern Keeper','Market Sprinter','Mooncap Wanderer','Sunset Relayer'];
+const shadowNames=['Night Wisp','Dussehra Ember','Halloween Hush','Diwali Afterglow','Winter Frost','New Year Stardrift','Canal Mist','Old City Cinder','Bell Hollow','Ribbon Wraith','Moth Veil','Crescent Lurker','Shard Mask','Ink Puddle','Thorn Crown','Eclipse Orb','Veil Hand','Serpent Coil','Hourglass Shade'];
+const couriers=[
+ [0,[0,4,7],[0,.32,.78]], [1,[0,7,5],[0,.24,.84]], [2,[0,5,9],[0,.4,1.03]], [3,[0,7,12],[0,.22,.63]],
+ [5,[0,3,7],[0,.49,1.05]], [4,[0,5,7],[0,.18,.51]], [4,[0,9,7],[0,.14,.7]], [3,[0,7,4],[0,.16,.48]],
+ [1,[0,5,12],[0,.55,1.19]], [2,[0,7,5],[0,.52,1.16]], [3,[0,3,10],[0,.38,.94]], [0,[0,5,9],[0,.19,.48]],
+ [1,[0,9,7],[0,.18,.56]], [4,[0,12,7],[0,.12,.4]], [0,[0,4,9],[0,.64,1.38]], [4,[0,7,12],[0,.1,.32]],
+ [2,[0,3,9],[0,.69,1.34]], [5,[0,7,9],[0,.3,.9]]
+];
+const shadowFamilies=[0,0,0,0,0,0,1,1,2,2,2,4,3,3,3,4,3,4,2];
+const shadows=shadowNames.map((name,i)=>({name,family:shadowFamilies[i],root:150+[0,11,-8,7,19,24,-13,5,17,-5,9,14,22,-11,28,2,25,-16,12][i],gap:[1,2,3,1,2,4,2,3,5,4,3,6,2,1,5,7,4,6,3][i],rate:[.27,.32,.22,.29,.20,.35,.24,.31,.25,.38,.34,.28,.36,.21,.42,.30,.39,.26,.23][i]}));
+const palettes=[{name:'First Deliveries',root:196,steps:[0,4,7,9]},{name:'Waterline',root:174.61,steps:[0,5,7,12]},{name:'Echo District',root:164.81,steps:[0,3,6,10]},{name:'Blackout',root:146.83,steps:[0,3,7,8]},{name:'Last Journey',root:196,steps:[0,5,9,12]}];
+const familyDesc=['warm wood and lantern brass','leaf and dry wood plucks','rounded water glass','small bell and clock metal','quick airy footfall','frosted glass and dusk chime'];
+const shadowDesc=['wavering violet air','hollow district haze','veiled bell resonance','broken, crawling scrape','curved, unstable overtone'];
+for(let i=0;i<courierNames.length;i++)$('courier').add(new Option(String(i+1).padStart(2,'0')+' · '+courierNames[i],i));
+for(let i=0;i<shadowNames.length;i++)$('shadowSkin').add(new Option(String(i+1).padStart(2,'0')+' · '+shadowNames[i],i));
+let ctx,master,bgm,courierBus,shadowBus,lightBus,eventBus,shadowVoices=[],noiseNode,timer,next=0,bar=0,playing=false,muted=false,revision=0;
+const chosenCourier=()=>couriers[+$('courier').value],chosenShadow=()=>shadows[+$('shadowSkin').value],gentle=()=>$('gentle').checked;
+function gain(v=0){const x=ctx.createGain();x.gain.value=v;return x}
+function set(g,v,s=.35){const t=ctx.currentTime;g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(Math.max(0,v),t,s/3)}
+function osc(f,t,d,to,peak=.05,type='sine',end=f){
+ const o=ctx.createOscillator(),g=gain();o.type=type;o.frequency.setValueAtTime(Math.max(30,f),t);o.frequency.exponentialRampToValueAtTime(Math.max(30,end),t+d);
+ o.connect(g);g.connect(to);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),t+.035);
+ g.gain.setTargetAtTime(.0001,t+Math.max(.06,d-.24),.10);o.start(t);o.stop(t+d+.35);
+}
+function init(){if(ctx)return true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC){$('status').textContent='Web Audio is unavailable in this browser.';return false}
+ ctx=new AC();master=gain(.65);master.connect(ctx.destination);bgm=gain(0);courierBus=gain(.7);shadowBus=gain(0);lightBus=gain(0);eventBus=gain(.9);
+ for(const b of [bgm,courierBus,shadowBus,lightBus,eventBus])b.connect(master);
+ // Two beating tones and one filtered air source feed the shared haunting bus.
+ for(let i=0;i<3;i++){const o=ctx.createOscillator(),g=gain(0);o.type=i===0?'triangle':'sine';o.connect(g);g.connect(shadowBus);o.start();shadowVoices.push({o,g})}
+ const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.12;
+ noiseNode=ctx.createBufferSource();noiseNode.buffer=buf;noiseNode.loop=true;const filter=ctx.createBiquadFilter(),air=gain(.012);filter.type='bandpass';filter.frequency.value=540;filter.Q.value=.8;noiseNode.connect(filter);filter.connect(air);air.connect(shadowBus);noiseNode.start();updateIdentity();return true;
+}
+function updateIdentity(){if(!ctx)return;const sh=chosenShadow(),f=sh.family,levels=[[.033,.032,.012],[.024,.019,.013],[.020,.027,.016],[.025,.018,.009],[.029,.024,.017]][f];
+ shadowVoices.forEach(({o,g},i)=>{o.frequency.setTargetAtTime(sh.root*(i===1?2**(sh.gap/12):i===2?2:1),ctx.currentTime,.25);set(g,levels[i],.5)});
+ const current=++revision;set(shadowBus,0,.12);setTimeout(()=>{if(current===revision)update()},300);
+}
+function signature(t=ctx.currentTime+.05,to=courierBus){const [f,steps,times]=chosenCourier(),p=palettes[+$('chapter').value],types=['triangle','triangle','sine','sine','triangle','sine'],base=p.root*(f===5?.8:f===4?1.18:1);
+ steps.forEach((step,i)=>{const d=f===0||f===5?.72:f===2?1.04:.42;osc(base*2**(step/12),t+times[i],d,to,f===3?.085:.075,types[f]);if(f===2)osc(base*2**((step+12)/12),t+times[i]+.06,.42,to,.012,'sine')});
+}
+function shadowCall(t=ctx.currentTime+.06,to=shadowBus){const sh=chosenShadow(),f=sh.family;
+ const types=['sine','triangle','sine','triangle','sine'];const length=[1.4,1.1,1.65,.7,1.5][f],peak=[.042,.05,.05,.045,.047][f];
+ osc(sh.root*2,t,length,to,peak,types[f],sh.root*2**(sh.gap/12)*2);
+ if(f===2||f===3)osc(sh.root*2.8,t+.25,.7,to,.025,'sine',sh.root*2.1);
+}
+function schedule(){if(!playing)return;while(next<ctx.currentTime+1.2){const p=palettes[+$('chapter').value],t=next;
+ osc(p.root/2,t,5.8,bgm,.022,'triangle');osc(p.root*2**(p.steps[bar%4]/12),t+.1,3.6,bgm,.035);osc(p.root*2**(p.steps[(bar+2)%4]/12),t+2.2,2.9,bgm,.021);
+ if(bar%2===0)signature(t+4.8);
+ if(+$('distance').value<5)shadowCall(t+3.6);
+ const light=+$('light').value;if(light<=45){const interval=light<=10?(gentle()?2.2:1.35):light<=25?2.4:4;
+  for(let at=t+.6;at<t+7.5;at+=interval)osc(light<=10?392:349.23,at,.28,lightBus,.052,'triangle');}
+ bar++;next+=8;
+ }}
+function update(){if(!ctx)return;set(master,muted?0:+$('volume').value/100,.15);set(bgm,playing?.82:0,.45);
+ const d=+$('distance').value,l=+$('light').value,near=d>=5?0:(5-d)/5;
+ set(shadowBus,playing?near*(gentle()?.35:.57):0,.8);set(lightBus,playing?(l>45?0:l>25?.32:l>10?.50:.70)*(gentle()?.6:1):0,.6);
+ $('distanceOut').textContent=d>=5?'asleep / far':d===0?'adjacent':d+' tile'+(d===1?'':'s');$('lightOut').textContent=l+'%';$('volumeOut').textContent=$('volume').value+'%';
+}
+function explain(){const c=+$('courier').value,s=chosenShadow();$('courierDesc').textContent=familyDesc[couriers[c][0]]+' · unique pitch and timing';$('shadowDesc').textContent=shadowDesc[s.family]+' · unique wavering interval'}
+function stop(){playing=false;clearInterval(timer);update();$('start').textContent='Resume full mix';$('status').textContent='Paused.'}
+async function unlock(){if(!init())return false;await ctx.resume();return true}
+function scene(kind){const states={safe:[6,100],near:[1,70],tense:[2,22],critical:[0,7]};[$('distance').value,$('light').value]=states[kind];update();$('status').textContent=kind+' scenario selected.'}
+function event(kind){if(!ctx)return;const t=ctx.currentTime+.05;set(bgm,.32,.08);set(shadowBus,0,.08);
+ if(kind==='delivery')[523,659,784].forEach((f,i)=>osc(f,t+i*.09,.38,eventBus,.095));
+ if(kind==='complete')[523,659,784,1046].forEach((f,i)=>osc(f,t+i*.13,.62,eventBus,.11,'triangle'));
+ if(kind==='failure')[[277,196],[196,130],[130,82]].forEach(([a,b],i)=>osc(a,t+i*.21,.58,eventBus,.09,'triangle',b));
+ setTimeout(()=>{if(ctx)update()},kind==='delivery'?600:1500);
+}
+ $('start').onclick=async()=>{if(!await unlock())return;if(playing){stop();return}playing=true;bar=0;next=ctx.currentTime+.1;timer=setInterval(schedule,250);schedule();signature(ctx.currentTime+.2);update();$('start').textContent='Pause full mix';$('status').textContent='Playing '+palettes[+$('chapter').value].name+' with '+courierNames[+$('courier').value]+' and '+chosenShadow().name+'.'};
+ $('mute').onclick=()=>{muted=!muted;$('mute').textContent=muted?'Unmute':'Mute';$('mute').setAttribute('aria-pressed',String(muted));update()};
+ $('courierOnly').onclick=async()=>{if(!await unlock())return;signature(ctx.currentTime+.04,eventBus);$('status').textContent=courierNames[+$('courier').value]+' signature.'};
+ $('shadowOnly').onclick=async()=>{if(!await unlock())return;shadowCall(ctx.currentTime+.04,eventBus);$('status').textContent=chosenShadow().name+' identity.'};
+ $('courier').onchange=()=>{explain();if(ctx&&playing)signature()};$('shadowSkin').onchange=()=>{explain();updateIdentity();if(ctx&&playing)shadowCall(ctx.currentTime+.1,eventBus)};
+ $('chapter').onchange=()=>{if(ctx&&playing){set(bgm,0,.2);bar=0;next=ctx.currentTime+.6;setTimeout(update,450)}$('status').textContent='Chapter: '+palettes[+$('chapter').value].name+'.'};
+ for(const id of ['volume','distance','light','gentle'])$(id).oninput=update;
+ for(const b of document.querySelectorAll('[data-scene]'))b.onclick=()=>scene(b.dataset.scene);
+ for(const k of ['delivery','complete','failure'])$(k).onclick=async()=>{if(await unlock())event(k)};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)stop()});explain();
+})();
+</script></html>

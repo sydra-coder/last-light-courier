@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-26",
+  "maps": 1000,
+  "newMaps": 800,
+  "productionRoutesReplayed": 1141,
+  "original200Preserved": true,
+  "newLayoutsUnique": true,
+  "newOpenGroundConnectedAfterRequiredRepair": true,
+  "requiredRepairMaps": 32,
+  "repairNecessityProvenByConnectivity": true,
+  "reviewPDFPages": 1002,
+  "routePDFPages": 1551,
+  "allReviewMapHeadingsChecked": true,
+  "renderedPagesInspected": [
+    1,
+    2,
+    203,
+    227,
+    1002
+  ],
+  "newRoutesGloballyShortest": false,
+  "phonePlaytested": false,
+  "active200GameOrAPKReplaced": false,
+  "files": {
+    "Last-Light-Courier-1000-Level-Review.pdf": "f3a3140d3d8d1946bbacf04c0ed3471c62284bb4cda1abce4c79768a68e743b6",
+    "Last-Light-Courier-1000-Map-Route-Archive.pdf": "ec71776f097838fdd07df3e3a7eb26449b80d505cdcd07b3b31d85cff5377daf",
+    "Last-Light-Courier-1000-Maps.json": "700f9ca69b1cee92ec908e783485953eeb4d7219f1bd6e0c2903ccd99839e20c",
+    "Last-Light-Courier-1000-Map-Solutions.json": "7365f829f7d5ff983d92924be08ad989589540fd67812315e52335084fd47722",
+    "Last-Light-Courier-1000-Level-Metrics.csv": "89a2c9143a55423866528321af53f40331ff2d7b89c4b3814bedf3700a4319dc",
+    "Last-Light-Courier-1000-Map-Handoff.md": "35b63f9a774a59d9dd24dd991d3ec0b08d0c6468240b4cc7d2d55ccc6432f9ae"
+  }
+}

@@ -27,7 +27,7 @@ const ROUTE_SOLVER=(()=>{
         if(home&&(options.goal==='nextHouse'||count(mask)<level.required))continue;
         const light=Math.min(capacity,s.light-(eq(p,level.dark)&&!(bought&&repair?.effect==='lamp')?2:1)+(fresh?2:0));
         if(light<=0&&!fresh&&!home)continue;
-        const next={pos:p,mask,light,active:s.active||fresh,phase:s.active?(s.phase+1)%level.patrol.length:s.phase,phase2:s.active&&level.patrol2?(s.phase2+1)%level.patrol2.length:s.phase2,
+        const next={pos:p,mask,light,active:!level.noShadow&&(s.active||fresh),phase:s.active?(s.phase+1)%level.patrol.length:s.phase,phase2:s.active&&level.patrol2?(s.phase2+1)%level.patrol2.length:s.phase2,
           fade:eq(p,level.fade)&&s.fade===null?5:s.fade===null?null:Math.max(0,s.fade-1),ice:eq(p,level.ice)&&s.ice===null?4:s.ice===null?null:Math.max(0,s.ice-1),gate:eq(p,level.switch)?4:Math.max(0,s.gate-1),trail:level.echo?[...s.trail.slice(-1),s.pos]:[],steps:s.steps+1,parent};
         const id=signature(next);if((seen.get(id)??-Infinity)>=next.light)continue;seen.set(id,next.light);queue.push(next);
       }

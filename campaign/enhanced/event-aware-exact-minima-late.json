@@ -1,0 +1,171 @@
+{
+  "scope": "Exact no-power, no optional repair, no signal step minima. Full runtime completions were rechecked by the event-aware shortcut audit and equal freshly generated relaxed phase-aware static tour lower bounds. Excludes transit, hidden-road openings, mandatory repair and powered bridge maps.",
+  "certified": [
+    {
+      "level": 1414,
+      "exactNoPowerSteps": 60,
+      "oldReferenceSteps": 132,
+      "lowerBound": 60,
+      "finishLight": 76,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1483,
+      "exactNoPowerSteps": 74,
+      "oldReferenceSteps": 132,
+      "lowerBound": 74,
+      "finishLight": 18,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1485,
+      "exactNoPowerSteps": 82,
+      "oldReferenceSteps": 134,
+      "lowerBound": 82,
+      "finishLight": 54,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1487,
+      "exactNoPowerSteps": 78,
+      "oldReferenceSteps": 128,
+      "lowerBound": 78,
+      "finishLight": 52,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1508,
+      "exactNoPowerSteps": 60,
+      "oldReferenceSteps": 122,
+      "lowerBound": 60,
+      "finishLight": 65,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1540,
+      "exactNoPowerSteps": 74,
+      "oldReferenceSteps": 138,
+      "lowerBound": 74,
+      "finishLight": 66,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1549,
+      "exactNoPowerSteps": 76,
+      "oldReferenceSteps": 136,
+      "lowerBound": 76,
+      "finishLight": 62,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1551,
+      "exactNoPowerSteps": 76,
+      "oldReferenceSteps": 134,
+      "lowerBound": 76,
+      "finishLight": 59,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1610,
+      "exactNoPowerSteps": 60,
+      "oldReferenceSteps": 126,
+      "lowerBound": 60,
+      "finishLight": 18,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1612,
+      "exactNoPowerSteps": 52,
+      "oldReferenceSteps": 120,
+      "lowerBound": 52,
+      "finishLight": 72,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1626,
+      "exactNoPowerSteps": 100,
+      "oldReferenceSteps": 136,
+      "lowerBound": 100,
+      "finishLight": 36,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1641,
+      "exactNoPowerSteps": 106,
+      "oldReferenceSteps": 124,
+      "lowerBound": 106,
+      "finishLight": 18,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1672,
+      "exactNoPowerSteps": 90,
+      "oldReferenceSteps": 164,
+      "lowerBound": 90,
+      "finishLight": 76,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1680,
+      "exactNoPowerSteps": 84,
+      "oldReferenceSteps": 156,
+      "lowerBound": 84,
+      "finishLight": 73,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1694,
+      "exactNoPowerSteps": 72,
+      "oldReferenceSteps": 128,
+      "lowerBound": 72,
+      "finishLight": 58,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1698,
+      "exactNoPowerSteps": 88,
+      "oldReferenceSteps": 154,
+      "lowerBound": 88,
+      "finishLight": 66,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1873,
+      "exactNoPowerSteps": 82,
+      "oldReferenceSteps": 156,
+      "lowerBound": 82,
+      "finishLight": 76,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    },
+    {
+      "level": 1940,
+      "exactNoPowerSteps": 76,
+      "oldReferenceSteps": 150,
+      "lowerBound": 76,
+      "finishLight": 75,
+      "proof": "live replay equals fresh phase-aware static tour bound"
+    }
+  ],
+  "invalidatedByPhaseClosures": [
+    {
+      "level": 1807,
+      "formerExactSteps": 64,
+      "reason": "Current default closure changed; new exact minimum unproven"
+    },
+    {
+      "level": 1828,
+      "formerExactSteps": 72,
+      "reason": "Current default closure changed; new exact minimum unproven"
+    },
+    {
+      "level": 1980,
+      "formerExactSteps": 82,
+      "reason": "Current default closure changed; new exact minimum unproven"
+    },
+    {
+      "level": 1994,
+      "formerExactSteps": 80,
+      "reason": "Current default closure changed; new exact minimum unproven"
+    }
+  ]
+}

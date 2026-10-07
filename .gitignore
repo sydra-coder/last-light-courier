@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 android/build/
 android/.local/
+
+# Local nested staging copy and generated review data
+design/design/
+
+campaign/expansion/expansion/
+campaign/enhanced/_build_verification.html

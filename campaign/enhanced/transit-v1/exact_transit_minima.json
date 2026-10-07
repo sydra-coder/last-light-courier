@@ -1,0 +1,45 @@
+{
+  "scope": "Exact no-power transit-inclusive step minima; level 1775 includes its mandatory free repair. Runtime routes were replayed and equal freshly generated relaxed road bounds with transit unlocked after first delivery.",
+  "certified": [
+    {
+      "level": 1708,
+      "exactSteps": 48,
+      "freeRepairRequired": false,
+      "finishLight": 16,
+      "walkingSteps": 62,
+      "proof": "live transit completion equals relaxed delivery-phase road tour with unlocked transit edges"
+    },
+    {
+      "level": 1711,
+      "exactSteps": 45,
+      "freeRepairRequired": false,
+      "finishLight": 16,
+      "walkingSteps": 56,
+      "proof": "live transit completion equals relaxed delivery-phase road tour with unlocked transit edges"
+    },
+    {
+      "level": 1716,
+      "exactSteps": 45,
+      "freeRepairRequired": false,
+      "finishLight": 16,
+      "walkingSteps": 60,
+      "proof": "live transit completion equals relaxed delivery-phase road tour with unlocked transit edges"
+    },
+    {
+      "level": 1775,
+      "exactSteps": 112,
+      "freeRepairRequired": true,
+      "finishLight": 16,
+      "walkingSteps": 122,
+      "proof": "live transit completion equals relaxed delivery-phase road tour with unlocked transit edges"
+    },
+    {
+      "level": 1793,
+      "exactSteps": 69,
+      "freeRepairRequired": false,
+      "finishLight": 16,
+      "walkingSteps": 80,
+      "proof": "live transit completion equals relaxed delivery-phase road tour with unlocked transit edges"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "scope": "Exact signal-branch step minima under selected first-delivery closure, certified where full-rule completion equals relaxed phase-aware road tour bound. Required free repair is included where stated.",
+  "certified": [
+    {
+      "level": 1804,
+      "exactSignalSteps": 60,
+      "freeRepairRequired": false,
+      "signalLightCost": 0,
+      "finishLight": 16,
+      "proof": "signaled live completion equals relaxed phase-aware road tour bound"
+    },
+    {
+      "level": 1807,
+      "exactSignalSteps": 64,
+      "freeRepairRequired": false,
+      "signalLightCost": 0,
+      "finishLight": 16,
+      "proof": "signaled full-rule replay equals relaxed phase-aware road tour bound"
+    },
+    {
+      "level": 1828,
+      "exactSignalSteps": 72,
+      "freeRepairRequired": false,
+      "signalLightCost": 0,
+      "finishLight": 16,
+      "proof": "signaled full-rule replay equals relaxed phase-aware road tour bound"
+    },
+    {
+      "level": 1900,
+      "exactSignalSteps": 110,
+      "freeRepairRequired": true,
+      "signalLightCost": 0,
+      "finishLight": 20,
+      "proof": "signaled live completion equals relaxed phase-aware road tour bound"
+    },
+    {
+      "level": 1994,
+      "exactSignalSteps": 80,
+      "freeRepairRequired": false,
+      "signalLightCost": 0,
+      "finishLight": 16,
+      "proof": "signaled full-rule replay equals relaxed phase-aware road tour bound"
+    }
+  ]
+}

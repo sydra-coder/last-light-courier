@@ -1,0 +1,202 @@
+[
+  {
+    "region": 1,
+    "name": "Ember Road",
+    "levels": "1–100",
+    "shadow": "01",
+    "cue": "The familiar wisp enters the lantern village; patrols first appear at level 8.",
+    "environment": "Warm windows and ember-lit stone lanes",
+    "regionArt": "region-01-ember-road.png",
+    "source": "exec-9c774560-f8fd-439b-8c8c-710b4f7c09ee.png"
+  },
+  {
+    "region": 2,
+    "name": "Dimming Crossroads",
+    "levels": "101–200",
+    "shadow": "12",
+    "cue": "An open crescent reads as a fork in the dark.",
+    "environment": "Branching roads and fading roadside lamps",
+    "regionArt": "region-02-dimming-crossroads.png",
+    "source": "exec-3f3b3727-70f1-41e9-a8ca-7a9afd3f9d2a.png"
+  },
+  {
+    "region": 3,
+    "name": "Veiled Hamlet",
+    "levels": "201–300",
+    "shadow": "11",
+    "cue": "Folded wings echo roofs hidden in mist.",
+    "environment": "Low fog and clustered village roofs",
+    "regionArt": "region-03-veiled-hamlet.png",
+    "source": "exec-84b5ed92-51d8-48b0-8eef-e1259e3db868.png"
+  },
+  {
+    "region": 4,
+    "name": "Lantern District",
+    "levels": "301–400",
+    "shadow": "09",
+    "cue": "A broad bell shape is clear beside bright lanterns.",
+    "environment": "Dense lanterns and amber shop windows",
+    "regionArt": "region-04-lantern-district.png",
+    "source": "exec-ada8c2ff-a2e1-4fc7-b1be-a42d1ed0f6be.png"
+  },
+  {
+    "region": 5,
+    "name": "Broken Causeways",
+    "levels": "401–500",
+    "shadow": "14",
+    "cue": "A low shape follows the line of broken crossings.",
+    "environment": "Fractured bridges over dark water",
+    "regionArt": "region-05-broken-causeways.png",
+    "source": "exec-dc5ba264-307a-4032-a084-638401fd8850.png"
+  },
+  {
+    "region": 6,
+    "name": "Hunting Dark",
+    "levels": "501–600",
+    "shadow": "18",
+    "cue": "The coiled form suggests watchfulness without a new attack.",
+    "environment": "Sparse lamps and deep violet roadside cover",
+    "regionArt": "region-06-hunting-dark.png",
+    "source": "exec-407d2e60-ac5b-4f31-9122-9b2d0ba3e996.png"
+  },
+  {
+    "region": 7,
+    "name": "The Shadowworks",
+    "levels": "601–700",
+    "shadow": "13",
+    "cue": "Hard facets suit a constructed, angular district.",
+    "environment": "Dark workshops, rails and broken machinery",
+    "regionArt": "region-07-the-shadowworks.png",
+    "source": "exec-b88a3a57-2d83-41cc-bcd4-460c3afb108f.png"
+  },
+  {
+    "region": 8,
+    "name": "River of Glass",
+    "levels": "701–800",
+    "shadow": "07",
+    "cue": "Cool canal mist keeps the shadow separate from reflections.",
+    "environment": "Blue glass water and mirror-like crossings",
+    "regionArt": "region-08-river-of-glass.png",
+    "source": "exec-69f89095-a1da-4341-bd4e-08833c86db07.png"
+  },
+  {
+    "region": 9,
+    "name": "Quake Frontier",
+    "levels": "801–900",
+    "shadow": "15",
+    "cue": "Uneven spikes echo fractured ground.",
+    "environment": "Split stone and unstable frontier roads",
+    "regionArt": "region-09-quake-frontier.png",
+    "source": "exec-e72c9672-458d-4b3f-b900-0671ad09b791.png"
+  },
+  {
+    "region": 10,
+    "name": "Faultline City",
+    "levels": "901–1000",
+    "shadow": "08",
+    "cue": "Cinder flecks suit damaged city blocks.",
+    "environment": "Broken masonry and amber windows",
+    "regionArt": "region-10-faultline-city.png",
+    "source": "exec-78f05400-4c6d-4bfd-a89d-f86904f679d0.png"
+  },
+  {
+    "region": 11,
+    "name": "Storm March",
+    "levels": "1001–1100",
+    "shadow": "10",
+    "cue": "Long ribbons read as wind-torn vapor.",
+    "environment": "Wind-swept roads under storm-blue clouds",
+    "regionArt": "region-11-storm-march.png",
+    "source": "exec-b400be73-60fa-4bc0-9aa1-784a382321c4.png"
+  },
+  {
+    "region": 12,
+    "name": "The Long Night",
+    "levels": "1101–1200",
+    "shadow": "16",
+    "cue": "A dark orb gives a simple, ominous outline.",
+    "environment": "Minimal distant lights and near-black sky",
+    "regionArt": "region-12-the-long-night.png",
+    "source": "exec-fcded96c-c8b0-43f4-9210-16324034a8d9.png"
+  },
+  {
+    "region": 13,
+    "name": "Breachlands",
+    "levels": "1201–1300",
+    "shadow": "17",
+    "cue": "The reaching outline echoes ruptured edges; it does not grab.",
+    "environment": "Torn roads and violet-lit breaches",
+    "regionArt": "region-13-breachlands.png",
+    "source": "exec-658f6650-237b-461d-aed6-273f38423e36.png"
+  },
+  {
+    "region": 14,
+    "name": "The Lumen Engine",
+    "levels": "1301–1400",
+    "shadow": "13",
+    "cue": "The faceted mask reads as a machine-born apparition.",
+    "environment": "Cold conduits with restrained warm power cores",
+    "regionArt": "region-14-the-lumen-engine.png",
+    "source": "exec-a96554b4-ef32-4e98-9f14-ec9cbad0e9e7.png"
+  },
+  {
+    "region": 15,
+    "name": "Keeper's Arsenal",
+    "levels": "1401–1500",
+    "shadow": "19",
+    "cue": "A pinched, armored profile suits stored defenses.",
+    "environment": "Vaulted stone, brass fittings and equipment",
+    "regionArt": "region-15-keeper-s-arsenal.png",
+    "source": "exec-3199984d-f27d-49b5-ad78-8f8a0c08c0d2.png"
+  },
+  {
+    "region": 16,
+    "name": "Convergence",
+    "levels": "1501–1600",
+    "shadow": "12",
+    "cue": "The crescent returns as roads and threats fold together.",
+    "environment": "Meeting routes and mixed earlier motifs",
+    "regionArt": "region-16-convergence.png",
+    "source": "exec-4c57bcb0-d55e-44dd-b108-1a692fc0a2ab.png"
+  },
+  {
+    "region": 17,
+    "name": "The Moving Kingdom",
+    "levels": "1601–1700",
+    "shadow": "18",
+    "cue": "The coil has a clear sense of movement at small scale.",
+    "environment": "Shifted streets and traveling architecture",
+    "regionArt": "region-17-the-moving-kingdom.png",
+    "source": "exec-8ee604a6-51d5-4fa4-97ea-0a468be292e3.png"
+  },
+  {
+    "region": 18,
+    "name": "Last Provinces",
+    "levels": "1701–1800",
+    "shadow": "09",
+    "cue": "The broad familiar profile anchors the final settlements.",
+    "environment": "Isolated homes and thinning lantern chains",
+    "regionArt": "region-18-last-provinces.png",
+    "source": "exec-348bb6de-198c-4946-ab3d-acf1e61647c9.png"
+  },
+  {
+    "region": 19,
+    "name": "Black Horizon",
+    "levels": "1801–1900",
+    "shadow": "16",
+    "cue": "The eclipse form holds its outline against a dark skyline.",
+    "environment": "Nearly black horizon with distant violet breaks",
+    "regionArt": "region-19-black-horizon.png",
+    "source": "exec-51bbbb3c-0132-4f28-a34a-9fd27e689e0f.png"
+  },
+  {
+    "region": 20,
+    "name": "The Last Light",
+    "levels": "1901–2000",
+    "shadow": "01",
+    "cue": "The original wisp returns for a deliberate visual bookend.",
+    "environment": "Deep navy darkness around the last warm lights",
+    "regionArt": "region-20-the-last-light.png",
+    "source": "exec-1302c23b-a0a2-42e5-8b0d-6f0392f36be9.png"
+  }
+]

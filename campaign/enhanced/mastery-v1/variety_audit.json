@@ -1,0 +1,92 @@
+{
+  "uniqueRouteDirections": 100,
+  "routeSteps": {
+    "minimum": 110,
+    "median": 138.0,
+    "maximum": 166
+  },
+  "archetypes": {
+    "Storm and fog": 25,
+    "Shadow and light network": 25,
+    "Chosen corridor": 25,
+    "Last light gauntlet": 25
+  },
+  "adjacentWallSimilarity": {
+    "median": 0.13,
+    "maximum": 0.207
+  },
+  "closestPairs": [
+    {
+      "levels": [
+        1986,
+        1987
+      ],
+      "wallJaccard": 0.207
+    },
+    {
+      "levels": [
+        1946,
+        1947
+      ],
+      "wallJaccard": 0.205
+    },
+    {
+      "levels": [
+        1958,
+        1959
+      ],
+      "wallJaccard": 0.2
+    },
+    {
+      "levels": [
+        1948,
+        1949
+      ],
+      "wallJaccard": 0.198
+    },
+    {
+      "levels": [
+        1934,
+        1935
+      ],
+      "wallJaccard": 0.193
+    },
+    {
+      "levels": [
+        1912,
+        1913
+      ],
+      "wallJaccard": 0.192
+    },
+    {
+      "levels": [
+        1904,
+        1905
+      ],
+      "wallJaccard": 0.182
+    },
+    {
+      "levels": [
+        1968,
+        1969
+      ],
+      "wallJaccard": 0.181
+    },
+    {
+      "levels": [
+        1908,
+        1909
+      ],
+      "wallJaccard": 0.18
+    },
+    {
+      "levels": [
+        1941,
+        1942
+      ],
+      "wallJaccard": 0.179
+    }
+  ],
+  "maxConsecutiveArchetype": 5,
+  "finalArchetype": "Last light gauntlet"
+}

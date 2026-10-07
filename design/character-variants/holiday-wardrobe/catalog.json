@@ -1,0 +1,635 @@
+{
+  "themes": [
+    {
+      "id": "dussehra",
+      "name": "Dussehra Victory",
+      "date": "20 Oct 2026",
+      "price": 60,
+      "palette": "#d78832"
+    },
+    {
+      "id": "halloween",
+      "name": "Halloween Nightwatch",
+      "date": "31 Oct 2026",
+      "price": 65,
+      "palette": "#9a6ba7"
+    },
+    {
+      "id": "diwali",
+      "name": "Diwali Lights",
+      "date": "8 Nov 2026",
+      "price": 80,
+      "palette": "#e2ad45"
+    },
+    {
+      "id": "christmas",
+      "name": "Christmas Hearth",
+      "date": "25 Dec 2026",
+      "price": 70,
+      "palette": "#6eae89"
+    },
+    {
+      "id": "new-year",
+      "name": "New Year Starlight",
+      "date": "1 Jan 2027",
+      "price": 75,
+      "palette": "#8ea8d5"
+    }
+  ],
+  "characters": [
+    {
+      "id": "01",
+      "name": "Ember Scout",
+      "slug": "ember-scout",
+      "base": "../01-ember-scout.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "01-ember-scout-dussehra.png",
+          "panel": null
+        },
+        {
+          "theme": "halloween",
+          "asset": "01-ember-scout-halloween.png",
+          "panel": null
+        },
+        {
+          "theme": "diwali",
+          "asset": "01-ember-scout-diwali.png",
+          "panel": null
+        },
+        {
+          "theme": "christmas",
+          "asset": "01-ember-scout-christmas.png",
+          "panel": null
+        },
+        {
+          "theme": "new-year",
+          "asset": "01-ember-scout-new-year.png",
+          "panel": null
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "name": "Moss Ranger",
+      "slug": "moss-ranger",
+      "base": "../02-moss-ranger.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "02-moss-ranger-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "02-moss-ranger-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "02-moss-ranger-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "02-moss-ranger-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "02-moss-ranger-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "name": "Canal Pilot",
+      "slug": "canal-pilot",
+      "base": "../03-canal-pilot.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "03-canal-pilot-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "03-canal-pilot-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "03-canal-pilot-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "03-canal-pilot-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "03-canal-pilot-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "name": "Bell Messenger",
+      "slug": "bell-messenger",
+      "base": "../04-bell-messenger.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "04-bell-messenger-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "04-bell-messenger-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "04-bell-messenger-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "04-bell-messenger-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "04-bell-messenger-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "name": "Winter Warden",
+      "slug": "winter-warden",
+      "base": "../05-winter-warden.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "05-winter-warden-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "05-winter-warden-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "05-winter-warden-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "05-winter-warden-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "05-winter-warden-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "name": "Patchwork Runner",
+      "slug": "patchwork-runner",
+      "base": "../06-patchwork-runner.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "06-patchwork-runner-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "06-patchwork-runner-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "06-patchwork-runner-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "06-patchwork-runner-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "06-patchwork-runner-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "name": "Rooftop Finch",
+      "slug": "rooftop-finch",
+      "base": "../07-rooftop-finch.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "07-rooftop-finch-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "07-rooftop-finch-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "07-rooftop-finch-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "07-rooftop-finch-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "07-rooftop-finch-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "name": "Clockwork Porter",
+      "slug": "clockwork-porter",
+      "base": "../08-clockwork-porter.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "08-clockwork-porter-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "08-clockwork-porter-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "08-clockwork-porter-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "08-clockwork-porter-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "08-clockwork-porter-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "name": "Willow Guide",
+      "slug": "willow-guide",
+      "base": "../09-willow-guide.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "09-willow-guide-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "09-willow-guide-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "09-willow-guide-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "09-willow-guide-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "09-willow-guide-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Harbor Skipper",
+      "slug": "harbor-skipper",
+      "base": "../10-harbor-skipper.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "10-harbor-skipper-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "10-harbor-skipper-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "10-harbor-skipper-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "10-harbor-skipper-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "10-harbor-skipper-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "name": "Ash Cartographer",
+      "slug": "ash-cartographer",
+      "base": "../11-ash-cartographer.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "11-ash-cartographer-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "11-ash-cartographer-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "11-ash-cartographer-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "11-ash-cartographer-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "11-ash-cartographer-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "name": "Dawn Baker",
+      "slug": "dawn-baker",
+      "base": "../12-dawn-baker.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "12-dawn-baker-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "12-dawn-baker-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "12-dawn-baker-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "12-dawn-baker-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "12-dawn-baker-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "name": "Foxglove Courier",
+      "slug": "foxglove-courier",
+      "base": "../13-foxglove-courier.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "13-foxglove-courier-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "13-foxglove-courier-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "13-foxglove-courier-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "13-foxglove-courier-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "13-foxglove-courier-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "name": "Bluebird Runner",
+      "slug": "bluebird-runner",
+      "base": "../14-bluebird-runner.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "14-bluebird-runner-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "14-bluebird-runner-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "14-bluebird-runner-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "14-bluebird-runner-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "14-bluebird-runner-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "name": "Lantern Keeper",
+      "slug": "lantern-keeper",
+      "base": "../15-lantern-keeper.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "15-lantern-keeper-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "15-lantern-keeper-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "15-lantern-keeper-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "15-lantern-keeper-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "15-lantern-keeper-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "name": "Market Sprinter",
+      "slug": "market-sprinter",
+      "base": "../16-market-sprinter.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "16-market-sprinter-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "16-market-sprinter-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "16-market-sprinter-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "16-market-sprinter-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "16-market-sprinter-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "name": "Mooncap Wanderer",
+      "slug": "mooncap-wanderer",
+      "base": "../17-mooncap-wanderer.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "17-mooncap-wanderer-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "17-mooncap-wanderer-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "17-mooncap-wanderer-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "17-mooncap-wanderer-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "17-mooncap-wanderer-five-looks.png",
+          "panel": 4
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "name": "Sunset Relayer",
+      "slug": "sunset-relayer",
+      "base": "../18-sunset-relayer.png",
+      "looks": [
+        {
+          "theme": "dussehra",
+          "asset": "18-sunset-relayer-five-looks.png",
+          "panel": 0
+        },
+        {
+          "theme": "halloween",
+          "asset": "18-sunset-relayer-five-looks.png",
+          "panel": 1
+        },
+        {
+          "theme": "diwali",
+          "asset": "18-sunset-relayer-five-looks.png",
+          "panel": 2
+        },
+        {
+          "theme": "christmas",
+          "asset": "18-sunset-relayer-five-looks.png",
+          "panel": 3
+        },
+        {
+          "theme": "new-year",
+          "asset": "18-sunset-relayer-five-looks.png",
+          "panel": 4
+        }
+      ]
+    }
+  ]
+}

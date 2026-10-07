@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path');
+const solve=require('../route-solver.js').solve;
+const root=path.resolve(__dirname,'../..');
+const level=JSON.parse(fs.readFileSync(path.join(root,'CAMPAIGN_1000_LEVELS.json'),'utf8'))[123];
+const old=JSON.parse(fs.readFileSync(path.join(__dirname,'early-winding-v1/shortest_routes.json'),'utf8'))[23];
+level.patrol2=[[10,9],[11,9],[11,10],[10,10]];
+const t=Date.now();
+const result=solve(level,null,{repaired:!!level.repairRequired});
+console.log(JSON.stringify({status:result.status,steps:result.steps,previousExact:old.steps,explored:result.explored,elapsedMs:Date.now()-t}));
+if(result.status==='solved')fs.writeFileSync(path.join(__dirname,'level124-patrol2-candidate-exact.json'),JSON.stringify({level:124,steps:result.steps,route:result.route},null,2));
+if(result.status!=='solved')process.exitCode=1;

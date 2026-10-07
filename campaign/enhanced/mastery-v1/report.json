@@ -1,0 +1,13 @@
+{
+  "attempted": 100,
+  "authored": 100,
+  "failed": [],
+  "staggered": true,
+  "maxConsecutiveArchetype": 5,
+  "archetypes": {
+    "Storm and fog": 25,
+    "Shadow and light network": 25,
+    "Chosen corridor": 25,
+    "Last light gauntlet": 25
+  }
+}

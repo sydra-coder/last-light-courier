@@ -89,8 +89,12 @@ def tighten_reference(l,route,bought,rng):
     except AssertionError:l['cap']=oldcap;records=replay(l,route,bought)
     l['spine']=route;l['referenceMethod']='Legal local shortcut search, followed by full rules replay; not globally optimal'
     return route,records
-def build(n):
-    rng=random.Random(n*90113);band=(n-201)//100;size=18+2*(band//2);hc=8+band//2;required=n%25==0
+def build(n,size_override=None,houses_override=None,band_override=None,seed_override=None,winding=False):
+    rng=random.Random(seed_override if seed_override is not None else n*90113)
+    band=(n-201)//100 if band_override is None else band_override
+    size=18+2*(band//2) if size_override is None else size_override
+    hc=8+band//2 if houses_override is None else houses_override
+    required=n%25==0
     if required:
         m=size//2;route=[[0,0]]
         def to(x,y):
@@ -99,13 +103,17 @@ def build(n):
         to(m-1,0);to(m-1,2);to(m+1,2);to(size-1,2);to(size-1,size-1);to(m+1,size-1);to(m+1,2);to(m-1,2);to(m-1,size-1);to(0,size-1);to(0,0)
         barrier={(m,y) for y in range(size)};repair_tile=[m,2]
     else:
-        rows=list(range(1,size-1,2))
+        # Leave a spare row between winding sweeps so short lateral bends have
+        # room to exist; the ordinary archived generator retains its spacing.
+        rows=list(range(1,size-1,3 if winding else 2))
         if len(rows)%2:rows.pop()
         route=[[0,rows[0]],[1,rows[0]]];cursor=2
         for i,y in enumerate(rows):
             end=rng.randrange(size-5,size) if i%2==0 else rng.randrange(2,6)
             route.extend([[x,y] for x in (range(cursor,end+1) if i%2==0 else range(cursor,end-1,-1))])
-            if i<len(rows)-1:route.append([end,y+1]);cursor=end
+            if i<len(rows)-1:
+                route.extend([[end, yy] for yy in range(y+1, rows[i+1])])
+                cursor=end
         route.extend([[x,rows[-1]] for x in range(route[-1][0]-1,-1,-1)])
         route.extend([[0,y] for y in range(rows[-1]-1,rows[0]-1,-1)])
         barrier=set();repair_tile=None
@@ -118,6 +126,20 @@ def build(n):
         return [x,y]
     route=list(map(tx,route));barrier={tuple(tx(p)) for p in barrier}
     repair_tile=tx(repair_tile) if repair_tile else None
+    if winding:
+        base_tiles=set(map(tuple,route));wound=[route[0]];wound_tiles={tuple(route[0])};previous_direction=None;straight=0
+        for p in route[1:]:
+            prev=wound[-1];direction=(p[0]-prev[0],p[1]-prev[1])
+            straight=straight+1 if direction==previous_direction else 1
+            if straight>=7:
+                sides=[(direction[1],-direction[0]),(-direction[1],direction[0])]
+                rng.shuffle(sides)
+                for dx,dy in sides:
+                    a=[prev[0]+dx,prev[1]+dy];b=[p[0]+dx,p[1]+dy]
+                    if all(0<=q[0]<size and 0<=q[1]<size and tuple(q) not in barrier and tuple(q) not in base_tiles and tuple(q) not in wound_tiles for q in (a,b)):
+                        wound.extend([a,b]);wound_tiles.update((tuple(a),tuple(b)));straight=0;break
+            wound.append(p);wound_tiles.add(tuple(p));previous_direction=direction
+        route=wound
     counts=Counter(map(tuple,route));unique=[i for i in range(3,len(route)-3) if counts[tuple(route[i])]==1]
     targets=[round(len(route)*(i+1)/(hc+1)) for i in range(hc)]
     picks=[]
@@ -183,7 +205,11 @@ def build(n):
     l=dict(n=n,chapter=(n-1)//10+1,grid=size,brief=f'Light all {hc} houses across branching streets. '+('Use the reserved free repair to connect both districts.' if required else 'Choose house order and crossing timing; repairs are optional.'),depot=route[0],homes=[dict(p=p,name=f'District {i+1}',points=600+40*band+80*i) for i,p in enumerate(homes)],walls=sorted(map(key,walls)),repair=dict(tile=repair_tile,name='Restore district connection' if required else 'Open branching shortcut',band='R',cost=cost,effect='open',stepsSaved=None),fade=fade,ice=ice,dark=dark,switch=switch,gate=gate,echo=True,patrol=patrols[0][0],phase=patrols[0][1],patrol2=patrols[1][0],phase2=patrols[1][1],cap=len(route)-1+sum(p==dark for p in route[1:])-2*hc+margin,spine=route,required=hc,bonus=1000+100*band,
            repairRequired=required,reservedFreeRepair=required,repairGemPrice=cost,difficultyBand=band+1,referenceMargin=margin,routeStatus='Verified reference route; global shortest route not claimed',economyStatus='Gem and voucher metadata follows the shop design; full shop integration remains separate')
     try:
-        route,records=tighten_reference(l,route,required,rng)
+        if winding:
+            records=replay(l,route,required)
+            l['referenceMethod']='Winding authored route with full rules replay; not globally optimal'
+        else:
+            route,records=tighten_reference(l,route,required,rng)
         assert metrics(l,required)['junctions']>=3
         if required:assert reachable(l,False)<hc and reachable(l,True)==hc
     except AssertionError as err: print("Rejected",n,str(err),flush=True);return None

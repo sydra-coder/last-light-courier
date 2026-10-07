@@ -1,0 +1,20 @@
+const path=require('node:path');
+const {chromium}=require('playwright');
+(async()=>{
+  const browser=await chromium.launch({executablePath:'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',headless:true});
+  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('file://'+path.resolve(__dirname,'index.html').replaceAll('\\','/'));
+  await page.waitForFunction(()=>!!window.__campaign&&!!window.__integratedShell);
+  const reached=await page.evaluate(()=>{__campaign.choose(1401);const l=__campaign.levels[1400];for(let i=1;i<l.spine.length;i++){if(!__campaign.move(l.spine[i]))break;if(__campaign.getState().mask.toString(2).replaceAll('0','').length===3)break}return __campaign.getState().mask});
+  const houses=await page.locator('#board .houseNumber').count(),lit=await page.locator('#board .houseNumber.isLit').count();
+  if(houses!==4||lit!==3)throw Error('House markers disagree with route: '+JSON.stringify({reached,houses,lit}));
+  if(!(await page.locator('#boardMessage').textContent()).includes('District 3 is lit'))throw Error('Delivery message missing on mobile board');
+  await page.locator('#board .cell[data-x="16"][data-y="11"]').click();
+  const inspected=await page.locator('#boardMessage').textContent();
+  if(!inspected.includes('CLOSED'))throw Error('Full road label unavailable: '+inspected);
+  if(errors.length)throw Error(errors.join('\n'));
+  await page.screenshot({path:path.join(__dirname,'large-map-clarity-sample.png')});
+  console.log('PASS Level 1401: 3 lit markers, delivery message, full road label on tap');
+  await browser.close();
+})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Last Light Courier · audio direction</title>
+<style>
+:root{color-scheme:dark;--ink:#f6e8d0;--muted:#b9b5c7;--line:#77718b;--gold:#ffcd83}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 75% 0,#51415d,#171b2c 55%,#0d1424);color:var(--ink);font:16px/1.5 system-ui,sans-serif}main{max-width:820px;margin:auto;padding:28px 20px 60px}h1,h2{font-family:Georgia,serif}h1{font-size:clamp(32px,6vw,52px);line-height:1.05;margin:8px 0}h2{font-size:23px;margin:0 0 12px}.eyebrow{letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;font-size:12px}.intro{color:var(--muted);max-width:66ch}.card{border:1px solid var(--line);background:#25293ed9;border-radius:18px;padding:20px;margin-top:16px;box-shadow:0 10px 30px #080b1766}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.row>*{flex:1}button,select{font:inherit;color:var(--ink);border:1px solid #a59ab0;background:#45435b;border-radius:11px;padding:11px 14px;cursor:pointer;min-height:46px}button:hover,select:hover{border-color:var(--gold)}button.primary{background:#e9ba78;color:#292133;border-color:#ffe0aa;font-weight:800}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #fff0b0;outline-offset:3px}label{display:block;font-weight:700}label small{display:block;color:var(--muted);font-weight:400}input[type=range]{width:100%;accent-color:var(--gold);margin:12px 0 4px}output{font-variant-numeric:tabular-nums;color:var(--gold)}.control{margin:15px 0}.hint{color:var(--muted);font-size:14px}.note{border-left:3px solid var(--gold);padding-left:12px;color:var(--muted)}.scene{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.scene button{font-size:13px;padding:8px 4px}@media(max-width:560px){.scene{grid-template-columns:repeat(2,1fr)}}
+</style>
+<main><p class="eyebrow">Listening prototype · October 2026</p><h1>The lantern route</h1><p class="intro">A small musical journey through the isometric village: warm window tones, violet shadow air, and a fading lantern pulse. Press Start to unlock browser audio, then move through the states. Headphones reveal the softer textures; the important notes sit in a phone-speaker range.</p>
+<section class="card"><div class="row"><button class="primary" id="start">Start audio</button><button id="mute" aria-pressed="false">Mute</button><button id="success">Play completion</button><button id="failure">Play failure</button></div><p id="status" role="status" class="hint">Audio is waiting for a tap.</p><div class="control"><label for="volume">Master volume <output id="volumeOut">65%</output></label><input id="volume" type="range" min="0" max="100" value="65"></div><label><input type="checkbox" id="gentle"> Gentle mix <small>Lower tension and low-light peaks; slower warning pulse.</small></label></section>
+<section class="card"><h2>Journey</h2><label for="chapter">Chapter palette</label><select id="chapter"><option value="0">1 · First Deliveries — hearth</option><option value="1">2 · Broken Crossings — timber</option><option value="2">3 · Waterline — canal</option><option value="3">5 · Echo District — violet</option><option value="4">9 · Blackout — narrow light</option><option value="5">20 · Last Journey — dawn</option></select><p class="hint">The motif changes on chapter boundaries, every ten playable levels. This demo samples six of the twenty chapter palettes; intervening chapters would share and evolve neighboring motifs.</p></section>
+<section class="card"><h2>In the street</h2><div class="control"><label for="shadow">Nearest active shadow <output id="shadowOut">Far / asleep</output></label><input id="shadow" type="range" min="0" max="6" value="6"><small class="hint">0 tiles = adjacent danger; 6 = far. Move it back and hear the air release.</small></div><div class="control"><label for="light">Lantern remaining <output id="lightOut">100%</output></label><input id="light" type="range" min="0" max="100" value="100"><small class="hint">45%: faint pulse · 25%: urgent rhythm · 10%: near-empty. House refills should raise this value smoothly.</small></div><div class="scene"><button data-scene="calm">Safe route</button><button data-scene="near">Shadow near</button><button data-scene="low">Low lantern</button><button data-scene="critical">Last light</button></div></section>
+<section class="card"><h2>Mix intent</h2><p class="note">Ambient motif stays quiet beneath movement and delivery sounds. Shadow proximity adds a soft dissonant breath rather than repeating the existing shadow warning. Low light adds measured pulses, never a siren. Completion opens into warm rising intervals; failure falls into a short unresolved low tone, then silence.</p><p class="hint">Prototype only. The playable <code>index.html</code> still uses its existing event sounds and haptics. This page stores no setting and changes no game state.</p></section></main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), palettes=[
+ {root:196,notes:[0,4,7,9],name:'hearth'}, {root:185,notes:[0,3,7,10],name:'timber'},
+ {root:174.61,notes:[0,5,7,12],name:'canal'}, {root:164.81,notes:[0,3,6,10],name:'violet'},
+ {root:146.83,notes:[0,3,7,8],name:'blackout'}, {root:196,notes:[0,5,9,12],name:'dawn'}];
+let ctx,master,ambBus,shadowBus,lightBus,timer,bar=0,nextBar=0,muted=false,playing=false;
+const vol=()=>Number($('volume').value)/100, gentle=()=> $('gentle').checked;
+function gain(v=0){const g=ctx.createGain();g.gain.value=v;return g}
+function glide(node,value,seconds=.45){const t=ctx.currentTime;node.gain.cancelScheduledValues(t);node.gain.setTargetAtTime(Math.max(0,value),t,seconds/3)}
+function note(freq,start,length,bus,peak=.04,type='sine'){
+ const o=ctx.createOscillator(),g=gain();o.type=type;o.frequency.setValueAtTime(freq,start);o.connect(g);g.connect(bus);
+ g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),start+.08);
+ g.gain.setTargetAtTime(.0001,start+Math.max(.1,length-.4),.19);o.start(start);o.stop(start+length+.5);
+}
+function makeAudio(){
+ if(ctx)return true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC){$('status').textContent='This browser does not support Web Audio.';return false}
+ ctx=new AC();master=gain(vol());master.connect(ctx.destination);ambBus=gain(.85);shadowBus=gain(0);lightBus=gain(0);
+ for(const b of [ambBus,shadowBus,lightBus])b.connect(master);
+ // A wavering minor-second bed and a filtered, slow-breathing air texture.
+ const breath=gain(.48),lfo=ctx.createOscillator(),depth=gain(.30);lfo.type='sine';lfo.frequency.value=.27;
+ lfo.connect(depth);depth.connect(breath.gain);lfo.start();
+ for(const [f,type,level] of [[174.61,'triangle',.038],[184.99,'sine',.036],[349.23,'sine',.014]]){
+  const o=ctx.createOscillator(),g=gain(level);o.type=type;o.frequency.value=f;o.connect(g);g.connect(breath);o.start();
+ }
+ const air=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=air.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.16;
+ const noise=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),airGain=gain(.045);
+ noise.buffer=air;noise.loop=true;filter.type='bandpass';filter.frequency.value=520;filter.Q.value=.7;
+ noise.connect(filter);filter.connect(airGain);airGain.connect(breath);noise.start();breath.connect(shadowBus);
+ return true;
+}
+function schedule(){if(!playing||!ctx)return;while(nextBar<ctx.currentTime+1.5){
+ const p=palettes[+$('chapter').value],s=nextBar,root=p.root,notes=p.notes;
+ note(root/2,s,6.2,ambBus,.022,'triangle');note(root*2**(notes[bar%4]/12),s+.12,4.1,ambBus,.032);
+ note(root*2**(notes[(bar+2)%4]/12),s+2.1,3.0,ambBus,.021);
+ const percent=+$('light').value,interval=percent<=10?(gentle()?2.2:1.2):percent<=25?(gentle()?3.0:2.0):3.8;
+ if(percent<=45)for(let t=s+.4;t<s+7.7;t+=interval)note(percent<=10?392:349.23,t,.32,lightBus,.052,'triangle');
+ bar++;nextBar+=8;
+ }}
+ function update(){if(!ctx)return;glide(master,muted?0:vol(),.15);const d=+$('shadow').value,p=+$('light').value;
+ glide(shadowBus,!playing||d>=5?0:(5-d)/5*(gentle()?.21:.40),.75);
+ glide(lightBus,!playing||p>45?0:p>25?.30:p>10?(gentle()?.38:.56):(gentle()?.46:.74),.7);
+ $('shadowOut').textContent=d>=5?'Far / asleep':d===0?'Adjacent':d+' tile'+(d===1?'':'s');$('lightOut').textContent=p+'%';$('volumeOut').textContent=$('volume').value+'%';
+ }
+ function transition(){if(!ctx)return;glide(ambBus,.08,.25);setTimeout(()=>{if(!ctx)return;bar=0;nextBar=ctx.currentTime+.12;glide(ambBus,.85,.8)},400)}
+ function cue(kind){if(!makeAudio())return;ctx.resume();const t=ctx.currentTime+.06,b=gain(.8);b.connect(master);const root=kind==='success'?261.63:196;
+ if(kind==='success')[[0,0],[4,.18],[7,.36],[12,.58]].forEach(([st,at],i)=>note(root*2**(st/12),t+at,1.5,b,.12-i*.008,'triangle'));
+ else [[0,0],[-2,.22],[-7,.47]].forEach(([st,at],i)=>note(root*2**(st/12),t+at,1.25,b,.10-i*.012,'triangle'));
+ if(kind==='failure'){glide(ambBus,.03,.15);setTimeout(()=>{if(ctx&&playing)glide(ambBus,.85,.8)},1900)}
+ $('status').textContent=kind==='success'?'Completion cue: lanterns answer upward.':'Failure cue: light falls away.';
+ }
+ $('start').onclick=async()=>{if(!makeAudio())return;await ctx.resume();playing=!playing;if(playing){nextBar=ctx.currentTime+.1;timer=setInterval(schedule,250);schedule();glide(ambBus,.85);$('start').textContent='Pause audio';$('status').textContent='Playing '+palettes[+$('chapter').value].name+' palette.'}else{clearInterval(timer);glide(ambBus,0,.25);glide(shadowBus,0,.25);glide(lightBus,0,.25);$('start').textContent='Resume audio';$('status').textContent='Paused.'}update()};
+ $('mute').onclick=()=>{muted=!muted;$('mute').textContent=muted?'Unmute':'Mute';$('mute').setAttribute('aria-pressed',String(muted));update()};
+ $('success').onclick=()=>cue('success');$('failure').onclick=()=>cue('failure');
+ $('chapter').onchange=()=>{transition();$('status').textContent='Chapter palette: '+palettes[+$('chapter').value].name+'.'};
+ for(const id of ['volume','light','shadow','gentle'])$(id).oninput=update;
+ for(const b of document.querySelectorAll('[data-scene]'))b.onclick=()=>{const x=b.dataset.scene;const states={calm:[6,100],near:[1,70],low:[4,22],critical:[0,7]};[$('shadow').value,$('light').value]=states[x];update();$('status').textContent=b.textContent+' scene.'};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing){clearInterval(timer);playing=false;glide(ambBus,0,.1);glide(shadowBus,0,.1);glide(lightBus,0,.1);$('start').textContent='Resume audio';$('status').textContent='Paused in background.'}});
+})();
+</script></html>

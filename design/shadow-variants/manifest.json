@@ -1,0 +1,21 @@
+[
+  {"id":"01","slug":"night-wisp","name":"Night Wisp","type":"default","source":"exec-640700f9-5a8f-4256-b91d-da243d152db0.png"},
+  {"id":"02","slug":"dussehra-ember","name":"Dussehra Ember","type":"seasonal","source":"exec-9a984627-fcc8-4847-aa86-53f8e7a1942d.png"},
+  {"id":"03","slug":"halloween-hush","name":"Halloween Hush","type":"seasonal","source":"exec-a6d491f6-8f39-4e42-8fad-cab92c45fae7.png"},
+  {"id":"04","slug":"diwali-afterglow","name":"Diwali Afterglow","type":"seasonal","source":"exec-e9eed8f6-2e0f-4882-87de-eabbb1e811c1.png"},
+  {"id":"05","slug":"winter-frost","name":"Winter Frost","type":"seasonal","source":"exec-318e57be-acbd-4131-aa14-97bc71a9dd77.png"},
+  {"id":"06","slug":"new-year-stardrift","name":"New Year Stardrift","type":"seasonal","source":"exec-517c8675-0245-4579-ba0d-a8e44c0c9f5e.png"},
+  {"id":"07","slug":"canal-mist","name":"Canal Mist","type":"district","source":"exec-4183b22c-3967-4b15-89c6-5b2536488d1a.png"},
+  {"id":"08","slug":"old-city-cinder","name":"Old City Cinder","type":"district","source":"exec-be2fd151-9448-4962-bc5b-8bf18dd55012.png"},
+  {"id":"09","slug":"bell-hollow","name":"Bell Hollow","type":"shape","source":"exec-4d08597e-08b9-4328-8b4b-2979ad0ab587.png"},
+  {"id":"10","slug":"ribbon-wraith","name":"Ribbon Wraith","type":"shape","source":"exec-8acf2dc1-0fa1-47ff-b822-508ffc9f9695.png"},
+  {"id":"11","slug":"moth-veil","name":"Moth Veil","type":"shape","source":"exec-e4febf47-d3fc-45cf-9b42-ba641dac165f.png"},
+  {"id":"12","slug":"crescent-lurker","name":"Crescent Lurker","type":"new-shape","source":"exec-47d4abc0-792e-448c-a20b-371008a883c6.png"},
+  {"id":"13","slug":"shard-mask","name":"Shard Mask","type":"new-shape","source":"exec-220dd983-d245-4331-95bc-4a4e9b2b7e3c.png"},
+  {"id":"14","slug":"ink-puddle","name":"Ink Puddle","type":"new-shape","source":"exec-2712c29e-57fe-49f2-b9b6-562b0d017323.png"},
+  {"id":"15","slug":"thorn-crown","name":"Thorn Crown","type":"new-shape","source":"exec-63cbb76f-01ad-4940-9a91-27007b0ed5f3.png"},
+  {"id":"16","slug":"eclipse-orb","name":"Eclipse Orb","type":"new-shape","source":"exec-e45ba25e-d7a8-4511-a70b-79b74cfb6445.png"},
+  {"id":"17","slug":"veil-hand","name":"Veil Hand","type":"new-shape","source":"exec-eeb18dd2-0038-4718-af66-39887046496e.png"},
+  {"id":"18","slug":"serpent-coil","name":"Serpent Coil","type":"new-shape","source":"exec-e7d2d178-b01f-4b97-8338-ed440746b2fa.png"},
+  {"id":"19","slug":"hourglass-shade","name":"Hourglass Shade","type":"new-shape","source":"exec-4d102859-58fb-4646-bf15-d5327c0ea438.png"}
+]
