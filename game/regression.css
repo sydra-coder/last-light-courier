@@ -1,0 +1,17 @@
+body.regressionBuild #integratedNav{display:none!important}
+body.regressionBuild[data-screen="play"] .shell{padding-bottom:10px}
+body.regressionBuild #storybookHome{display:none!important}
+body.regressionBuild #regressionBar{display:grid;gap:5px;margin:0 0 7px;padding:8px;border:1px solid #b99c65;border-radius:10px;background:#1d3547;color:#ffe5b2}
+body.regressionBuild #regressionBar .regressionHeading{display:flex;align-items:baseline;justify-content:space-between;gap:7px}
+body.regressionBuild #regressionBar .regressionHeading strong{font:700 15px Georgia,serif}
+body.regressionBuild #regressionBar .regressionHeading span{font:10px Arial,sans-serif;color:#bdd2dc;text-align:right}
+body.regressionBuild #regressionBar .regressionActions{display:flex;gap:6px;align-items:center}
+body.regressionBuild #regressionBar label{display:flex;align-items:center;gap:5px;min-width:0;flex:1;font:700 10px Arial,sans-serif}
+body.regressionBuild #regressionScenario{min-width:0;flex:1;padding:5px 3px;border:1px solid #879a9e;border-radius:5px;background:#263f50;color:#fff1ce;font:700 11px Arial,sans-serif}
+body.regressionBuild #regressionReplay{flex:none;padding:6px 7px;border:1px solid #f8d69b;border-radius:6px;background:#dcaa60;color:#30251d;font:800 10px Arial,sans-serif}
+body.regressionBuild #regressionBar details{font:10px Arial,sans-serif;color:#d5e2e5}
+body.regressionBuild #regressionBar summary{cursor:pointer;color:#ffe1a0}
+body.regressionBuild #regressionBar p{margin:5px 0 0;line-height:1.3}
+body.regressionBuild #playScreen:not(.homeMode){height:auto}
+body.regressionBuild .boardZoom #zoomMap{display:none!important}
+body.regressionBuild #levelTitle{font-size:14px!important}
