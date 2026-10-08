@@ -44,17 +44,22 @@ replaceOnce('const isEcho=level.echo&&state.active','const isEcho=level.echo&&!w
 replaceOnce("if(level.echo)entries.push(['echo'","if(level.echo&&!window.LLC_DISABLE_ECHO)entries.push(['echo'");
 replaceOnce('Echo still follows your trail.','All patrol shadows pause.');
 replaceOnce("const night=mode==='night';", "const night=mode==='night',compact=level.grid>=12&&!canvas.parentElement.classList.contains('zoomed');");
-replaceOnce("const floor=wall?(night?'#494258':'#65737f'):lit?'#8b6855'", "const floor=wall?(compact?'#4d5a64':night?'#494258':'#65737f'):lit?'#277b55'");
-replaceOnce("wall?'#495b68':lit?'#876b55'", "wall?'#495b68':lit?'#277b55'");
-replaceOnce("night?((p[0]+p[1])%2?'#34374d':'#3c4155'):((p[0]+p[1])%2?'#667e88':'#77909a')", "compact?'#756f67':night?((p[0]+p[1])%2?'#34374d':'#3c4155'):((p[0]+p[1])%2?'#667e88':'#77909a')");
+replaceOnce("const floor=wall?(night?'#494258':'#65737f'):lit?'#8b6855'", "const floor=wall?(night?'#303c50':'#2d4353'):lit?'#286348'");
+replaceOnce("wall?'#495b68':lit?'#876b55'", "wall?'#293f50':lit?'#286348'");
+replaceOnce("night?((p[0]+p[1])%2?'#34374d':'#3c4155'):((p[0]+p[1])%2?'#667e88':'#77909a')", "night?((p[0]+p[1])%2?'#303d53':'#35445a'):((p[0]+p[1])%2?'#344b5a':'#3a5160')");
 replaceOnce("lit?'#fbd693':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?3:1.5", "lit?'#7dffb5':compact?'#31414b66':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?4:compact?1:1.5");
 replaceOnce('if(!wall&&!feature){line(x-18', 'if(!compact&&!wall&&!feature){line(x-18');
 replaceOnce("41:['Echo Shadow','The echo retraces your earlier steps. Its current position is shown as a pale shadow. You cannot enter its current tile or the tile it reaches after your next tap.']","41:['Longer patrols','Watch where patrols stand now and where they will step after your next move.']");
 replaceOnce('Both patrols and the Echo remain active after the first delivery.','Patrols become active after the first delivery.');
-replaceOnce('s.phase,s.phase2,s.fade,s.ice,s.gate,...s.trail','s.phase,s.phase2,s.phase3,s.fade,s.ice,s.gate,...s.trail');
-const hintBlocked=/function blocked\(p,s\)\{[^\n]+\}/;
-if(!hintBlocked.test(html))throw Error('Hint shadow rule missing');
-html=html.replace(hintBlocked,'function blocked(p,s){if(!s.active)return false;for(const [patrol,phase,index] of [[level.patrol,s.phase,1],[level.patrol2,s.phase2,2],[level.patrol3,s.phase3,3]])if(patrol&&(index!==3||count(s.mask)>=(level.patrol3Wake||1))&&(eq(p,patrol[phase])||eq(p,patrol[(phase+1)%patrol.length])))return true;return false}');
+replaceOnce('s.phase,s.phase2,s.fade,s.ice,s.gate,','s.phase,s.phase2,s.phase3,s.fade,s.ice,s.gate,');
+if(html.includes('for(const [patrol,phase] of [[level.patrol,s.phase],[level.patrol2,s.phase2]])if(patrol&&')){
+  replaceOnce('for(const [patrol,phase] of [[level.patrol,s.phase],[level.patrol2,s.phase2]])if(patrol&&', 'for(const [patrol,phase,index] of [[level.patrol,s.phase,1],[level.patrol2,s.phase2,2],[level.patrol3,s.phase3,3]])if(patrol&&(index!==3||count(s.mask)>=(level.patrol3Wake||1))&&');
+  replaceOnce('return !!(level.echo&&s.trail.some(q=>eq(q,p)))','return !!(level.echo&&!window.LLC_DISABLE_ECHO&&s.trail.some(q=>eq(q,p)))');
+}else{
+  const hintBlocked=/function blocked\(p,s\)\{[^\n]+\}/;
+  if(!hintBlocked.test(html))throw Error('Hint shadow rule missing');
+  html=html.replace(hintBlocked,'function blocked(p,s){if(!s.active)return false;for(const [patrol,phase,index] of [[level.patrol,s.phase,1],[level.patrol2,s.phase2,2],[level.patrol3,s.phase3,3]])if(patrol&&(index!==3||count(s.mask)>=(level.patrol3Wake||1))&&(eq(p,patrol[phase])||eq(p,patrol[(phase+1)%patrol.length])))return true;return false}');
+}
 replaceOnce('phase:item.phase,phase2:item.phase2,fade:item.fade','phase:item.phase,phase2:item.phase2,phase3:item.phase3,fade:item.fade');
 replaceOnce('phase2:s.active&&level.patrol2?(s.phase2+1)%level.patrol2.length:s.phase2,','phase2:s.active&&level.patrol2?(s.phase2+1)%level.patrol2.length:s.phase2,phase3:s.active&&level.patrol3?(s.phase3+1)%level.patrol3.length:s.phase3,');
 replaceOnce('<title>Last Light Courier — 2,000-map candidate campaign</title>', '<title>Last Light Courier — integrated campaign build</title>');
@@ -78,8 +83,8 @@ replaceOnce('  if(changed)persist();', "  if(TESTER_BUILD&&!save.testerSeeded){f
 replaceOnce('function courier(x,y,moving,t){ctx.save();', 'function courier(x,y,moving,t){if(window.__appearance?.drawCourier(ctx,x,y,moving,t))return;ctx.save();');
 replaceOnce('function shadow(x,y,echo=false,moving=false,t=0){ctx.save();', 'function shadow(x,y,echo=false,moving=false,t=0){if(window.__appearance?.drawShadow(ctx,x,y,echo,moving,t))return;ctx.save();');
 replaceOnce("const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);", "if(!window.__appearance?.drawBackdrop(ctx,W,H)){const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H)}");
-replaceOnce("(p[0]+p[1])%2?'#4d6973':'#5a7479'", "(p[0]+p[1])%2?'#655c5a':'#706762'");
-replaceOnce("lit?'#f9d99c':wall?'#8a9ca4':'#879ba1'", "lit?'#ffd989':wall?'#8796a0':'#ad9d86'");
+replaceOnce("(p[0]+p[1])%2?'#4d6973':'#5a7479'", "(p[0]+p[1])%2?'#344b5a':'#3a5160'");
+replaceOnce("lit?'#f9d99c':wall?'#8a9ca4':'#879ba1'", "lit?'#7dffb5':wall?'#506778':'#607c8a'");
 replaceOnce("ellipse(x,y+33,39,13,'#08162488');", "ellipse(x,y+33,39,13,'#08162488');ctx.save();ctx.globalAlpha=.78;");
 replaceOnce("else polygon([[x,y-th],[x+tw,y],[x,y+th],[x-tw,y]],floor,edge,2);", "else polygon([[x,y-th],[x+tw,y],[x,y+th],[x-tw,y]],floor,edge,1.2);");
 replaceOnce("if(danger){ellipse(x,y,5,3,'#ff9b9e')}else if(safe){ellipse(x,y,5,3,'#c1ffe0')}", "ctx.restore();if(danger){ellipse(x,y,5,3,'#ff9b9e')}else if(safe){ellipse(x,y,5,3,'#c1ffe0')}");
@@ -118,7 +123,6 @@ replaceOnce('Tap REPAIR on the marked tile to buy instantly with banked points.'
 replaceOnce('if(!r||repaired()||state.done||state.failed||state.help)return false;', 'if(!r||repaired()||state.done||state.failed||state.help)return false;if(!confirmed&&window.__integratedShell?.confirmRepair){window.__integratedShell.confirmRepair(origin);return false;}');
 replaceOnce("hapticsOn:true,viewMode:'isometric'", "hapticsOn:true,viewMode:'overhead'");
 replaceOnce("const night=mode==='night',bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);", "const night=mode==='night';if(night||!window.__appearance?.drawBackdrop(ctx,W,H)){const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H)}");
-replaceOnce("((p[0]+p[1])%2?'#667e88':'#77909a')", "((p[0]+p[1])%2?'#766c62':'#85796b')");
 if (html.split('(now-travel.start)/430').length-1!==2) throw new Error('Expected two movement animation durations');
 html=html.replaceAll('(now-travel.start)/430','(now-travel.start)/(document.body.classList.contains("reduceMotion")?1:430)');
 replaceOnce('if(!hasLevel)showMenu();', '/* The five-tab shell is the entry screen. */');
