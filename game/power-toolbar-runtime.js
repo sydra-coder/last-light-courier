@@ -67,9 +67,11 @@ function explainPower(power){
   const reason=powerUsedFor(power)?'Already used this run.':!stock?'No charges in inventory.':power==='anchor_trap'&&!ready?'Stand on a patrol route first.':!ready?'Not usable on this tile or at this moment.':'Tap once to use it now.';
   const panel=$('candidatePower').querySelector('.powerInfo');
   panel.dataset.power=power;
-  panel.innerHTML='<strong>'+item.name+' · '+info.scope+'</strong><span>'+info.help+'</span><small>'+stock+' charge'+(stock===1?'':'s')+' · '+reason+'</small>';
+  panel.innerHTML='<button type="button" class="powerInfoClose" aria-label="Close power details">×</button><strong>'+item.name+' · '+info.scope+'</strong><span>'+info.help+'</span><small>'+stock+' charge'+(stock===1?'':'s')+' · '+reason+'</small>';
   panel.hidden=false;
 }
+function closePowerInfo(){const panel=$('candidatePower').querySelector('.powerInfo');if(panel)panel.hidden=true}
+function togglePowerInfo(power){const panel=$('candidatePower').querySelector('.powerInfo');if(panel&&!panel.hidden&&panel.dataset.power===power){closePowerInfo();return true}explainPower(power);return false}
 renderCandidatePower=function(){
   const box=$('candidatePower'),options=availablePowers();
   if(!options.length){box.hidden=true;return}
@@ -100,10 +102,11 @@ useCandidatePower=function(){
 };
 (()=>{
   const box=$('candidatePower');let timer=null,pressed=null,long=false,startX=0,startY=0;
-  box.addEventListener('pointerdown',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(!button)return;pressed=button.dataset.power;long=false;startX=e.clientX;startY=e.clientY;clearTimeout(timer);timer=setTimeout(()=>{long=true;explainPower(pressed)},520)});
+  box.addEventListener('pointerdown',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(!button)return;pressed=button.dataset.power;long=false;startX=e.clientX;startY=e.clientY;clearTimeout(timer);timer=setTimeout(()=>{long=true;togglePowerInfo(pressed)},520)});
   box.addEventListener('pointermove',e=>{if(pressed&&Math.hypot(e.clientX-startX,e.clientY-startY)>12){clearTimeout(timer);pressed=null}});
-  box.addEventListener('pointerup',e=>{if(!pressed)return;clearTimeout(timer);const id=pressed;pressed=null;if(!long){state.selectedPower=id;useCandidatePower()}});
+  box.addEventListener('pointerup',e=>{if(!pressed)return;clearTimeout(timer);const id=pressed;pressed=null;if(!long){if(togglePowerInfo(id))return;closePowerInfo();state.selectedPower=id;useCandidatePower()}});
   box.addEventListener('pointercancel',()=>{clearTimeout(timer);pressed=null});
   box.addEventListener('contextmenu',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(button){e.preventDefault();explainPower(button.dataset.power)}});
-  box.addEventListener('click',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(button&&e.detail===0){state.selectedPower=button.dataset.power;useCandidatePower()}});
+  box.addEventListener('click',e=>{if(e.target.closest('.powerInfoClose')){closePowerInfo();return}const button=e.target.closest('button.powerIcon[data-power]');if(button&&e.detail===0){if(togglePowerInfo(button.dataset.power))return;closePowerInfo();state.selectedPower=button.dataset.power;useCandidatePower()}});
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('#candidatePower'))closePowerInfo()});
 })();

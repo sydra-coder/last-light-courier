@@ -223,6 +223,8 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #candidatePower .powerInfo strong{font:700 13px Georgia,serif}
 #candidatePower .powerInfo span{min-width:0;font-size:11px;color:#e5e9e5}
 #candidatePower .powerInfo small{font-size:10px;color:#ffc78e}
+#candidatePower .powerInfo{padding-right:31px}
+#candidatePower .powerInfoClose{position:absolute;right:5px;top:4px;width:24px;height:24px;border:1px solid #d8b778;border-radius:5px;background:#354b60;color:#ffe9b9;font-size:19px;line-height:1}
 @media(max-width:610px){#integratedNav{height:77px}.integratedPanel{max-height:85vh}.shell{padding-bottom:90px}}
 /* Keep the board as the main play surface; move secondary information into compact rails. */
 body[data-screen="play"] .shell{padding:2px 2px 82px}
@@ -250,6 +252,7 @@ body[data-screen="play"] .boardZoom{margin:2px 0;min-height:29px}
 body[data-screen="play"] .boardZoom #retry,body[data-screen="play"] #boardLegendButton{width:29px;min-width:29px;min-height:28px;height:28px}
 body[data-screen="play"] .boardZoom #zoomMap{min-height:28px;padding:3px 6px;font-size:10px}
 body[data-screen="play"] .mapStage .mapViewport{max-height:min(58dvh,490px)!important}
+body[data-screen="play"] #playScreen.largeBoard .mapStage .mapViewport{height:min(calc(100vw - 18px),58dvh,490px);max-height:none!important;overscroll-behavior:contain;touch-action:pan-x pan-y}
 body[data-screen="play"] .boardframe,body[data-screen="play"] #playScreen.largeBoard .boardframe:not(.zoomed){aspect-ratio:1/1}
 body[data-screen="play"] .boardframe{padding:0;border-radius:8px}
 body[data-screen="play"] .boardframe:not(.zoomed) #scene,body[data-screen="play"] .boardframe:not(.zoomed) #board{transform:scaleX(1.3);transform-origin:center}

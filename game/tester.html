@@ -522,13 +522,14 @@ function focusMapTile(p){
   if(!frame.classList.contains('zoomed'))setMapZoom(true);
   const cell=$('board').querySelector('.cell[data-x="'+p[0]+'"][data-y="'+p[1]+'"]');
   if(!cell)return;
-  viewport.scrollTo({left:Math.max(0,Math.min(viewport.scrollWidth-viewport.clientWidth,cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),
-    top:Math.max(0,Math.min(viewport.scrollHeight-viewport.clientHeight,cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:'instant'});
+  const cells=[...$('board').querySelectorAll('.cell')],minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth)),minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));
+  viewport.scrollTo({left:Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),
+    top:Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:'instant'});
 }
 function focusZoomMap(){if($('scene').parentElement.classList.contains('zoomed'))focusMapTile(state.pos)}
 function render(){
   $('mobileWallet').textContent=save.wallet.toLocaleString();
-  $('scene').parentElement.style.setProperty('--map-zoom',Math.max(1.4,(level.grid||8)/8.5)*100+'%');
+  $('scene').parentElement.style.setProperty('--map-zoom',Math.max(1,(level.grid||8)/8.4)*100+'%');
   $('scene').parentElement.classList.toggle('urgent',state.light<=5&&!state.done&&!state.failed);$('lowLightWarning').hidden=!(state.light<=5&&!state.done&&!state.failed);$('lowLightWarning').textContent=state.light+' lights left — get home!';
   $('levelTitle').textContent='Level '+level.n+' · '+CHAPTERS[level.chapter-1];$('chapterTag').textContent='Chapter '+level.chapter;
   $('progress').textContent='Light '+level.required+' of '+level.homes.length+' houses and return · '+(level.grid||8)+' × '+(level.grid||8)+' map · '+((!level.noShadow?1:0)+!!level.patrol2+!!level.patrol3+!!level.sentinelCenter+!!level.shadowSpawner+!!level.hunterDen+!!level.shadowInfluence2x2)+' shadows'+(level.networkCircuitRequired?' · Circuit '+(Number(!!state.networkCharged)+Number(!!state.overloadCrossed)+Number(!!state.transferCollected))+'/3':'');
@@ -568,7 +569,7 @@ function attemptRepair(origin,confirmed=false){
 }
 function canRepairMove(p){const r=level.repair;if(!r||r.effect!=='open'||repaired()||state.done||state.failed||state.help||state.light<=1||save.wallet<r.cost||!eq(p,r.tile)||Math.abs(p[0]-state.pos[0])+Math.abs(p[1]-state.pos[1])!==1)return false;save.repairs[level.n]=true;const valid=legal(p);delete save.repairs[level.n];return valid}
 function repairAndMove(p){if(!canRepairMove(p))return false;const r=level.repair;save.repairs[level.n]=true;const moved=move(p);if(!moved){delete save.repairs[level.n];return false}save.wallet-=r.cost;persist();render();ISO.repair(p);FEEDBACK.emit('repair');return true}
-function choose(n){window.__integratedShell?.onLevelChosen(n);window.__integratedShell?.enterBoard();showScreen('play');level=LEVELS[n-1];chapterShown=level.chapter;const zoom=false;$('scene').parentElement.classList[zoom?'add':'remove']('zoomed');$('zoomMap').textContent=zoom?'− Fit map':'＋ Zoom map';$('zoomMap').setAttribute?.('aria-pressed',String(zoom));reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}
+function choose(n){window.__integratedShell?.onLevelChosen(n);window.__integratedShell?.enterBoard();showScreen('play');level=LEVELS[n-1];chapterShown=level.chapter;const zoom=level.grid>12;$('scene').parentElement.classList[zoom?'add':'remove']('zoomed');$('zoomMap').textContent=zoom?'− Fit map':'＋ Zoom map';$('zoomMap').setAttribute?.('aria-pressed',String(zoom));reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}
 let pickerFromMenu=false;
 function showMenu(){if(window.__integratedShell){window.__integratedShell.navigate('map');return} $('menuCleared').textContent=Object.keys(save.cleared).length+' / 2000';$('menuWallet').textContent=save.wallet.toLocaleString();FEEDBACK.labels();$('mainMenu').hidden=false;$('menuContinue').focus() }
 function closeMenu(){$('mainMenu').hidden=true}
@@ -867,9 +868,11 @@ function explainPower(power){
   const reason=powerUsedFor(power)?'Already used this run.':!stock?'No charges in inventory.':power==='anchor_trap'&&!ready?'Stand on a patrol route first.':!ready?'Not usable on this tile or at this moment.':'Tap once to use it now.';
   const panel=$('candidatePower').querySelector('.powerInfo');
   panel.dataset.power=power;
-  panel.innerHTML='<strong>'+item.name+' · '+info.scope+'</strong><span>'+info.help+'</span><small>'+stock+' charge'+(stock===1?'':'s')+' · '+reason+'</small>';
+  panel.innerHTML='<button type="button" class="powerInfoClose" aria-label="Close power details">×</button><strong>'+item.name+' · '+info.scope+'</strong><span>'+info.help+'</span><small>'+stock+' charge'+(stock===1?'':'s')+' · '+reason+'</small>';
   panel.hidden=false;
 }
+function closePowerInfo(){const panel=$('candidatePower').querySelector('.powerInfo');if(panel)panel.hidden=true}
+function togglePowerInfo(power){const panel=$('candidatePower').querySelector('.powerInfo');if(panel&&!panel.hidden&&panel.dataset.power===power){closePowerInfo();return true}explainPower(power);return false}
 renderCandidatePower=function(){
   const box=$('candidatePower'),options=availablePowers();
   if(!options.length){box.hidden=true;return}
@@ -900,12 +903,13 @@ useCandidatePower=function(){
 };
 (()=>{
   const box=$('candidatePower');let timer=null,pressed=null,long=false,startX=0,startY=0;
-  box.addEventListener('pointerdown',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(!button)return;pressed=button.dataset.power;long=false;startX=e.clientX;startY=e.clientY;clearTimeout(timer);timer=setTimeout(()=>{long=true;explainPower(pressed)},520)});
+  box.addEventListener('pointerdown',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(!button)return;pressed=button.dataset.power;long=false;startX=e.clientX;startY=e.clientY;clearTimeout(timer);timer=setTimeout(()=>{long=true;togglePowerInfo(pressed)},520)});
   box.addEventListener('pointermove',e=>{if(pressed&&Math.hypot(e.clientX-startX,e.clientY-startY)>12){clearTimeout(timer);pressed=null}});
-  box.addEventListener('pointerup',e=>{if(!pressed)return;clearTimeout(timer);const id=pressed;pressed=null;if(!long){state.selectedPower=id;useCandidatePower()}});
+  box.addEventListener('pointerup',e=>{if(!pressed)return;clearTimeout(timer);const id=pressed;pressed=null;if(!long){if(togglePowerInfo(id))return;closePowerInfo();state.selectedPower=id;useCandidatePower()}});
   box.addEventListener('pointercancel',()=>{clearTimeout(timer);pressed=null});
   box.addEventListener('contextmenu',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(button){e.preventDefault();explainPower(button.dataset.power)}});
-  box.addEventListener('click',e=>{const button=e.target.closest('button.powerIcon[data-power]');if(button&&e.detail===0){state.selectedPower=button.dataset.power;useCandidatePower()}});
+  box.addEventListener('click',e=>{if(e.target.closest('.powerInfoClose')){closePowerInfo();return}const button=e.target.closest('button.powerIcon[data-power]');if(button&&e.detail===0){if(togglePowerInfo(button.dataset.power))return;closePowerInfo();state.selectedPower=button.dataset.power;useCandidatePower()}});
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('#candidatePower'))closePowerInfo()});
 })();
 
 setupNavigationIcons();

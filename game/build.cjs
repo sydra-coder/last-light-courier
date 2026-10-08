@@ -113,11 +113,10 @@ replaceOnce("(minimum===null?'No verified minimum for this map yet; your complet
 replaceOnce("<strong>'+(minimum??'—')+'</strong><small>Verified minimum</small>", "<strong data-global-best>—</strong><small>All-player best</small>");
 replaceOnce("(minimum===null?'':extra===0?'You matched the shortest route!':extra+' extra step'+(extra===1?'':'s')+'.')", "''");
 replaceOnce('Other players’ records require an online leaderboard.', 'All-player best appears when shared results are connected.');
-replaceOnce('Math.max(1.5,(level.grid||8)/6)', 'Math.max(1.4,(level.grid||8)/8.5)');
-replaceOnce('left:cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2,', 'left:Math.max(0,Math.min(viewport.scrollWidth-viewport.clientWidth,cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),');
-replaceOnce("top:cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2,behavior:", "top:Math.max(0,Math.min(viewport.scrollHeight-viewport.clientHeight,cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:");
-replaceOnce("const zoom=!!window.matchMedia?.('(max-width:610px)').matches&&level.grid>=16;", "const zoom=level.grid>=12;");
-replaceOnce('const zoom=level.grid>=12;', 'const zoom=false;');
+replaceOnce('Math.max(1.5,(level.grid||8)/6)', 'Math.max(1,(level.grid||8)/8.4)');
+replaceOnce("  viewport.scrollTo({left:cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2,", "  const cells=[...$('board').querySelectorAll('.cell')],minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth)),minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));\n  viewport.scrollTo({left:Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),");
+replaceOnce("    top:cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2,behavior:", "    top:Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:");
+replaceOnce("const zoom=!!window.matchMedia?.('(max-width:610px)').matches&&level.grid>=16;", "const zoom=level.grid>12;");
 replaceOnce("reset();$('playScreen').scrollTop=0}", "reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}");
 replaceOnce('Tap REPAIR on the marked tile to buy instantly with banked points.', 'Tap REPAIR on the marked tile to view the cost and confirm with banked points.');
 replaceOnce('if(!r||repaired()||state.done||state.failed||state.help)return false;', 'if(!r||repaired()||state.done||state.failed||state.help)return false;if(!confirmed&&window.__integratedShell?.confirmRepair){window.__integratedShell.confirmRepair(origin);return false;}');
