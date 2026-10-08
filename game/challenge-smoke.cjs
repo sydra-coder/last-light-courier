@@ -17,7 +17,7 @@ const {chromium}=require('playwright');
  const hint=await page.evaluate(()=>{__campaign.choose(70);const l=__campaign.levels[69];for(let i=1;i<l.spine.length;i++){__campaign.move(l.spine[i]);if(__campaign.getState().mask)break}const result=__campaign.hintRoute();return {status:result.status,steps:result.steps,routeLength:result.route?.length}});
  if(hint.status!=='solved'||hint.routeLength<2)throw Error('Challenge hint failed: '+JSON.stringify(hint));
  await page.evaluate(()=>{__campaign.choose(1401);const l=__campaign.levels[1400];for(let i=1;i<l.spine.length;i++){if(!__campaign.move(l.spine[i]))break;if(__campaign.getState().mask.toString(2).replaceAll('0','').length>=3)break}});
- await page.locator('#zoomMap').click();
+ if(!(await page.locator('.boardframe').evaluate(el=>el.classList.contains('zoomed'))))await page.locator('#zoomMap').click();
  const zoom=await page.evaluate(()=>{const v=document.querySelector('.mapViewport'),cells=[...document.querySelectorAll('#board .cell')],min=Math.min(...cells.map(c=>c.getBoundingClientRect().left)),max=Math.max(...cells.map(c=>c.getBoundingClientRect().right)),r=v.getBoundingClientRect();return {left:min,viewportLeft:r.left,right:max,viewportRight:r.right,scrollLeft:v.scrollLeft}});
  if(zoom.left>zoom.viewportLeft+12||zoom.right<zoom.viewportRight-12)throw Error('Zoom exposed empty map border: '+JSON.stringify(zoom));
  await page.screenshot({path:path.join(__dirname,'large-map-zoom-after.png')});
