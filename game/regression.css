@@ -15,3 +15,29 @@ body.regressionBuild #regressionBar p{margin:5px 0 0;line-height:1.3}
 body.regressionBuild #playScreen:not(.homeMode){height:auto}
 body.regressionBuild .boardZoom #zoomMap{display:none!important}
 body.regressionBuild #levelTitle{font-size:14px!important}
+body.regressionBuild #progress{display:none!important}
+body.regressionBuild .hintBar{display:none!important}
+body.regressionBuild .boardZoom{position:relative;display:flex;align-items:center;gap:5px;margin:3px 0 5px}
+body.regressionBuild .boardZoom #focusCourier,body.regressionBuild .boardZoom #focusDestination,body.regressionBuild .boardZoom label[for="focusDestination"]{display:none!important}
+body.regressionBuild .boardZoom #useHint{display:flex;align-items:center;justify-content:center;gap:3px;min-width:66px;min-height:33px;padding:3px 6px;font:800 11px Arial,sans-serif}
+body.regressionBuild .boardZoom #collectHint:not([hidden]){display:inline-flex;min-height:33px;padding:3px 5px;font:700 10px Arial,sans-serif}
+body.regressionBuild #regressionMessageToggle{order:9;width:33px;height:33px;margin-left:auto;border:1px solid #f3c681;border-radius:7px;background:#445168;color:#ffe9ae;font:900 18px Georgia,serif}
+body.regressionBuild #regressionMessageToggle[aria-expanded="true"]{background:#986c3c;color:#fff}
+body.regressionBuild #boardMessage{position:absolute;z-index:25;top:calc(100% + 3px);left:0;right:0;display:grid;min-height:0;margin:0;padding:8px 30px 8px 9px;box-shadow:0 8px 22px #081321cc}
+body.regressionBuild #boardMessage[hidden]{display:none!important}
+body.regressionBuild #boardMessage strong{font-size:12px}
+body.regressionBuild #boardMessage span{font-size:11px;line-height:1.35}
+body.regressionBuild #candidatePower{padding:5px 6px;margin:5px 0}
+body.regressionBuild #candidatePower .powerTray{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+body.regressionBuild #candidatePower .powerIcon{display:flex;flex-direction:column;justify-content:center;gap:2px;height:50px;padding:3px 1px;border-width:2px;background:#2b4357}
+body.regressionBuild #candidatePower .powerIcon>span{font-size:19px;line-height:1}
+body.regressionBuild #candidatePower .powerIcon::after{content:attr(data-label);font:800 9px/1 Arial,sans-serif;color:#f6e7c8;white-space:nowrap}
+body.regressionBuild #candidatePower .powerIcon i{right:2px;top:2px;bottom:auto;padding:1px 2px;border-radius:3px;background:#152c3c;font-size:9px}
+body.regressionBuild #candidatePower .powerIcon.ready{border-color:#f6d087;background:#485742}
+body.regressionBuild #candidatePower .powerIcon.unavailable{opacity:1;border-color:#748898;background:#243747;color:#b7c8d4}
+body.regressionBuild #candidatePower .powerIcon.unavailable::after{color:#c4d1d8}
+body.regressionBuild #phaseChoiceControl:not([hidden]){display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:5px;min-height:37px;margin:4px 0;padding:3px 5px;font-size:10px}
+body.regressionBuild #phaseChoiceControl strong{flex:1;min-width:0;font-size:10px;line-height:1.15}
+body.regressionBuild #phaseChoiceControl span{display:none}
+body.regressionBuild #phaseChoiceControl button{flex:none;min-height:29px;padding:3px 6px;font-size:10px}
+@media(max-width:360px){body.regressionBuild #candidatePower .powerIcon::after{font-size:8px}}

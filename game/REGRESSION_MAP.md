@@ -6,6 +6,8 @@ For the Level 500 review, open `game/level-500-test.html`. It is a **12×12 test
 
 Use the **Hazards** selector to keep the same board and switch between **All hazards**, **Roads & crossings**, **Weather & light**, **Shadow pressure**, and **Circuit & travel**. **Replay fresh** resets position, deliveries, power uses, repair spending, and arena progress while keeping the selected setup. Each of the nine implemented powers begins with ten charges; the wallet begins with at least 10,000 points. A power can be used once per run. Long press an icon for its explanation; tap to apply it.
 
+On the compact phone view, the bulb opens a route hint, `ⓘ` opens or closes the latest map message, `?` explains map symbols, and the nine powers appear in a two-row labeled tray. The full 12×12 board is visible, so the camera jump controls are omitted from these two test pages.
+
 The map has four houses. Deliver to any three and return to the blue depot. The marked outer route is a reliable completion route, so each setup remains replayable even if a test changes a side road. The fourth house and side routes allow interaction tests.
 
 ## Feature coverage

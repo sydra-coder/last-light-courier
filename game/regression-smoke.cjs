@@ -12,6 +12,14 @@ const {chromium}=require('playwright');
       await page.waitForTimeout(250);
       const initial=await page.evaluate(()=>({level:__campaign.getCurrentLevel().n,grid:__campaign.getCurrentLevel().grid,scenario:LLCRegression.scenario,powers:document.querySelectorAll('#candidatePower .powerIcon').length,stock:Object.values(__campaign.getSave().powerStock),wallet:__campaign.getSave().wallet,home:document.querySelector('#playScreen').classList.contains('homeMode'),frame:document.querySelector('.boardframe').getBoundingClientRect().width}));
       if(initial.level!==build.level||initial.grid!==12||initial.scenario!==scenario||initial.powers!==9||initial.stock.length!==9||initial.stock.some(n=>n<10)||initial.wallet<10000||initial.home||initial.frame<360)throw Error('Regression setup failed: '+JSON.stringify(initial));
+      if(build.level===500&&scenario==='all'){
+        const layout=await page.evaluate(()=>({trayBottom:document.getElementById('candidatePower').getBoundingClientRect().bottom,phaseBottom:document.getElementById('phaseChoiceControl').getBoundingClientRect().bottom,labels:[...document.querySelectorAll('.powerIcon')].map(button=>button.dataset.label),statusHidden:document.getElementById('boardMessage').hidden}));
+        if(layout.trayBottom>844||layout.phaseBottom>844||layout.labels.some(label=>!label)||!layout.statusHidden)throw Error('Compact layout failed: '+JSON.stringify(layout));
+        await page.locator('#regressionMessageToggle').click();
+        if(!await page.locator('#boardMessage').isVisible())throw Error('Map message did not open');
+        await page.locator('#regressionMessageToggle').click();
+        if(await page.locator('#boardMessage').isVisible())throw Error('Map message did not close');
+      }
       if(scenario==='all'){
         if(build.level===500){await page.evaluate(()=>__campaign.move(__campaign.getCurrentLevel().spine[1]));await page.waitForTimeout(450);await page.screenshot({path:path.join(__dirname,'level-500-test-review.png')});await page.evaluate(()=>__campaign.reset())}
         else await page.screenshot({path:path.join(__dirname,'regression-all-hazards-review.png')});
