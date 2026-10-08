@@ -180,6 +180,7 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #boardMessage.expanded span{-webkit-line-clamp:unset;display:block}
 #playScreen.largeBoard .board .cell .houseNumber{position:absolute;z-index:6;left:50%;top:48%;transform:translate(-50%,-50%);display:grid;place-items:center;width:75%;height:75%;border-radius:50%;border:2px solid #d7ccdc;background:#403a57;color:#fff1df;box-shadow:0 1px 4px #0a1522;font:bold clamp(9px,2.4vw,14px) Arial,sans-serif;line-height:1;pointer-events:none}
 #playScreen.largeBoard .board .cell .houseNumber.isLit{border-color:#fff3b4;background:#ffd15e;color:#3c2919;box-shadow:0 0 0 2px #ffc65c77,0 0 10px #ffd570}
+#playScreen .board .cell .houseNumber{display:none!important}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .timer:not(.repairBadge){display:none}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .repairBadge{font-size:0!important;width:16px;height:16px;display:grid;place-items:center;padding:0!important;border-radius:50%;background:#dca75c;color:#2a261f}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .repairBadge::after{content:'⚒';font-size:11px;line-height:1}

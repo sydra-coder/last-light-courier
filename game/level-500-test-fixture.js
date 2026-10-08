@@ -15,8 +15,11 @@
     {p:[10,4],name:'Hidden Lantern',points:260}
   ];
   level.required=4;
+  level.revealAfterVisible=true;
   level.cap=70;
   level.bonus=500;
-  if(level.hiddenRoad)level.hiddenHouseIndex=4;
+  level.hiddenRoad=[10,3];
+  level.hiddenHouseIndex=4;
+  level.beaconHouseIndex=99;
   if(level.lumenNetwork)level.lumenNetwork.sourceHouseIndex=1;
 })();

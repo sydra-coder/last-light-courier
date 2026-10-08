@@ -40,4 +40,5 @@ body.regressionBuild #phaseChoiceControl:not([hidden]){display:flex;align-items:
 body.regressionBuild #phaseChoiceControl strong{flex:1;min-width:0;font-size:10px;line-height:1.15}
 body.regressionBuild #phaseChoiceControl span{display:none}
 body.regressionBuild #phaseChoiceControl button{flex:none;min-height:29px;padding:3px 6px;font-size:10px}
+body.regressionBuild #board .cell[aria-label*="Hidden Lantern"]{box-shadow:inset 0 0 0 2px #9cf2ff,0 0 10px #73dcf9}
 @media(max-width:360px){body.regressionBuild #candidatePower .powerIcon::after{font-size:8px}}

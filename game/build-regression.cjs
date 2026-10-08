@@ -9,6 +9,11 @@ html=html.slice(0,begin)+'const LEVELS=[window.LLCRegression.level]'+html.slice(
 html=html.replace('<title>Last Light Courier — tester build</title>','<title>Last Light Courier — regression arena</title>');
 html=html.replace('last-light-courier-tester-v1','last-light-courier-regression-v1');
 html=html.replace("document.body.classList.add('testerBuild');", "document.body.classList.add('testerBuild','regressionBuild');");
+const oldReveal='if(hi===level.beaconHouseIndex)state.beaconRevealed=true;';
+const newReveal='if(level.revealAfterVisible?level.hiddenHouseIndex!=null&&level.homes.every((home,i)=>i===level.hiddenHouseIndex||!!(state.mask&(1<<i))):hi===level.beaconHouseIndex)state.beaconRevealed=true;';
+if(!html.includes(oldReveal))throw Error('Hidden house reveal marker missing');
+html=html.replace(oldReveal,newReveal);
+html=html.replace("hi===level.beaconHouseIndex?'The Beacon revealed a hidden house and opened its road.'", "level.hiddenHouseIndex!=null&&state.beaconRevealed&&!rewindSnapshot.beaconRevealed?'The hidden house appeared and its road opened.'");
 html=html.replace('function choose(n){','function choose(n){if(document.body.classList.contains(\'regressionBuild\'))n=1;');
 html=html.replace('function minimumForLevel(n,bought=false,signaled=false){','function minimumForLevel(n,bought=false,signaled=false){if(document.body.classList.contains(\'regressionBuild\'))return null;');
 html=html.replace('<script src="tile-symbols.js"></script></head>','<script src="tile-symbols.js"></script><script src="regression-fixture.js"></script><link rel="stylesheet" href="regression.css"></head>');
