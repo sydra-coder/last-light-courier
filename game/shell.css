@@ -224,3 +224,51 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #candidatePower .powerInfo span{min-width:0;font-size:11px;color:#e5e9e5}
 #candidatePower .powerInfo small{font-size:10px;color:#ffc78e}
 @media(max-width:610px){#integratedNav{height:77px}.integratedPanel{max-height:85vh}.shell{padding-bottom:90px}}
+/* Keep the board as the main play surface; move secondary information into compact rails. */
+body[data-screen="play"] .shell{padding:2px 2px 82px}
+body[data-screen="play"] #playScreen{padding:6px 4px 8px;border-radius:13px}
+body[data-screen="play"] #playScreen:not(.homeMode){height:auto;min-height:0}
+body[data-screen="play"] .gamehead{margin-bottom:2px;min-height:31px}
+body[data-screen="play"] .gamehead strong{font-size:16px;line-height:1.1}
+body[data-screen="play"] .gamehead .compactSettings{min-width:31px;min-height:31px;padding:3px}
+body[data-screen="play"] #progress{margin:2px 0 4px;font-size:10px;line-height:1.15}
+body[data-screen="play"] .stats{gap:4px;margin:0 0 4px}
+body[data-screen="play"] .stat{min-height:43px;padding:4px 6px;border-radius:8px}
+body[data-screen="play"] .stat label{font-size:8px;letter-spacing:.06em}
+body[data-screen="play"] .stat strong{font-size:16px;line-height:1.05}
+body[data-screen="play"] .stat small{font-size:9px}
+body[data-screen="play"] .stat .meter{height:4px;margin-top:2px}
+body[data-screen="play"] .hintBar{margin:0 0 3px;gap:4px;min-height:28px}
+body[data-screen="play"] .hintBar button{min-height:27px;padding:3px 7px;font-size:10px}
+body[data-screen="play"] #hintTarget{font-size:9px}
+body[data-screen="play"] #boardMessage{display:flex;align-items:center;gap:5px;min-height:24px;margin:2px 0 4px;padding:3px 6px;border-radius:6px}
+body[data-screen="play"] #boardMessage strong{font-size:10px;white-space:nowrap;flex:none}
+body[data-screen="play"] #boardMessage span{font-size:9px;line-height:1.1;-webkit-line-clamp:1}
+body[data-screen="play"] #boardMessage.expanded{display:grid}
+body[data-screen="play"] #boardMessage.expanded span{-webkit-line-clamp:unset}
+body[data-screen="play"] .boardZoom{margin:2px 0;min-height:29px}
+body[data-screen="play"] .boardZoom #retry,body[data-screen="play"] #boardLegendButton{width:29px;min-width:29px;min-height:28px;height:28px}
+body[data-screen="play"] .boardZoom #zoomMap{min-height:28px;padding:3px 6px;font-size:10px}
+body[data-screen="play"] .mapStage .mapViewport{max-height:min(58dvh,490px)!important}
+body[data-screen="play"] .boardframe,body[data-screen="play"] #playScreen.largeBoard .boardframe:not(.zoomed){aspect-ratio:1/1}
+body[data-screen="play"] .boardframe{padding:0;border-radius:8px}
+body[data-screen="play"] .boardframe:not(.zoomed) #scene,body[data-screen="play"] .boardframe:not(.zoomed) #board{transform:scaleX(1.3);transform-origin:center}
+body[data-screen="play"] .boardframe:has(.boardOverlay) #board{transform:none}
+body[data-screen="play"] .underboard{margin:2px 1px;font-size:9px}
+body[data-screen="play"] #candidatePower{margin:3px 0;padding:4px;border-radius:7px}
+body[data-screen="play"] #candidatePower[hidden]{display:none!important}
+body[data-screen="play"] #candidatePower .powerIcon{height:34px}
+body[data-screen="play"] #repairCallout{margin:3px 0;padding:5px 6px}
+body[data-screen="play"] #repairCallout .repairMark{width:24px;height:24px}
+body[data-screen="play"] #repairCallout button{padding:5px 7px}
+body.testerBuild #levelTitle::after{content:'TEST';margin-left:6px;padding:2px 4px;border:1px solid #ffd48b;border-radius:4px;color:#ffe2ad;font:800 8px Arial,sans-serif;vertical-align:middle}
+body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin-top:4px;color:#ffe2ad;font:800 10px Arial,sans-serif;letter-spacing:.15em}
+#repairPopover{position:absolute;z-index:40;width:170px;min-height:58px;padding:7px 22px 7px 8px;background:#152d3e;border:2px solid #ffd15f;border-radius:9px;box-shadow:0 6px 20px #071321bb;color:#ffdf9a;font:700 11px/1.2 system-ui,sans-serif}
+#repairPopover[hidden]{display:none}
+#repairPopover strong,#repairPopover small{display:block}
+#repairPopover small{color:#d9dfda;font-weight:500;margin-top:3px}
+#repairPopover [data-repair-move]{display:block;margin-top:4px;padding:4px 7px;border:1px solid #f7d98c;border-radius:5px;background:#eebd65;color:#172435;font-weight:800;font-size:11px}
+#repairPopover [data-repair-tile-cancel]{position:absolute;right:3px;top:2px;border:0;background:transparent;color:#ffe8af;font-size:17px}
+#board .cell.repairable{box-shadow:inset 0 0 0 3px #ffdb5e,0 0 8px #ffcb55!important;background:#ffd35832!important;z-index:2}
+#board .cell.lit{box-shadow:inset 0 0 0 3px #70efad!important;z-index:1}
+#board .repairBadge{display:none!important}

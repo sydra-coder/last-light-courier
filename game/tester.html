@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#16192d">
-<title>Last Light Courier — integrated campaign build</title>
+<title>Last Light Courier — tester build</title>
 <style>
   :root{--cream:#fbf0da;--gold:#ffdc96;--mint:#9ceac7;--red:#ff9b9e;--muted:#b9bed1;--edge:#555b77}
   *{box-sizing:border-box}body{margin:0;color:var(--cream);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 45% -12%,#363657,#1a1e35 46%,#101322 82%)}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #fff0af;outline-offset:2px}
@@ -69,7 +69,7 @@ const TUTORIALS={
   101:['Beyond the village','The maps are larger now. Light every house and return to the blue depot. Patrols become active after the first delivery. Check the side legend, use Zoom map to inspect the lanes, and plan your gate and crossing order.']
 };
 const $=id=>document.getElementById(id), k=p=>p[0]+','+p[1], eq=(a,b)=>!!a&&!!b&&a[0]===b[0]&&a[1]===b[1];
-const TESTER_BUILD=false;if(TESTER_BUILD)document.body.classList.add('testerBuild');const saveKey=TESTER_BUILD?'last-light-courier-tester-v1':'last-light-courier-2000-candidate-v1';
+const TESTER_BUILD=true;if(TESTER_BUILD)document.body.classList.add('testerBuild');const saveKey=TESTER_BUILD?'last-light-courier-tester-v1':'last-light-courier-2000-candidate-v1';
 let save={wallet:0,cleared:{},mastered:{},repairs:{},best:{},bestSteps:{},seenTutorials:{},soundOn:true,hapticsOn:true,viewMode:'overhead'};
 try{const stored=JSON.parse(localStorage.getItem(saveKey)||'null');if(stored&&typeof stored.wallet==='number')save={...save,...stored};}catch(_){}
 if(!Number.isInteger(save.hints)){save.hints=3;save.pendingHintRewards=0;save.hintRewardMilestone=Math.floor(Object.keys(save.cleared).length/5)}save.hints=Math.max(0,Math.min(5,save.hints));save.pendingHintRewards??=0;save.hintRewardMilestone??=Math.floor(Object.keys(save.cleared).length/5);

@@ -1,5 +1,5 @@
 (() => {
-  const key='llc-player-data-v1';
+  const key=document.body.classList.contains('testerBuild')?'llc-tester-data-v1':'llc-player-data-v1';
   const fresh=()=>({version:1,rulesRevision:3,profile:{guestId:crypto.randomUUID?.()||'guest-'+Date.now().toString(36),displayName:'Guest Courier',createdAt:new Date().toISOString(),linkedAccount:false},bestByLevel:{},recentRuns:[]});
   let data;
   try{const saved=JSON.parse(localStorage.getItem(key)||'null');data=saved?.version===1&&saved.profile&&saved.bestByLevel&&Array.isArray(saved.recentRuns)?saved:fresh()}catch(_){data=fresh()}

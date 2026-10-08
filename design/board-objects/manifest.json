@@ -1,0 +1,107 @@
+[
+  {
+    "id": "rock-slab",
+    "name": "Slab boulder",
+    "type": "permanent",
+    "file": "rock-slab.png",
+    "source": "exec-c56730db-b8cd-4c60-916b-5ec36e3258d3.png"
+  },
+  {
+    "id": "rock-spires",
+    "name": "Split spires",
+    "type": "permanent",
+    "file": "rock-spires.png",
+    "source": "exec-13b38a78-471f-470f-95a8-ced0d1c711df.png"
+  },
+  {
+    "id": "rock-rubble",
+    "name": "Masonry rubble",
+    "type": "permanent",
+    "file": "rock-rubble.png",
+    "source": "exec-7a3853db-8383-47a0-98fd-91857b125e97.png"
+  },
+  {
+    "id": "tree-pine",
+    "name": "Midnight pine",
+    "type": "permanent",
+    "file": "tree-pine.png",
+    "source": "exec-716bf659-39d3-48b0-80ec-bebccbc4981d.png"
+  },
+  {
+    "id": "tree-oak",
+    "name": "Old oak",
+    "type": "permanent",
+    "file": "tree-oak.png",
+    "source": "exec-40970165-7ca6-457f-8be1-6e1bfa527cb2.png"
+  },
+  {
+    "id": "tree-dead",
+    "name": "Dead tree",
+    "type": "permanent",
+    "file": "tree-dead.png",
+    "source": "exec-bf214e7a-8188-48c5-93d8-813670303733.png"
+  },
+  {
+    "id": "bush-thorn",
+    "name": "Thorn bush",
+    "type": "permanent",
+    "file": "bush-thorn.png",
+    "source": "exec-9471e4e6-9050-4d2d-871c-272d9721381d.png"
+  },
+  {
+    "id": "repair-rock",
+    "name": "Ruptured boulder",
+    "type": "repairable",
+    "file": "repair-rock.png",
+    "source": "exec-4e4e3ac4-c268-4204-8404-cb7f36de1a75.png"
+  },
+  {
+    "id": "repair-tree",
+    "name": "Snapped tree",
+    "type": "repairable",
+    "file": "repair-tree.png",
+    "source": "exec-b4b590fb-de46-44ac-a98b-272a614af608.png"
+  },
+  {
+    "id": "repair-bush",
+    "name": "Cut thorn bush",
+    "type": "repairable",
+    "file": "repair-bush.png",
+    "source": "exec-1f7ce656-f5b6-46b6-8731-14e2ed000841.png"
+  },
+  {
+    "id": "house-unlit",
+    "name": "Unlit house",
+    "type": "house",
+    "file": "house-unlit.png",
+    "source": "exec-2414f021-94c1-476c-a72b-62ca4d1d2403.png"
+  },
+  {
+    "id": "house-lit",
+    "name": "Visited house",
+    "type": "house",
+    "file": "house-lit.png",
+    "source": "exec-f2ac57e1-a4eb-4341-9d97-ba62f188d9de.png"
+  },
+  {
+    "id": "switch-idle",
+    "name": "Idle switch",
+    "type": "switch",
+    "file": "switch-idle.png",
+    "source": "exec-9c116f71-0711-4005-a7d1-3e6f135ceee6.png"
+  },
+  {
+    "id": "switch-active",
+    "name": "Active switch",
+    "type": "switch",
+    "file": "switch-active.png",
+    "source": "exec-82b8e5d1-f200-4905-a9ed-24470c2c497e.png"
+  },
+  {
+    "id": "switch-expiring",
+    "name": "Expiring switch",
+    "type": "switch",
+    "file": "switch-expiring.png",
+    "source": "exec-99a40086-f5c3-4d9b-bfe1-1b224a2bf31e.png"
+  }
+]

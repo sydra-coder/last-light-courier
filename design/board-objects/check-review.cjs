@@ -1,0 +1,23 @@
+const { chromium } = require('playwright');
+const path = require('path');
+const { pathToFileURL } = require('url');
+(async () => {
+  const browser = await chromium.launch({headless:true,channel:'msedge'});
+  const page = await browser.newPage({viewport:{width:390,height:850}});
+  const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+  await page.goto(pathToFileURL(path.join(__dirname,'index.html')).href);
+  const wallet=()=>page.locator('#wallet').textContent();
+  await page.locator('#repairTarget').click();
+  if(await wallet()!=='120 points'||!await page.locator('#demoPrompt').isHidden())throw Error('Distant tap charged or prompted');
+  await page.locator('[data-reach="unsafe"]').click(); await page.locator('#repairTarget').click();
+  if(await wallet()!=='120 points'||!await page.locator('#demoPrompt').isHidden())throw Error('Unsafe tap charged or prompted');
+  await page.locator('[data-reach="safe"]').click(); await page.locator('#repairTarget').click();
+  if(await page.locator('#demoPrompt').isHidden())throw Error('Safe tap did not prompt');
+  await page.locator('#cancelRepair').click();
+  if(await wallet()!=='120 points'||!await page.locator('#demoPrompt').isHidden())throw Error('Cancel charged');
+  await page.locator('#repairTarget').click(); await page.locator('#confirmRepair').click();
+  if(await wallet()!=='60 points'||!await page.locator('#repairTarget .tile.open').count())throw Error('Confirmed move not reflected');
+  if(errors.length)throw Error(errors.join('; '));
+  console.log('Repair interaction passed: distant, unsafe, cancel cost zero; confirmed successful move costs 60 and opens road.');
+  await browser.close();
+})().catch(e=>{console.error(e);process.exitCode=1});

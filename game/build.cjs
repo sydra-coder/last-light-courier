@@ -44,11 +44,11 @@ replaceOnce('const isEcho=level.echo&&state.active','const isEcho=level.echo&&!w
 replaceOnce("if(level.echo)entries.push(['echo'","if(level.echo&&!window.LLC_DISABLE_ECHO)entries.push(['echo'");
 replaceOnce('Echo still follows your trail.','All patrol shadows pause.');
 replaceOnce("const night=mode==='night';", "const night=mode==='night',compact=level.grid>=12&&!canvas.parentElement.classList.contains('zoomed');");
-replaceOnce("const floor=wall?(night?'#494258':'#65737f'):lit?'#8b6855'", "const floor=wall?(compact?'#4d5a64':night?'#494258':'#65737f'):lit?'#bd8942'");
+replaceOnce("const floor=wall?(night?'#494258':'#65737f'):lit?'#8b6855'", "const floor=wall?(compact?'#4d5a64':night?'#494258':'#65737f'):lit?'#277b55'");
+replaceOnce("wall?'#495b68':lit?'#876b55'", "wall?'#495b68':lit?'#277b55'");
 replaceOnce("night?((p[0]+p[1])%2?'#34374d':'#3c4155'):((p[0]+p[1])%2?'#667e88':'#77909a')", "compact?'#756f67':night?((p[0]+p[1])%2?'#34374d':'#3c4155'):((p[0]+p[1])%2?'#667e88':'#77909a')");
-replaceOnce("lit?'#fbd693':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?3:1.5", "lit?'#ffe6a0':compact?'#31414b66':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?4:compact?1:1.5");
+replaceOnce("lit?'#fbd693':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?3:1.5", "lit?'#7dffb5':compact?'#31414b66':wall?'#8d9aa7':night?'#6a6a83':'#a6b4b8',lit?4:compact?1:1.5");
 replaceOnce('if(!wall&&!feature){line(x-18', 'if(!compact&&!wall&&!feature){line(x-18');
-replaceOnce('if(wall)objects.push({y:cy,draw:()=>{ctx.save();ctx.translate(cx,cy+8);', 'if(wall&&!((level.grid||8)>=12&&!canvas.parentElement.classList.contains("zoomed")))objects.push({y:cy,draw:()=>{ctx.save();ctx.translate(cx,cy+8);');
 replaceOnce("41:['Echo Shadow','The echo retraces your earlier steps. Its current position is shown as a pale shadow. You cannot enter its current tile or the tile it reaches after your next tap.']","41:['Longer patrols','Watch where patrols stand now and where they will step after your next move.']");
 replaceOnce('Both patrols and the Echo remain active after the first delivery.','Patrols become active after the first delivery.');
 replaceOnce('s.phase,s.phase2,s.fade,s.ice,s.gate,...s.trail','s.phase,s.phase2,s.phase3,s.fade,s.ice,s.gate,...s.trail');
@@ -61,6 +61,20 @@ replaceOnce('<title>Last Light Courier — 2,000-map candidate campaign</title>'
 replaceOnce('Playable campaign preview · 200 levels', 'Integrated campaign · 2,000 levels');
 replaceOnce('2,000-map review', '2,000-level map');
 replaceOnce('All levels are open for this design preview.', 'All candidate levels are open for playtesting.');
+replaceOnce('function rubble(x,y){ctx.save();', 'function rubble(x,y){if(window.LLCTileArt?.rubble(ctx,x,y))return;ctx.save();');
+replaceOnce('function crates(x,y){ctx.save();', 'function crates(x,y){if(window.LLCTileArt?.crates(ctx,x,y))return;ctx.save();');
+replaceOnce('function bridge(x,y,broken){ctx.save();', 'function bridge(x,y,broken){if(window.LLCTileArt?.bridge(ctx,x,y,broken))return;ctx.save();');
+replaceOnce('function house(x,y,lit,depot=false){', 'function house(x,y,lit,depot=false){if(window.LLCTileArt?.house(ctx,x,y,lit,depot))return;');
+replaceOnce('function featureArt(x,y,feature,closed){', 'function featureArt(x,y,feature,closed){if(window.LLCTileArt?.feature(ctx,x,y,feature,closed,state.gate))return;');
+replaceSome('ctx.scale(.72,.72);house(0,0', 'ctx.scale(1,1);house(0,0');
+replaceSome('ctx.scale(.76,.76);', 'ctx.scale(.95,.95);');
+replaceOnce("const saveKey='last-light-courier-2000-candidate-v1';", "const TESTER_BUILD=false;if(TESTER_BUILD)document.body.classList.add('testerBuild');const saveKey=TESTER_BUILD?'last-light-courier-tester-v1':'last-light-courier-2000-candidate-v1';");
+replaceOnce('save.hintRewardMilestone=Math.floor(Object.keys(save.cleared).length/10)', 'save.hintRewardMilestone=Math.floor(Object.keys(save.cleared).length/5)');
+replaceOnce('save.pendingHintRewards??=0;save.hintRewardMilestone??=0;', 'save.pendingHintRewards??=0;save.hintRewardMilestone??=Math.floor(Object.keys(save.cleared).length/5);');
+replaceOnce('const milestone=Math.floor(Object.keys(save.cleared).length/10);if(milestone>save.hintRewardMilestone){save.pendingHintRewards+=milestone-save.hintRewardMilestone;save.hintRewardMilestone=milestone;}', 'const milestone=Math.floor(Object.keys(save.cleared).length/5);if(milestone>save.hintRewardMilestone){const earned=milestone-save.hintRewardMilestone,added=Math.min(earned,5-save.hints);save.hints+=added;save.pendingHintRewards+=earned-added;save.hintRewardMilestone=milestone;}');
+replaceOnce("$('hintCount').textContent=save.hints+' / 5';$('collectHint').hidden=!(save.pendingHintRewards>0);", "if(save.pendingHintRewards>0&&save.hints<5){const added=Math.min(save.pendingHintRewards,5-save.hints);save.hints+=added;save.pendingHintRewards-=added;persist()}$('hintCount').textContent=save.hints+' / 5';$('collectHint').hidden=true;");
+replaceSome('Earn one hint for every ten new levels completed.', 'A hint is added after every five new levels cleared.');
+replaceOnce('  if(changed)persist();', "  if(TESTER_BUILD&&!save.testerSeeded){for(const item of POWER_CATALOG){save.powerUnlocked[item.id]=true;save.powerStock[item.id]=10}save.hints=5;save.wallet=Math.max(save.wallet,10000);save.testerSeeded=true;changed=true}if(changed)persist();");
 replaceOnce('function courier(x,y,moving,t){ctx.save();', 'function courier(x,y,moving,t){if(window.__appearance?.drawCourier(ctx,x,y,moving,t))return;ctx.save();');
 replaceOnce('function shadow(x,y,echo=false,moving=false,t=0){ctx.save();', 'function shadow(x,y,echo=false,moving=false,t=0){if(window.__appearance?.drawShadow(ctx,x,y,echo,moving,t))return;ctx.save();');
 replaceOnce("const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);", "if(!window.__appearance?.drawBackdrop(ctx,W,H)){const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#2c4150');bg.addColorStop(1,'#172b3a');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H)}");
@@ -74,6 +88,16 @@ replaceOnce('Math.max(.0002,volume)', 'Math.max(.0002,volume*(Number.isFinite(sa
 replaceOnce('redraw:()=>ISO.render()};', 'redraw:()=>ISO.render(),setView:value=>switchView(value),setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()}};');
 replaceOnce('setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()}};', 'setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()},getCurrentLevel:()=>level,buyRepairConfirmed:origin=>attemptRepair(origin,true)};');
 replaceOnce('function attemptRepair(origin){', 'function attemptRepair(origin,confirmed=false){');
+replaceOnce('function choose(n){showScreen', `function canRepairMove(p){const r=level.repair;if(!r||r.effect!=='open'||repaired()||state.done||state.failed||state.help||state.light<=1||save.wallet<r.cost||!eq(p,r.tile)||Math.abs(p[0]-state.pos[0])+Math.abs(p[1]-state.pos[1])!==1)return false;save.repairs[level.n]=true;const valid=legal(p);delete save.repairs[level.n];return valid}
+function repairAndMove(p){if(!canRepairMove(p))return false;const r=level.repair;save.repairs[level.n]=true;const moved=move(p);if(!moved){delete save.repairs[level.n];return false}save.wallet-=r.cost;persist();render();ISO.repair(p);FEEDBACK.emit('repair');return true}
+function choose(n){showScreen`);
+replaceOnce('getCurrentLevel:()=>level,buyRepairConfirmed:origin=>attemptRepair(origin,true)', 'getCurrentLevel:()=>level,buyRepairConfirmed:origin=>attemptRepair(origin,true),canRepairMove,repairAndMove');
+replaceOnce('if(level.repair&&eq(p,level.repair.tile)&&!repaired()&&(e.target.closest(\'.repairBadge\')||!legal(p))){attemptRepair(cell);return}', "if(level.repair&&eq(p,level.repair.tile)&&!repaired()){if(level.repair.effect==='open')window.__integratedShell?.showRepairTile(cell);else attemptRepair(cell);return}");
+replaceSome("if(repairTile&&repaired()&&level.repair.effect==='open')objects.push", "if(false)objects.push");
+replaceOnce("if(repairTile&&(name.includes('crate')||name.includes('debris')))crates(0,0);else if(repairTile&&(name.includes('bridge')||name.includes('crossing')))bridge(0,0,true);else rubble(0,0);", "window.LLCTileArt.blocker(ctx,0,0,p,repairTile&&!repaired(),name);");
+replaceOnce("repairTile&&(name.includes('crate')||name.includes('debris'))?crates(cx,cy):repairTile&&(name.includes('bridge')||name.includes('crossing'))?bridge(cx,cy,true):rubble(cx,cy)", "window.LLCTileArt.blocker(ctx,cx,cy,p,repairTile&&!repaired(),name)");
+replaceOnce("if(isRepair&&!repaired())badge+='<span class=\"timer repairBadge\">REPAIR</span>';", "if(isRepair&&!repaired())badge+='<span class=\"timer repairBadge\" aria-hidden=\"true\">⚒</span>';");
+replaceOnce("(isRepair&&!repaired()?', tap repair badge to buy'", "(isRepair&&!repaired()?', tap to view repair cost'");
 replaceOnce('setupNavigationIcons();', fs.readFileSync(path.join(__dirname,'power-toolbar-runtime.js'),'utf8')+'\nsetupNavigationIcons();');
 replaceOnce("let badge='';if(lit)badge+='<span class=\"done\">✓ DONE</span>';", "let badge='';if(hi>=0&&level.grid>=12)badge+='<span class=\"houseNumber '+(lit?'isLit':'')+'\">'+(lit?'✓':hi+1)+'</span>';if(lit)badge+='<span class=\"done\">✓ DONE</span>';");
 replaceOnce("const p=[+cell.dataset.x,+cell.dataset.y];if(state.trapArmed", "const p=[+cell.dataset.x,+cell.dataset.y];if(!legal(p)&&!(level.repair&&eq(p,level.repair.tile)&&!repaired())&&!canTrapAt(p)&&!canDecoyAt(p)){window.__integratedShell?.inspectTile(cell);return}if(state.trapArmed");
@@ -85,15 +109,13 @@ replaceOnce("<strong>'+(minimum??'—')+'</strong><small>Verified minimum</small
 replaceOnce("(minimum===null?'':extra===0?'You matched the shortest route!':extra+' extra step'+(extra===1?'':'s')+'.')", "''");
 replaceOnce('Other players’ records require an online leaderboard.', 'All-player best appears when shared results are connected.');
 replaceOnce('Math.max(1.5,(level.grid||8)/6)', 'Math.max(1.4,(level.grid||8)/8.5)');
-replaceOnce('left:courier.offsetLeft+courier.offsetWidth/2-viewport.clientWidth/2,', 'left:courier.offsetLeft+courier.offsetWidth/2-viewport.clientWidth*.9,');
-replaceOnce("left:courier.offsetLeft+courier.offsetWidth/2-viewport.clientWidth*.9,", "left:Math.max(mapBounds.left,Math.min(mapBounds.right-viewport.clientWidth,courier.offsetLeft+courier.offsetWidth/2-viewport.clientWidth/2)),");
-replaceOnce('  viewport.scrollTo({left:Math.max(mapBounds.left,', "  const cells=[...$('board').querySelectorAll('.cell')],mapBounds={left:Math.min(...cells.map(c=>c.offsetLeft)),right:Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth)),top:Math.min(...cells.map(c=>c.offsetTop)),bottom:Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight))};\n  viewport.scrollTo({left:Math.max(mapBounds.left,");
-replaceOnce('top:courier.offsetTop+courier.offsetHeight/2-viewport.clientHeight/2,behavior:', 'top:Math.max(mapBounds.top,Math.min(mapBounds.bottom-viewport.clientHeight,courier.offsetTop+courier.offsetHeight/2-viewport.clientHeight/2)),behavior:');
+replaceOnce('left:cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2,', 'left:Math.max(0,Math.min(viewport.scrollWidth-viewport.clientWidth,cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),');
+replaceOnce("top:cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2,behavior:", "top:Math.max(0,Math.min(viewport.scrollHeight-viewport.clientHeight,cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:");
 replaceOnce("const zoom=!!window.matchMedia?.('(max-width:610px)').matches&&level.grid>=16;", "const zoom=level.grid>=12;");
 replaceOnce('const zoom=level.grid>=12;', 'const zoom=false;');
 replaceOnce("reset();$('playScreen').scrollTop=0}", "reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}");
 replaceOnce('Tap REPAIR on the marked tile to buy instantly with banked points.', 'Tap REPAIR on the marked tile to view the cost and confirm with banked points.');
-replaceOnce('if(!r||repaired()||state.done||state.failed||state.help)return false;', 'if(!r||repaired()||state.done||state.failed||state.help)return false;if(!confirmed&&window.__integratedShell?.confirmRepair){window.__integratedShell.confirmRepair();return false;}');
+replaceOnce('if(!r||repaired()||state.done||state.failed||state.help)return false;', 'if(!r||repaired()||state.done||state.failed||state.help)return false;if(!confirmed&&window.__integratedShell?.confirmRepair){window.__integratedShell.confirmRepair(origin);return false;}');
 replaceOnce("hapticsOn:true,viewMode:'isometric'", "hapticsOn:true,viewMode:'overhead'");
 replaceOnce("const night=mode==='night',bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H);", "const night=mode==='night';if(night||!window.__appearance?.drawBackdrop(ctx,W,H)){const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,night?'#24233a':'#40596b');bg.addColorStop(1,night?'#101629':'#243d50');ctx.fillStyle=bg;ctx.fillRect(-W,-H,3*W,3*H)}");
 replaceOnce("((p[0]+p[1])%2?'#667e88':'#77909a')", "((p[0]+p[1])%2?'#766c62':'#85796b')");
@@ -106,8 +128,13 @@ replaceOnce("function choose(n){showScreen('play');", "function choose(n){window
 replaceOnce("html+='<div class=\"boardOverlay\" role=\"alert\"><div class=\"overlayCard\"><div style=\"font-size:25px\">✦ ✦ ✦</div>", "html+='<div class=\"boardOverlay\" role=\"alert\"><div class=\"overlayCard\"><button type=\"button\" class=\"overlayClose\" data-action=\"shell-map\" aria-label=\"Close result and open map\">×</button><div style=\"font-size:25px\">✦ ✦ ✦</div>");
 replaceOnce("if(what==='map')showPicker();", "if(what==='map')showPicker();if(what==='shell-map')window.__integratedShell?.navigate('map');");
 replaceOnce("function showMenu(){ $('menuCleared')", "function showMenu(){if(window.__integratedShell){window.__integratedShell.navigate('map');return} $('menuCleared')");
-replaceOnce('</head>', '<link rel="stylesheet" href="shell.css"><script src="challenge-patrols.js"></script></head>');
+replaceOnce('</head>', '<link rel="stylesheet" href="shell.css"><script src="challenge-patrols.js"></script><script src="tile-symbols.js"></script></head>');
 replaceOnce('</body>', '<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="shell.js"></script></body>');
 
+html=html.trimEnd()+'\n';
 fs.writeFileSync(target, html);
-console.log(`Built ${target} from ${source}`);
+const testerTarget=path.join(__dirname,'tester.html');
+const testerHtml=html.replace('const TESTER_BUILD=false;', 'const TESTER_BUILD=true;').replace('<title>Last Light Courier — integrated campaign build</title>','<title>Last Light Courier — tester build</title>');
+if(testerHtml===html)throw new Error('Tester build flag missing');
+fs.writeFileSync(testerTarget,testerHtml);
+console.log(`Built player ${target} and tester ${testerTarget} from ${source}`);
