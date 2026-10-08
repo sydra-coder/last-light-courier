@@ -10,13 +10,23 @@
   const bars=(c,color)=>{for(const x of [-15,-5,5,15])line(c,[[x,-17],[x,17]],color,4);line(c,[[-22,-20],[22,-20]],color,4);line(c,[[-22,20],[22,20]],color,4)};
   const bolt=c=>path(c,[[-3,-23],[12,-23],[3,-5],[14,-5],[-9,24],[-3,4],[-15,4]],C.gold,C.ink,2);
   const hourglass=c=>{line(c,[[-17,-20],[17,-20],[-8,18],[8,18],[-17,-20]],C.cream,4);line(c,[[-17,21],[17,21]],C.gold,5);circle(c,0,0,3,C.gold,null)};
-  const house=(c,x,y,lit,depot=false)=>at(c,x,y,()=>{
-    circle(c,0,0,31,depot?'#25607d':lit?'#176b4d':'#4a4559',depot?C.blue:lit?C.green:'#d9b7a7',3);
+  const depotMark=(c,x,y)=>at(c,x,y,()=>{
+    circle(c,0,0,31,'#12374b',C.blue,5);
+    circle(c,0,0,24,'#22536a','#d8f7fa',2);
+    for(const a of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
+      c.save();c.rotate(a);box(c,-3,-29,6,8,2,'#ffe4a3',C.ink,1);c.restore();
+    }
+    path(c,[[0,-23],[15,-3],[0,19],[-15,-3]],'#79d9ee',C.ink,4);
+    path(c,[[0,-16],[8,-3],[0,11],[-8,-3]],'#e9fbfc',null);
+    circle(c,0,-2,5,C.gold,C.ink,1);
+    circle(c,0,-2,2,'#fff9de',null);
+  });
+  const house=(c,x,y,lit,depot=false)=>depot?depotMark(c,x,y):at(c,x,y,()=>{
+    circle(c,0,0,31,lit?'#176b4d':'#4a4559',lit?C.green:'#d9b7a7',3);
     box(c,-19,-3,38,25,3,lit?'#e1ab60':'#956e66',C.ink,3);
-    path(c,[[-25,-3],[0,-25],[25,-3]],depot?'#55c7e4':lit?'#ffd06d':'#d79278',C.ink,4);
-    box(c,-6,7,12,15,2,lit?'#fff6c0':depot?'#a7f2ff':'#353b4b',C.ink,2);
+    path(c,[[-25,-3],[0,-25],[25,-3]],lit?'#ffd06d':'#d79278',C.ink,4);
+    box(c,-6,7,12,15,2,lit?'#fff6c0':'#353b4b',C.ink,2);
     if(lit){circle(c,19,-20,11,C.green,C.ink,2);line(c,[[13,-20],[18,-15],[26,-25]],C.ink,3.5)}
-    else if(depot){circle(c,0,-15,4,C.cream,null)}
   });
   const rubble=(c,x,y)=>at(c,x,y,()=>{
     box(c,-30,-28,60,56,8,'#243441',C.blocked,4);
@@ -65,7 +75,7 @@
     return sprite(c,asset,x,y-5,68,68)||rubble(c,x,y);
   };
   const storyHouse=(c,x,y,lit,depot=false)=>{
-    if(depot)return house(c,x,y,false,true);
+    if(depot)return depotMark(c,x,y);
     const ok=sprite(c,lit?'house-lit':'house-unlit',x,y-8,69,69);
     if(ok&&lit)at(c,x+22,y-24,()=>{circle(c,0,0,10,C.green,C.ink,2);line(c,[[-5,0],[-1,4],[5,-5]],C.ink,3)});
     return ok||house(c,x,y,lit,false);
