@@ -329,3 +329,8 @@ body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin
 .gemShopPanel .gemPack b{margin-top:3px;padding:4px 17px;border-radius:7px;background:linear-gradient(#ffe1a1,#d69c58);color:#3c2713;font-size:12px}
 .gemShopPanel .shopTools{min-height:38px}
 .gemShopPanel .shopNote{margin:0;text-align:center;font-size:10px}
+.pointIcon{display:inline-block;width:20px;height:23px;flex:none;vertical-align:-5px;filter:drop-shadow(0 1px 3px #ffd27588)}
+.pointAmount,.gemShopPanel .shopPoints{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.gemShopPanel .shopPoints .pointIcon{width:24px;height:27px}
+.exchangePreview{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 8px;border:1px solid #aa8a60;border-radius:11px;background:#20384a;color:#ffe4ad;font-size:21px}
+.exchangePreview .pointIcon,.exchangePreview .gemIcon{width:27px;height:30px}

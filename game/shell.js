@@ -56,6 +56,8 @@
   const getSave = () => window.__campaign.getSave();
   const gems = window.LLCGemShop;
   const gemAmount = amount => `${gems.icon}<span>${Number(amount||0).toLocaleString()}</span>`;
+  const pointIcon = '<svg class="pointIcon" viewBox="0 0 32 36" aria-hidden="true"><path d="M13 3h6m-3 0v5M9 12l3-4h8l3 4M9 12h14v17H9z" fill="#7a4b2c" stroke="#ffe5a7" stroke-width="2" stroke-linejoin="round"/><path d="M12 15h8v10h-8z" fill="#ffd275"/><path d="M13 20l3-5 3 5-3 5z" fill="#fff4b9"/><path d="M7 29h18v3H7z" fill="#c88a46" stroke="#ffe5a7" stroke-width="1.5"/></svg>';
+  const pointAmount = amount => `${pointIcon}<span>${Number(amount||0).toLocaleString()}</span>`;
   const settingsPanel=document.getElementById('settingsPanel');
   const extras=document.createElement('div');
   extras.id='integratedSettings';
@@ -131,7 +133,7 @@
   };
   const openShop = () => {
     const s = getSave();
-    panel('Night Market', `<div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">✦ ${Number(s.wallet||0).toLocaleString()}</span></div><button type="button" class="shopExchange" data-exchange-gems ${s.wallet<2000?'disabled':''} aria-label="Exchange 2,000 points for 20 gems"><span>✦ 2,000</span><span aria-hidden="true">➜</span><strong class="gemAmount">${gemAmount(20)}</strong></button><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><button type="button" class="shopTools" data-action="repairs" aria-label="Open repairs and powers">⚒ &nbsp; Repairs &amp; Powers <span aria-hidden="true">›</span></button><p class="shopNote">Preview prices · Checkout unavailable</p>`);
+    panel('Night Market', `<div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</span></div><button type="button" class="shopExchange" data-exchange-gems ${s.wallet<2000?'disabled':''} aria-label="Exchange 2,000 points for 20 gems"><span class="pointAmount">${pointAmount(2000)}</span><span aria-hidden="true">➜</span><strong class="gemAmount">${gemAmount(20)}</strong></button><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><button type="button" class="shopTools" data-action="repairs" aria-label="Open repairs and powers">⚒ &nbsp; Repairs &amp; Powers <span aria-hidden="true">›</span></button><p class="shopNote">Preview prices · Checkout unavailable</p>`);
     overlay.querySelector('.integratedPanel').classList.add('gemShopPanel');
   };
   const openCourier = () => {
@@ -157,7 +159,7 @@
     if(e.target.closest('[data-open-guide]')){close();enterBoard();document.getElementById('help').click();return}
     if(e.target.closest('[data-repair-cancel]')){close();return}
     if(e.target.closest('[data-repair-approve]')){const origin=repairCallout.querySelector('[data-repair-open]');window.__campaign.buyRepairConfirmed(origin);close();renderRepairCallout();return}
-    if(e.target.closest('[data-exchange-gems]')){const s=getSave();if(s.wallet<2000)return;panel('Exchange points?',`<p>Convert <strong>2,000 earned points</strong> into <strong class="gemAmount">${gemAmount(20)} gems</strong>. You can spend the gems on repairs or power restocks.</p><div class="repairActions"><button type="button" data-exchange-cancel>Keep points</button><button type="button" data-exchange-confirm>Exchange</button></div>`);return}
+    if(e.target.closest('[data-exchange-gems]')){const s=getSave();if(s.wallet<2000)return;panel('Exchange?',`<div class="exchangePreview"><strong class="pointAmount" aria-label="2,000 earned points">${pointAmount(2000)}</strong><span aria-hidden="true">➜</span><strong class="gemAmount" aria-label="20 gems">${gemAmount(20)}</strong></div><p>Use gems for repairs and powers.</p><div class="repairActions"><button type="button" data-exchange-cancel>Cancel</button><button type="button" data-exchange-confirm>Exchange</button></div>`);return}
     if(e.target.closest('[data-exchange-cancel]')){openShop();return}
     if(e.target.closest('[data-exchange-confirm]')){window.__campaign.exchangePointsForGems();openShop();return}
     const packButton=e.target.closest('[data-gem-pack]');
