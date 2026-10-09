@@ -105,6 +105,7 @@ replaceOnce("if(isRepair&&!repaired())badge+='<span class=\"timer repairBadge\">
 replaceOnce("(isRepair&&!repaired()?', tap repair badge to buy'", "(isRepair&&!repaired()?', tap to view repair cost'");
 replaceOnce('setupNavigationIcons();', fs.readFileSync(path.join(__dirname,'power-toolbar-runtime.js'),'utf8')+'\nsetupNavigationIcons();');
 replaceOnce("if(lit)badge+='<span class=\"done\">✓ DONE</span>';", "if(hi>=0&&level.grid>=12)badge+='<span class=\"houseNumber '+(lit?'isLit':'')+'\">'+(lit?'✓':hi+1)+'</span>';if(lit)badge+='<span class=\"done\">✓ DONE</span>';");
+replaceOnce("const classes=['cell',wall?'wall':'',feature,lit?'lit':'',", "const classes=['cell',wall?'wall':'',feature,hi>=0?(lit?'houseLit':'houseUnlit'):'',lit?'lit':'',");
 replaceOnce("const p=[+cell.dataset.x,+cell.dataset.y];if(state.trapArmed", "const p=[+cell.dataset.x,+cell.dataset.y];if(!legal(p)&&!(level.repair&&eq(p,level.repair.tile)&&!repaired())&&!canTrapAt(p)&&!canDecoyAt(p)){window.__integratedShell?.inspectTile(cell);return}if(state.trapArmed");
 replaceOnce("'+(!safe&&!(isRepair&&!repaired())&&!canTrapAt(p)&&!canDecoyAt(p)?'disabled':'')+'", "'+(safe?'':'tabindex=\"-1\"')+'");
 replaceOnce('minimum=shortestSafeRoute(state.mask),localBest=', 'minimum=level.patrolChallenge?null:shortestSafeRoute(state.mask),localBest=');
