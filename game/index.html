@@ -738,7 +738,7 @@ $('powerShop').addEventListener('click',event=>{
   if(!selected.length||total<=0||total>save.gems||selected.some(item=>!save.powerUnlocked?.[item.id]))return;
   save.gems-=total;
   for(const item of selected){save.powerStock[item.id]=(save.powerStock[item.id]||0)+powerCart[item.id];powerCart[item.id]=0}
-  persist();render();setStatus('Powers restocked',selected.length+' types',total+' gems spent.');
+  persist();render();setStatus('Powers restocked',selected.length+' types',total+' gems spent.');window.dispatchEvent(new Event('llc:gem-balance-change'));
 });
 syncPowerUnlocks();
 // Let the courier choose any earned tool; the assigned review tool remains selectable.
@@ -978,7 +978,7 @@ useCandidatePower=function(){
 })();
 
 setupNavigationIcons();
-window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,hintRoute:()=>ROUTE_SOLVER.solve(level,structuredClone(state),{repaired:repaired()}),getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history,redraw:()=>ISO.render(),setView:value=>switchView(value),setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()},getCurrentLevel:()=>level,buyRepairConfirmed:origin=>attemptRepair(origin,true),canRepairMove,repairAndMove,exchangePointsForGems:()=>{if(save.wallet<2000)return false;save.wallet-=2000;save.gems+=20;persist();render();return true}};
+window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,hintRoute:()=>ROUTE_SOLVER.solve(level,structuredClone(state),{repaired:repaired()}),getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history,redraw:()=>ISO.render(),setView:value=>switchView(value),setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()},getCurrentLevel:()=>level,buyRepairConfirmed:origin=>attemptRepair(origin,true),canRepairMove,repairAndMove,exchangePointsForGems:(qty=1)=>{if(!Number.isSafeInteger(qty)||qty<1||qty>Math.floor(save.wallet/2000)||save.gems+qty*20>Number.MAX_SAFE_INTEGER)return false;save.wallet-=qty*2000;save.gems+=qty*20;persist();render();return true}};
 window.CourierApp={back:()=>{if(!$('hintDialog').hidden){closeHint();return true}if(document.body.dataset.screen!=='play'&&$('legendHelp').hidden&&$('settingsPanel').hidden){showScreen('play');return true}if(!$('legendHelp').hidden){closeLegendHelp();return true}if(!$('settingsPanel').hidden){$('settingsPanel').hidden=true;return true}if(!$('levelPicker').hidden){backPicker();return true}if(!$('mainMenu').hidden)return false;if(state.help){state.help=false;render();return true}showMenu();return true}};
 const requested=Number(new URLSearchParams(location.search).get('level'));const hasLevel=Number.isInteger(requested)&&requested>=1&&requested<=LEVELS.length;choose(hasLevel?requested:(LEVELS.find(l=>!save.cleared[l.n])?.n||LEVELS.length));switchView(save.viewMode||'isometric');/* The five-tab shell is the entry screen. */
 })();

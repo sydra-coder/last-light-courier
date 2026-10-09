@@ -378,3 +378,11 @@ body[data-screen="shop"] #shopScreen{display:block}
 .shopPage #powerShop .powerCartFooter{bottom:4px}
 body[data-screen="shop"] .side{display:block;overflow-y:auto;overscroll-behavior:contain}
 body[data-screen="shop"] .game{display:none}
+.shopPage .shopExchange{display:grid;gap:7px;justify-content:stretch;justify-items:stretch;padding:9px 10px;background:#233b4d}
+.shopPage .exchangeAmounts{display:flex;align-items:center;justify-content:center;gap:13px;color:#ffe0a5;font-size:17px}
+.shopPage .exchangeAmounts .pointIcon,.shopPage .exchangeAmounts .gemIcon{width:22px;height:24px}
+.shopPage .exchangeControls{display:grid;grid-template-columns:38px 36px 38px minmax(0,1fr);align-items:center;gap:5px}
+.shopPage .exchangeControls button{display:grid;place-items:center;min-height:36px;padding:0;border:1px solid #e3bf83;border-radius:7px;background:#68523c;color:#fff0d6;font:900 19px/1 system-ui}
+.shopPage .exchangeControls button:disabled{opacity:.4}
+.shopPage .exchangeControls output{color:#fff0d6;text-align:center;font-size:15px;font-weight:900}
+.shopPage .exchangeControls .exchangeCommit{background:linear-gradient(#ffe0a0,#cf9253);color:#302313;font-size:13px}

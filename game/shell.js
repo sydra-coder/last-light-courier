@@ -63,6 +63,7 @@
   const gemAmount = amount => `${gems.icon}<span>${Number(amount||0).toLocaleString()}</span>`;
   const pointIcon = '<svg class="pointIcon" viewBox="0 0 32 36" aria-hidden="true"><path d="M13 3h6m-3 0v5M9 12l3-4h8l3 4M9 12h14v17H9z" fill="#7a4b2c" stroke="#ffe5a7" stroke-width="2" stroke-linejoin="round"/><path d="M12 15h8v10h-8z" fill="#ffd275"/><path d="M13 20l3-5 3 5-3 5z" fill="#fff4b9"/><path d="M7 29h18v3H7z" fill="#c88a46" stroke="#ffe5a7" stroke-width="1.5"/></svg>';
   const pointAmount = amount => `${pointIcon}<span>${Number(amount||0).toLocaleString()}</span>`;
+  let exchangeQty=1;
   const settingsPanel=document.getElementById('settingsPanel');
   const extras=document.createElement('div');
   extras.id='integratedSettings';
@@ -142,15 +143,30 @@
   const openShop = () => {
     close();
     const s = getSave(),level=window.__campaign.getCurrentLevel(),repair=level?.repair,repaired=!!s.repairs?.[level?.n],repairCost=repair?gems.repairPrice(repair.cost):0;
+    const maxExchange=Math.floor(s.wallet/gems.exchangePoints);
+    exchangeQty=maxExchange?Math.max(1,Math.min(exchangeQty,maxExchange)):0;
+    const exchangeMarkup=`<div class="shopExchange" aria-label="Exchange earned points for gems"><div class="exchangeAmounts"><strong class="pointAmount" data-exchange-points>${pointAmount(exchangeQty*gems.exchangePoints)}</strong><span aria-hidden="true">➜</span><strong class="gemAmount" data-exchange-total>${gemAmount(exchangeQty*gems.exchangeGems)}</strong></div><div class="exchangeControls"><button type="button" data-exchange-minus aria-label="Exchange one fewer batch" ${exchangeQty<=1?'disabled':''}>−</button><output data-exchange-qty aria-label="Exchange batches">${exchangeQty}</output><button type="button" data-exchange-plus aria-label="Exchange one more batch" ${exchangeQty>=maxExchange?'disabled':''}>+</button><button type="button" class="exchangeCommit" data-exchange-submit ${!exchangeQty?'disabled':''}>Exchange</button></div></div>`;
     const repairCard=repair?`<div class="marketRepair"><span class="marketRepairIcon" aria-hidden="true">⚒</span><span><b>${repair.name}</b><small>${repaired?'✓ Repaired':repair.effect==='open'?'Marked tile · repair on map':'Level '+level.n}</small></span><strong class="gemAmount">${gemAmount(repairCost)}</strong><button type="button" ${repaired?'disabled':repair.effect==='open'?'data-shop-repair-map':'data-shop-repair'}>${repaired?'✓':repair.effect==='open'?'Map':'Repair'}</button></div>`:'<div class="marketRepair empty"><span class="marketRepairIcon" aria-hidden="true">⚒</span><span><b>Current map</b><small>No repair on this level</small></span></div>';
-    shopScreen.innerHTML=`<h2>Night Market</h2><div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</span></div><button type="button" class="shopExchange" data-exchange-gems ${s.wallet<2000?'disabled':''} aria-label="Exchange 2,000 points for 20 gems"><span class="pointAmount">${pointAmount(2000)}</span><span aria-hidden="true">➜</span><strong class="gemAmount">${gemAmount(20)}</strong></button><h3>⚒ Repair</h3>${repairCard}<h3>✦ Powers</h3><div id="marketPowerSlot"></div><h3>${gems.icon} Gems</h3><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><p class="shopNote">Preview prices · Checkout unavailable</p>`;
+    shopScreen.innerHTML=`<h2>Night Market</h2><div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</span></div>${exchangeMarkup}<h3>⚒ Repair</h3>${repairCard}<h3>✦ Powers</h3><div id="marketPowerSlot"></div><h3>${gems.icon} Gems</h3><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><p class="shopNote">Preview prices · Checkout unavailable</p>`;
     shopScreen.querySelector('#marketPowerSlot').append(powerShop);
     powerShop.querySelector('details').open=true;
     document.body.dataset.screen='shop';setActive('shop');
   };
   window.addEventListener('llc:gem-balance-change',()=>{if(document.body.dataset.screen==='shop')openShop()});
+  const updateExchange=()=>{
+    const max=Math.floor(getSave().wallet/gems.exchangePoints);
+    exchangeQty=max?Math.max(1,Math.min(exchangeQty,max)):0;
+    shopScreen.querySelector('[data-exchange-points]').innerHTML=pointAmount(exchangeQty*gems.exchangePoints);
+    shopScreen.querySelector('[data-exchange-total]').innerHTML=gemAmount(exchangeQty*gems.exchangeGems);
+    shopScreen.querySelector('[data-exchange-qty]').textContent=exchangeQty;
+    shopScreen.querySelector('[data-exchange-minus]').disabled=exchangeQty<=1;
+    shopScreen.querySelector('[data-exchange-plus]').disabled=exchangeQty>=max;
+    shopScreen.querySelector('[data-exchange-submit]').disabled=!exchangeQty;
+  };
   shopScreen.addEventListener('click',e=>{
-    if(e.target.closest('[data-exchange-gems]')){if(getSave().wallet<2000)return;panel('Exchange?',`<div class="exchangePreview"><strong class="pointAmount" aria-label="2,000 earned points">${pointAmount(2000)}</strong><span aria-hidden="true">➜</span><strong class="gemAmount" aria-label="20 gems">${gemAmount(20)}</strong></div><p>Use gems for repairs and powers.</p><div class="repairActions"><button type="button" data-exchange-cancel>Cancel</button><button type="button" data-exchange-confirm>Exchange</button></div>`);return}
+    if(e.target.closest('[data-exchange-minus]')){exchangeQty--;updateExchange();return}
+    if(e.target.closest('[data-exchange-plus]')){exchangeQty++;updateExchange();return}
+    if(e.target.closest('[data-exchange-submit]')){if(!window.__campaign.exchangePointsForGems(exchangeQty))return;exchangeQty=1;openShop();return}
     if(e.target.closest('[data-shop-repair]')){repairFromShop=true;confirmRepair();return}
     if(e.target.closest('[data-shop-repair-map]')){navigate('play');enterBoard();return}
     if(e.target.closest('[data-gem-pack]')){const note=shopScreen.querySelector('.shopNote');note.textContent='Checkout unavailable in this browser build';note.scrollIntoView({block:'nearest',behavior:'smooth'})}
@@ -178,8 +194,6 @@
     if(e.target.closest('[data-open-guide]')){close();enterBoard();document.getElementById('help').click();return}
     if(e.target.closest('[data-repair-cancel]')){if(repairFromShop){repairFromShop=false;openShop()}else close();return}
     if(e.target.closest('[data-repair-approve]')){const origin=repairCallout.querySelector('[data-repair-open]');window.__campaign.buyRepairConfirmed(origin);if(repairFromShop){repairFromShop=false;openShop()}else close();renderRepairCallout();return}
-    if(e.target.closest('[data-exchange-cancel]')){openShop();return}
-    if(e.target.closest('[data-exchange-confirm]')){window.__campaign.exchangePointsForGems();openShop();return}
     const b = e.target.closest('[data-courier]');
     if (b) { selectedCourier = Number(b.dataset.courier); saveAppearance(); openCourier(); }
     const look = e.target.closest('[data-look]');
