@@ -2,7 +2,16 @@
 
 The browser game keeps earned points as the play score. Repairs and optional power restocks spend gems. Players may confirm a repeatable exchange of **2,000 earned points for 20 gems**. A paid pack preview never adds gems. The tester build starts with 200 test gems; its save is separate from the player build.
 
-Existing repair prices in level data convert at 100 points of the old price to one gem, rounded up. A zero-cost repair remains free. Power restocks cost 6–12 gems depending on the power; milestone unlocks and level-provided charges remain available. The conversion is a review balance and can be tuned before release.
+Shop prices use four visible gem tiers. Existing repair prices in level data determine the tier without changing the levels: old cost 1–1,000 points = 10 gems; 1,001–2,000 = 15; 2,001–5,000 = 20; above 5,000 = 50. A zero-cost repair remains free. Milestone unlocks and level-provided power charges remain available.
+
+| Power restock | Gems |
+| --- | ---: |
+| Anchor Trap, Decoy Light | 10 |
+| Reveal Pulse, Lumen Flask | 15 |
+| Road Repair, Light Bridge, Map Stabilizer | 20 |
+| Freeze Seal, Rewind | 50 |
+
+The 50-gem tier is reserved for powers with strong whole-map or recovery effects. These review prices can be tuned after playtesting.
 
 | Product ID | Gems | Proposed US price |
 | --- | ---: | ---: |
