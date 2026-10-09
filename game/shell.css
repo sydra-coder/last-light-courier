@@ -57,10 +57,10 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 .button.primary,.overlayActions .primary,.menuActions .primary{background:linear-gradient(#ffe0a2,#dfa04d);color:#332316;border-color:#ffdd99}
 #bottomNav{display:none!important}
 #integratedNav{position:fixed;z-index:65;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));max-width:430px;margin:auto;padding:6px 4px calc(7px + env(safe-area-inset-bottom));height:80px;background:linear-gradient(#1d3448,#0c1b2b);border:1px solid #8b714d;border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -8px 22px #0008}
-#integratedNav button{border:0;background:transparent;color:#c0c9cf;display:grid;place-items:center;gap:2px;align-content:center;min-width:0;border-radius:10px;font-size:10px;font-weight:800}
+#integratedNav button{border:0;background:transparent;color:#c0c9cf;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;border-radius:10px;font-size:10px;font-weight:800;line-height:12px}
 #integratedNav button.active{color:#ffd185;background:#6b492a91}
-#integratedNav button span{font-size:22px;line-height:1}
-#integratedNav button[data-destination="play"] span{display:grid;place-items:center;width:42px;height:42px;border:2px solid #d7a057;border-radius:50%;margin-top:-13px;background:#2c2f3a;box-shadow:0 0 14px #d9a45b66}
+#integratedNav button span{display:grid;place-items:center;width:36px;height:36px;font-size:22px;line-height:1}
+#integratedNav button[data-destination="play"] span{width:36px;height:36px;padding-left:2px;border:2px solid #d7a057;border-radius:50%;background:#2c2f3a;box-shadow:0 0 12px #d9a45b66;font-size:19px}
 #integratedOverlay{position:fixed;z-index:90;inset:0;max-width:430px;margin:auto;background:#07111edc;display:grid;place-items:center;padding:18px}
 #integratedOverlay[hidden]{display:none}
 .integratedPanel{width:min(100%,480px);max-height:min(90vh,780px);overflow:auto;border:1px solid #bb925d;border-radius:17px;background:linear-gradient(#263e54,#102238);padding:18px;box-shadow:0 20px 60px #000a;color:#f6e8d0}
