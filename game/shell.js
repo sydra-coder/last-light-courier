@@ -102,7 +102,7 @@
   const setActive = id => nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.destination === id));
   const powerShop=document.getElementById('powerShop'),powerShopHome=powerShop.parentElement;
   const restorePowerShop=()=>{if(powerShop.parentElement!==powerShopHome)powerShopHome.append(powerShop)};
-  const close = () => { repairFromShop=false;restorePowerShop();overlay.hidden = true; overlay.innerHTML = '';document.body.classList.remove('modalOpen'); };
+  const close = () => { restorePowerShop();overlay.hidden = true; overlay.innerHTML = '';document.body.classList.remove('modalOpen'); };
   const panel = (title, body) => { restorePowerShop();overlay.hidden = false;document.body.classList.add('modalOpen');overlay.innerHTML = `<section class="integratedPanel" role="dialog" aria-modal="true" aria-label="${title}"><div class="head"><h2>${title}</h2><button class="close" type="button" aria-label="Close">×</button></div>${body}</section>`; };
   const legendButton=document.createElement('button');
   legendButton.type='button';legendButton.id='boardLegendButton';legendButton.setAttribute('aria-label','Map symbols');legendButton.textContent='?';
@@ -130,7 +130,6 @@
   const renderRepairCallout=()=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||r.effect==='open'){repairCallout.hidden=true;return}repairCallout.hidden=false;const bought=!!s.repairs?.[level.n],cost=gems.repairPrice(r.cost),missing=Math.max(0,cost-s.gems);repairCallout.innerHTML=`<div class="repairMark" aria-hidden="true">⚒</div><div class="repairInfo"><strong>${bought?'Road repaired':r.name}</strong><span class="gemAmount">${bought?'Shortcut active':`${gemAmount(cost)} gems · ${gemAmount(s.gems)} owned${missing?` · need ${missing} more`:''}`}</span></div><button type="button" data-repair-open ${bought?'disabled':''}>${bought?'Done':'View'}</button>`};
   new MutationObserver(renderRepairCallout).observe(document.getElementById('repairBody'),{childList:true,subtree:true});
   repairCallout.addEventListener('click',e=>{if(e.target.closest('[data-repair-open]'))confirmRepair()});
-  let repairFromShop=false;
   const confirmRepair=()=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||s.repairs?.[level.n])return;if(r.effect==='open'){const cell=document.querySelector(`#board .cell[data-x="${r.tile[0]}"][data-y="${r.tile[1]}"]`);if(cell)showRepairTile(cell);return}const cost=gems.repairPrice(r.cost),missing=Math.max(0,cost-s.gems);panel('Repair this road?',`<p><strong>${r.name}</strong></p><div class="repairCost"><span>Repair cost <strong class="gemAmount">${gemAmount(cost)} gems</strong></span><span>Owned <strong class="gemAmount">${gemAmount(s.gems)} gems</strong></span></div>${missing?`<p class="repairMissing">Need ${missing.toLocaleString()} more gems. Earn points and exchange them in the Shop.</p>`:''}<div class="repairActions"><button type="button" data-repair-cancel>Keep gems</button><button type="button" data-repair-approve ${missing?'disabled':''}>Spend ${cost} gems</button></div>`);overlay.querySelector('.integratedPanel').classList.add('repairPanel')};
   renderRepairCallout();
   const handledResults=new WeakSet();
@@ -142,12 +141,11 @@
   };
   const openShop = () => {
     close();
-    const s = getSave(),level=window.__campaign.getCurrentLevel(),repair=level?.repair,repaired=!!s.repairs?.[level?.n],repairCost=repair?gems.repairPrice(repair.cost):0;
+    const s = getSave();
     const maxExchange=Math.floor(s.wallet/gems.exchangePoints);
     exchangeQty=maxExchange?Math.max(1,Math.min(exchangeQty,maxExchange)):0;
     const exchangeMarkup=`<div class="shopExchange" aria-label="Exchange earned points for gems"><div class="exchangeAmounts"><strong class="pointAmount" data-exchange-points>${pointAmount(exchangeQty*gems.exchangePoints)}</strong><span aria-hidden="true">➜</span><strong class="gemAmount" data-exchange-total>${gemAmount(exchangeQty*gems.exchangeGems)}</strong></div><div class="exchangeControls"><button type="button" data-exchange-minus aria-label="Exchange one fewer batch" ${exchangeQty<=1?'disabled':''}>−</button><output data-exchange-qty aria-label="Exchange batches">${exchangeQty}</output><button type="button" data-exchange-plus aria-label="Exchange one more batch" ${exchangeQty>=maxExchange?'disabled':''}>+</button><button type="button" class="exchangeCommit" data-exchange-submit ${!exchangeQty?'disabled':''}>Exchange</button></div></div>`;
-    const repairCard=repair?`<div class="marketRepair"><span class="marketRepairIcon" aria-hidden="true">⚒</span><span><b>${repair.name}</b><small>${repaired?'✓ Repaired':repair.effect==='open'?'Marked tile · repair on map':'Level '+level.n}</small></span><strong class="gemAmount">${gemAmount(repairCost)}</strong><button type="button" ${repaired?'disabled':repair.effect==='open'?'data-shop-repair-map':'data-shop-repair'}>${repaired?'✓':repair.effect==='open'?'Map':'Repair'}</button></div>`:'<div class="marketRepair empty"><span class="marketRepairIcon" aria-hidden="true">⚒</span><span><b>Current map</b><small>No repair on this level</small></span></div>';
-    shopScreen.innerHTML=`<h2>Night Market</h2><div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</span></div>${exchangeMarkup}<h3>⚒ Repair</h3>${repairCard}<h3>✦ Powers</h3><div id="marketPowerSlot"></div><h3>${gems.icon} Gems</h3><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><p class="shopNote">Preview prices · Checkout unavailable</p>`;
+    shopScreen.innerHTML=`<h2>Night Market</h2><div class="shopWallet"><strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><span class="shopPoints" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</span></div>${exchangeMarkup}<h3>✦ Powers</h3><div id="marketPowerSlot"></div><h3>${gems.icon} Gems</h3><div class="gemPacks">${gems.packs.map((pack,i)=>`<button type="button" class="gemPack gemPack${i}" data-gem-pack="${pack.id}" aria-label="Preview ${pack.amount} gems for ${pack.usd}"><span class="packArt" aria-hidden="true">${gems.icon.repeat(i+1)}</span><strong>${pack.amount.toLocaleString()}</strong><b>${pack.usd}</b></button>`).join('')}</div><p class="shopNote">Preview prices · Checkout unavailable</p>`;
     shopScreen.querySelector('#marketPowerSlot').append(powerShop);
     powerShop.querySelector('details').open=true;
     document.body.dataset.screen='shop';setActive('shop');
@@ -167,8 +165,6 @@
     if(e.target.closest('[data-exchange-minus]')){exchangeQty--;updateExchange();return}
     if(e.target.closest('[data-exchange-plus]')){exchangeQty++;updateExchange();return}
     if(e.target.closest('[data-exchange-submit]')){if(!window.__campaign.exchangePointsForGems(exchangeQty))return;exchangeQty=1;openShop();return}
-    if(e.target.closest('[data-shop-repair]')){repairFromShop=true;confirmRepair();return}
-    if(e.target.closest('[data-shop-repair-map]')){navigate('play');enterBoard();return}
     if(e.target.closest('[data-gem-pack]')){const note=shopScreen.querySelector('.shopNote');note.textContent='Checkout unavailable in this browser build';note.scrollIntoView({block:'nearest',behavior:'smooth'})}
   });
   const openCourier = () => {
@@ -192,8 +188,8 @@
   overlay.addEventListener('click', e => {
     if (e.target === overlay || e.target.closest('.close')) { close(); return; }
     if(e.target.closest('[data-open-guide]')){close();enterBoard();document.getElementById('help').click();return}
-    if(e.target.closest('[data-repair-cancel]')){if(repairFromShop){repairFromShop=false;openShop()}else close();return}
-    if(e.target.closest('[data-repair-approve]')){const origin=repairCallout.querySelector('[data-repair-open]');window.__campaign.buyRepairConfirmed(origin);if(repairFromShop){repairFromShop=false;openShop()}else close();renderRepairCallout();return}
+    if(e.target.closest('[data-repair-cancel]')){close();return}
+    if(e.target.closest('[data-repair-approve]')){const origin=repairCallout.querySelector('[data-repair-open]');window.__campaign.buyRepairConfirmed(origin);close();renderRepairCallout();return}
     const b = e.target.closest('[data-courier]');
     if (b) { selectedCourier = Number(b.dataset.courier); saveAppearance(); openCourier(); }
     const look = e.target.closest('[data-look]');
