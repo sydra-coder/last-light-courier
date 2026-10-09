@@ -225,8 +225,6 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #candidatePower .powerInfo strong{font:700 13px Georgia,serif}
 #candidatePower .powerInfo span{min-width:0;font-size:11px;color:#e5e9e5}
 #candidatePower .powerInfo small{font-size:10px;color:#ffc78e}
-#candidatePower .powerInfo{padding-right:31px}
-#candidatePower .powerInfoClose{position:absolute;right:5px;top:4px;width:24px;height:24px;border:1px solid #d8b778;border-radius:5px;background:#354b60;color:#ffe9b9;font-size:19px;line-height:1}
 @media(max-width:610px){#integratedNav{height:77px}.integratedPanel{max-height:85vh}.shell{padding-bottom:90px}}
 /* Keep the board as the main play surface; move secondary information into compact rails. */
 body[data-screen="play"] .shell{padding:2px 2px 82px}

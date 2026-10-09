@@ -17,10 +17,9 @@ const {chromium}=require('playwright');
     await page.waitForTimeout(600);
     await icon.dispatchEvent('pointerup',{pointerId:1,pointerType:'touch',clientX:20,clientY:20});
     if(!(await page.evaluate(()=>!document.querySelector('#candidatePower .powerInfo').hidden)))throw Error('Power info did not open');
-    await icon.dispatchEvent('pointerdown',{pointerId:2,pointerType:'touch',clientX:20,clientY:20});
-    await icon.dispatchEvent('pointerup',{pointerId:2,pointerType:'touch',clientX:20,clientY:20});
-    if(!(await page.evaluate(()=>document.querySelector('#candidatePower .powerInfo').hidden)))throw Error('Second click did not dismiss power info');
+    await page.waitForTimeout(3100);
+    if(!(await page.evaluate(()=>document.querySelector('#candidatePower .powerInfo').hidden)))throw Error('Power info did not dismiss three seconds after release');
     if(errors.length)throw Error(errors.join(' | '));
-    console.log('PASS 20x20 level viewed through ~12x12 phone viewport and power info dismisses on second tap');
+    console.log('PASS 20x20 level viewed through ~12x12 phone viewport and power info dismisses after release');
   }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

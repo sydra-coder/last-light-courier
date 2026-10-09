@@ -20,6 +20,9 @@ const levels = [1,8,6,9,11,31,51,61,101,151,201,301,401,402,501,601,701,801,901,
     }
     await page.evaluate(() => __campaign.choose(3));
     await page.screenshot({path:path.join(__dirname,'depot-review.png')});
+    const bridgeIcon = await page.locator('[data-power="light_bridge"]').boundingBox();
+    await page.mouse.click(bridgeIcon.x+bridgeIcon.width/2,bridgeIcon.y+bridgeIcon.height/2);
+    await page.screenshot({path:path.join(__dirname,'power-info-review.png')});
     const beforeMove = await page.evaluate(() => ({stock:[...document.querySelectorAll('#candidatePower .powerIcon')].map(button=>Number(button.querySelector('i').textContent)),flask:document.querySelector('[data-power="lumen_flask"]').classList.contains('ready')}));
     if(beforeMove.stock.length!==9||beforeMove.stock.some(stock=>stock<9)||beforeMove.flask)throw Error('Tester starting inventory or power readiness failed: '+JSON.stringify(beforeMove));
     const afterMove = await page.evaluate(() => {__campaign.move(__campaign.levels[2].spine[1]);return document.querySelector('[data-power="lumen_flask"]').classList.contains('ready')});
