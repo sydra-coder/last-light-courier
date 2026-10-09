@@ -64,7 +64,18 @@ function explainPower(power){
   const item=POWER_CATALOG.find(entry=>entry.id===power),info=POWER_UI[power];
   if(!item||!info)return;
   const stock=save.powerStock?.[power]||0,ready=powerReady(power);
-  const reason=powerUsedFor(power)?'Already used this run.':!stock?'No charges in inventory.':power==='anchor_trap'&&!ready?'Stand on a patrol route first.':!ready?'Not usable on this tile or at this moment.':'Tap once to use it now.';
+  const waitReason={
+    anchor_trap:!state.active?'Patrols wake after the first delivery.':'Stand on a patrol route to place this trap.',
+    decoy_light:'Patrols wake after the first delivery.',
+    reveal_pulse:'Use on a map with a hidden house before its Beacon reveals it.',
+    lumen_flask:'Spend at least one lantern light first.',
+    road_repair:'Wait for a marked road to close, then reopen it.',
+    light_bridge:'Build the marked crossing after a delivery, with enough light.',
+    map_stabilizer:'Use before the marked road event closes it.',
+    freeze_seal:'Patrols wake after the first delivery.',
+    rewind:'Make a move first.'
+  };
+  const reason=powerUsedFor(power)?'Already used this run.':!canSpendPowerCharge(power)?'No charge available.':!ready?waitReason[power]:'Tap once to use it now.';
   const panel=$('candidatePower').querySelector('.powerInfo');
   panel.dataset.power=power;
   panel.innerHTML='<button type="button" class="powerInfoClose" aria-label="Close power details">×</button><strong>'+item.name+' · '+info.scope+'</strong><span>'+info.help+'</span><small>'+stock+' charge'+(stock===1?'':'s')+' · '+reason+'</small>';
@@ -79,7 +90,7 @@ renderCandidatePower=function(){
   const open=box.querySelector('.powerInfo:not([hidden])'),openPower=open?.dataset.power;
   box.innerHTML='<div class="powerTray" role="group" aria-label="Powers and utilities">'+options.map(id=>{
     const item=POWER_CATALOG.find(entry=>entry.id===id),info=POWER_UI[id],stock=save.powerStock?.[id]||0,ready=powerReady(id);
-    return '<button type="button" class="powerIcon '+(ready?'ready':'unavailable')+'" data-power="'+id+'" aria-label="'+item.name+', '+stock+' charges'+(ready?', ready':'')+'" title="'+item.name+'" aria-disabled="'+(!ready)+'"><span aria-hidden="true">'+info.icon+'</span><i aria-hidden="true">'+stock+'</i></button>';
+    return '<button type="button" class="powerIcon '+(ready?'ready':'unavailable')+'" data-power="'+id+'" aria-label="'+item.name+', '+stock+' charges, '+(ready?'ready':'tap for requirements')+'" title="'+item.name+'" aria-disabled="'+(!ready)+'"><span aria-hidden="true">'+info.icon+'</span><i aria-hidden="true">'+stock+'</i></button>';
   }).join('')+'</div><div class="powerInfo" hidden data-power="'+(openPower||'')+'"></div>';
   if(openPower&&options.includes(openPower))explainPower(openPower);
 };

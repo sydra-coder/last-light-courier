@@ -104,7 +104,7 @@ replaceOnce("repairTile&&(name.includes('crate')||name.includes('debris'))?crate
 replaceOnce("if(isRepair&&!repaired())badge+='<span class=\"timer repairBadge\">REPAIR</span>';", "if(isRepair&&!repaired())badge+='<span class=\"timer repairBadge\" aria-hidden=\"true\">⚒</span>';");
 replaceOnce("(isRepair&&!repaired()?', tap repair badge to buy'", "(isRepair&&!repaired()?', tap to view repair cost'");
 replaceOnce('setupNavigationIcons();', fs.readFileSync(path.join(__dirname,'power-toolbar-runtime.js'),'utf8')+'\nsetupNavigationIcons();');
-replaceOnce("let badge='';if(lit)badge+='<span class=\"done\">✓ DONE</span>';", "let badge='';if(hi>=0&&level.grid>=12)badge+='<span class=\"houseNumber '+(lit?'isLit':'')+'\">'+(lit?'✓':hi+1)+'</span>';if(lit)badge+='<span class=\"done\">✓ DONE</span>';");
+replaceOnce("if(lit)badge+='<span class=\"done\">✓ DONE</span>';", "if(hi>=0&&level.grid>=12)badge+='<span class=\"houseNumber '+(lit?'isLit':'')+'\">'+(lit?'✓':hi+1)+'</span>';if(lit)badge+='<span class=\"done\">✓ DONE</span>';");
 replaceOnce("const p=[+cell.dataset.x,+cell.dataset.y];if(state.trapArmed", "const p=[+cell.dataset.x,+cell.dataset.y];if(!legal(p)&&!(level.repair&&eq(p,level.repair.tile)&&!repaired())&&!canTrapAt(p)&&!canDecoyAt(p)){window.__integratedShell?.inspectTile(cell);return}if(state.trapArmed");
 replaceOnce("'+(!safe&&!(isRepair&&!repaired())&&!canTrapAt(p)&&!canDecoyAt(p)?'disabled':'')+'", "'+(safe?'':'tabindex=\"-1\"')+'");
 replaceOnce('minimum=shortestSafeRoute(state.mask),localBest=', 'minimum=level.patrolChallenge?null:shortestSafeRoute(state.mask),localBest=');

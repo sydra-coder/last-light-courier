@@ -11,15 +11,19 @@
   const bolt=c=>path(c,[[-3,-23],[12,-23],[3,-5],[14,-5],[-9,24],[-3,4],[-15,4]],C.gold,C.ink,2);
   const hourglass=c=>{line(c,[[-17,-20],[17,-20],[-8,18],[8,18],[-17,-20]],C.cream,4);line(c,[[-17,21],[17,21]],C.gold,5);circle(c,0,0,3,C.gold,null)};
   const depotMark=(c,x,y)=>at(c,x,y,()=>{
-    circle(c,0,0,31,'#12374b',C.blue,5);
-    circle(c,0,0,24,'#22536a','#d8f7fa',2);
-    for(const a of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
-      c.save();c.rotate(a);box(c,-3,-29,6,8,2,'#ffe4a3',C.ink,1);c.restore();
-    }
-    path(c,[[0,-23],[15,-3],[0,19],[-15,-3]],'#79d9ee',C.ink,4);
-    path(c,[[0,-16],[8,-3],[0,11],[-8,-3]],'#e9fbfc',null);
-    circle(c,0,-2,5,C.gold,C.ink,1);
-    circle(c,0,-2,2,'#fff9de',null);
+    // The roof and side posts stay visible even while the courier stands on the depot.
+    circle(c,0,0,33,'#12374b',C.blue,3);
+    box(c,-27,-12,54,37,5,'#b7d8d2',C.ink,3);
+    box(c,-23,-7,9,30,2,'#f4e6b9',C.ink,2);
+    box(c,14,-7,9,30,2,'#f4e6b9',C.ink,2);
+    box(c,-23,-2,7,10,2,'#ffe39a',C.ink,1);
+    box(c,16,-2,7,10,2,'#ffe39a',C.ink,1);
+    box(c,-11,-6,22,31,8,'#174c61','#f4d38a',3);
+    path(c,[[-33,-12],[0,-31],[33,-12]],'#efb75f',C.ink,4);
+    line(c,[[-32,-13],[0,-31],[32,-13]],'#fff1c3',4);
+    box(c,-10,-37,20,10,3,'#efbd69',C.ink,2);
+    circle(c,0,-32,3,'#fff4c2',null);
+    line(c,[[-25,22],[25,22]],C.gold,4);
   });
   const house=(c,x,y,lit,depot=false)=>depot?depotMark(c,x,y):at(c,x,y,()=>{
     circle(c,0,0,31,lit?'#176b4d':'#4a4559',lit?C.green:'#d9b7a7',3);
