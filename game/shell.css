@@ -276,3 +276,35 @@ body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin
 #board .cell.houseUnlit{box-shadow:inset 0 0 0 3px #ffad4d,0 0 12px 3px #ff9a3caa!important;z-index:2}
 #board .cell.houseLit{box-shadow:inset 0 0 0 3px #70efad,0 0 12px 2px #70efad99!important;z-index:2}
 #board .repairBadge{display:none!important}
+.gemIcon{width:18px;height:18px;display:inline-block;vertical-align:-4px;filter:drop-shadow(0 1px 3px #7cecff88);flex:none}
+.gemAmount{display:inline-flex!important;align-items:center;gap:3px;white-space:nowrap}
+.powerGemBalance{display:flex;align-items:center;gap:5px;padding:6px 8px;margin:0 0 8px;border:1px solid #6ac7d7;border-radius:8px;background:#163e52;color:#ddfbff;font-weight:900}
+#powerShop .shopRow button{display:inline-flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap}
+#powerShop .shopRow button .gemIcon{width:15px;height:15px}
+.gemShopPanel{max-height:min(88dvh,760px);padding:14px}
+.gemShopPanel h3{margin:12px 0 7px}
+.shopBalances{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.shopBalances>div{padding:9px;border:1px solid #648499;border-radius:10px;background:#152e42}
+.shopBalances small{display:block;color:#b9ccd7;font-size:10px}
+.shopBalances strong{display:block;color:#ffdfa5;font-size:18px}
+.shopBalances .gemAmount{color:#d9faff}
+.shopExchange{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:9px 0;padding:9px;border:1px solid #aa8a60;border-radius:10px;background:#20384a}
+.shopExchange strong,.shopExchange small{display:block}
+.shopExchange small{margin-top:3px;color:#c5d4dc;font-size:10px}
+.shopExchange small .gemIcon{width:13px;height:13px}
+.shopExchange button,.shopTools{border:1px solid #e4bd77;border-radius:8px;background:linear-gradient(#ffe0a0,#cf9253);color:#302313;font-weight:900;padding:8px 10px}
+.shopExchange button:disabled{opacity:.5}
+.gemPacks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.gemPack{min-width:0;min-height:89px;display:grid;grid-template-columns:43px 1fr;grid-template-rows:28px 18px 25px;align-items:center;gap:0 5px;padding:6px;border:1px solid #7bbdca;border-radius:11px;background:linear-gradient(145deg,#2a536b,#183246);color:#ecfbff;text-align:left}
+.gemPack .packGem{grid-row:1/4;display:grid;place-items:center}
+.gemPack .packGem .gemIcon{width:34px;height:34px}
+.gemPack strong{font-size:17px;line-height:1}
+.gemPack small{font-size:9px;color:#bfd3de}
+.gemPack b{font-size:12px;color:#ffdc9a}
+.gemPack:active{transform:scale(.98)}
+.gemShopPanel .shopNote{font-size:10px;margin:8px 0;color:#bed0d9}
+.gemShopPanel .shopTools{width:100%}
+.packPreview{display:grid;place-items:center;gap:5px;padding:15px;border:1px solid #82cbd9;border-radius:10px;background:#193c52}
+.packPreview .gemIcon{width:54px;height:54px}
+.packPreview strong{font-size:22px;color:#dffcff}
+.packPreview span{font-size:12px;color:#ffe0a6}

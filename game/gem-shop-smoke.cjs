@@ -1,0 +1,49 @@
+const path=require('node:path');
+const {chromium}=require('playwright');
+
+(async()=>{
+  const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});
+  try{
+    const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];
+    page.on('pageerror',error=>errors.push(error.message));
+    const url=file=>'file://'+path.join(__dirname,file).replaceAll('\\','/');
+    await page.goto(url('index.html'));
+    await page.waitForFunction(()=>!!window.__campaign&&!!window.__integratedShell);
+    if(await page.evaluate(()=>__campaign.getSave().gems)!==0)throw Error('Fresh player received paid gems');
+    await page.evaluate(()=>__integratedShell.openShop());
+    if(await page.locator('.gemPack').count()!==6)throw Error('Six gem packs missing');
+    const prices=await page.locator('.gemPack b').allTextContents();
+    if(prices.join(',')!=='$0.99,$2.99,$4.99,$9.99,$19.99,$39.99')throw Error('Pack prices changed: '+prices);
+    await page.screenshot({path:path.join(__dirname,'gem-shop-review.png')});
+    await page.locator('[data-gem-pack="llc_gems_050"]').click();
+    if(await page.evaluate(()=>__campaign.getSave().gems)!==0)throw Error('Pack preview credited unverified gems');
+    if(await page.evaluate(()=>LLCGemShop.repairPrice(0))!==0)throw Error('Required free repairs became paid');
+    await page.goto(url('tester.html'));
+    await page.waitForFunction(()=>!!window.__campaign&&!!window.__integratedShell);
+    const initial=await page.evaluate(()=>({gems:__campaign.getSave().gems,points:__campaign.getSave().wallet,stock:__campaign.getSave().powerStock.anchor_trap}));
+    if(initial.gems<200||initial.points<10000)throw Error('Tester gem seed missing: '+JSON.stringify(initial));
+    await page.evaluate(()=>__integratedShell.openShop());
+    await page.locator('[data-exchange-gems]').click();
+    await page.locator('[data-exchange-confirm]').click();
+    const exchanged=await page.evaluate(()=>({gems:__campaign.getSave().gems,points:__campaign.getSave().wallet}));
+    if(exchanged.gems!==initial.gems+20||exchanged.points!==initial.points-2000)throw Error('Point exchange failed: '+JSON.stringify(exchanged));
+    await page.locator('[data-action="repairs"]').click();
+    await page.locator('#powerShop details summary').click();
+    await page.screenshot({path:path.join(__dirname,'gem-tools-review.png')});
+    await page.locator('[data-buy-power="anchor_trap"]').click();
+    const restock=await page.evaluate(()=>({gems:__campaign.getSave().gems,points:__campaign.getSave().wallet,stock:__campaign.getSave().powerStock.anchor_trap}));
+    if(restock.gems!==exchanged.gems-6||restock.points!==exchanged.points||restock.stock!==initial.stock+1)throw Error('Gem tool purchase failed: '+JSON.stringify(restock));
+    await page.evaluate(()=>__campaign.choose(9));
+    const cost=await page.evaluate(()=>LLCGemShop.repairPrice(__campaign.getCurrentLevel().repair.cost));
+    await page.evaluate(()=>__integratedShell.confirmRepair());
+    await page.locator('[data-repair-cancel]').click();
+    const cancelled=await page.evaluate(()=>({gems:__campaign.getSave().gems,repaired:!!__campaign.getSave().repairs[9]}));
+    if(cancelled.gems!==restock.gems||cancelled.repaired)throw Error('Repair cancel spent gems: '+JSON.stringify(cancelled));
+    await page.evaluate(()=>__integratedShell.confirmRepair());
+    await page.locator('[data-repair-approve]').click();
+    const repaired=await page.evaluate(()=>({gems:__campaign.getSave().gems,points:__campaign.getSave().wallet,repaired:!!__campaign.getSave().repairs[9]}));
+    if(repaired.gems!==restock.gems-cost||repaired.points!==restock.points||!repaired.repaired)throw Error('Gem repair purchase failed: '+JSON.stringify(repaired));
+    if(errors.length)throw Error(errors.join(' | '));
+    console.log('PASS six pack previews, exchange, gem restock, repair cancel and purchase');
+  }finally{await browser.close()}
+})().catch(error=>{console.error(error);process.exitCode=1});
