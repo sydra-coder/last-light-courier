@@ -149,6 +149,12 @@ replaceOnce("function showMenu(){ $('menuCleared')", "function showMenu(){if(win
 replaceOnce('</head>', '<link rel="stylesheet" href="shell.css"><script src="gem-shop.js"></script><script src="challenge-patrols.js"></script><script src="tile-symbols.js"></script></head>');
 replaceOnce('</body>', '<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="shell.js"></script></body>');
 
+const cartStart=html.indexOf('function renderPowerShop(){');
+const cartComment=html.indexOf('// Let the courier choose any earned tool',cartStart);
+const cartEnd=html.lastIndexOf('syncPowerUnlocks();',cartComment);
+if(cartStart<0||cartEnd<0)throw new Error('Power shop insertion markers missing');
+html=html.slice(0,cartStart)+fs.readFileSync(path.join(__dirname,'power-cart-runtime.js'),'utf8')+html.slice(cartComment);
+
 html=html.trimEnd()+'\n';
 fs.writeFileSync(target, html);
 const testerTarget=path.join(__dirname,'tester.html');
