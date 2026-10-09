@@ -132,10 +132,35 @@ replaceOnce("<strong>'+(minimum??'—')+'</strong><small>Verified minimum</small
 replaceOnce("(minimum===null?'':extra===0?'You matched the shortest route!':extra+' extra step'+(extra===1?'':'s')+'.')", "''");
 replaceOnce('Other players’ records require an online leaderboard.', 'All-player best appears when shared results are connected.');
 replaceOnce('Math.max(1.5,(level.grid||8)/6)', 'Math.max(1,(level.grid||8)/8.4)');
-replaceOnce("  viewport.scrollTo({left:cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2,", "  const cells=[...$('board').querySelectorAll('.cell')],minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth)),minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));\n  viewport.scrollTo({left:Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),");
-replaceOnce("    top:cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2,behavior:", "    top:Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:");
+replaceOnce(html.slice(html.indexOf('function focusMapTile(p){'),html.indexOf('function render(){',html.indexOf('function focusMapTile(p){'))), `let cameraFrame=0;
+function focusMapTile(p,force=false,instant=false){
+  const frame=$('scene').parentElement,viewport=frame.parentElement;
+  if(!viewport||!viewport.scrollTo)return;
+  if(!frame.classList.contains('zoomed'))setMapZoom(true);
+  const cell=$('board').querySelector('.cell[data-x="'+p[0]+'"][data-y="'+p[1]+'"]');
+  if(!cell)return;
+  const cells=[...$('board').querySelectorAll('.cell')];
+  const minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth));
+  const minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));
+  const cx=cell.offsetLeft+cell.offsetWidth/2,cy=cell.offsetTop+cell.offsetHeight/2;
+  const edge=.28;
+  if(!force&&cx>=viewport.scrollLeft+viewport.clientWidth*edge&&cx<=viewport.scrollLeft+viewport.clientWidth*(1-edge)&&cy>=viewport.scrollTop+viewport.clientHeight*edge&&cy<=viewport.scrollTop+viewport.clientHeight*(1-edge))return;
+  const left=Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cx-viewport.clientWidth/2));
+  const top=Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cy-viewport.clientHeight/2));
+  if(Math.abs(left-viewport.scrollLeft)<1&&Math.abs(top-viewport.scrollTop)<1)return;
+  if(cameraFrame)cancelAnimationFrame(cameraFrame);
+  if(instant||document.body.classList.contains('reduceMotion')){viewport.scrollTo({left,top,behavior:'instant'});return}
+  const fromLeft=viewport.scrollLeft,fromTop=viewport.scrollTop,start=performance.now(),duration=300;
+  const step=now=>{const t=Math.min(1,(now-start)/duration),ease=1-(1-t)**3;viewport.scrollLeft=fromLeft+(left-fromLeft)*ease;viewport.scrollTop=fromTop+(top-fromTop)*ease;if(t<1)cameraFrame=requestAnimationFrame(step);else cameraFrame=0};
+  cameraFrame=requestAnimationFrame(step);
+}
+function focusZoomMap(instant=false){if($('scene').parentElement.classList.contains('zoomed'))focusMapTile(state.pos,instant,instant)}
+for(const event of ['pointerdown','wheel','touchstart'])document.querySelector('.mapViewport').addEventListener(event,()=>{if(cameraFrame)cancelAnimationFrame(cameraFrame);cameraFrame=0},{passive:true});
+`);
+replaceOnce("$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos));", "$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos,true));");
+replaceOnce('if(p)focusMapTile(p)});', 'if(p)focusMapTile(p,true)});');
 replaceOnce("const zoom=!!window.matchMedia?.('(max-width:610px)').matches&&level.grid>=16;", "const zoom=level.grid>12;");
-replaceOnce("reset();$('playScreen').scrollTop=0}", "reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}");
+replaceOnce("reset();$('playScreen').scrollTop=0}", "reset();if(zoom)requestAnimationFrame(()=>focusZoomMap(true));$('playScreen').scrollTop=0}");
 replaceOnce('Tap REPAIR on the marked tile to buy instantly with banked points.', 'Tap REPAIR on the marked tile to view the gem cost and confirm.');
 replaceOnce('if(!r||repaired()||state.done||state.failed||state.help)return false;', 'if(!r||repaired()||state.done||state.failed||state.help)return false;if(!confirmed&&window.__integratedShell?.confirmRepair){window.__integratedShell.confirmRepair(origin);return false;}');
 replaceOnce("hapticsOn:true,viewMode:'isometric'", "hapticsOn:true,viewMode:'overhead'");

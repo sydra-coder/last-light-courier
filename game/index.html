@@ -557,17 +557,30 @@ function setMapZoom(zoomed){
   $('zoomMap').setAttribute('aria-label',zoomed?'Fit map':'Zoom map');
   $('zoomMap').setAttribute('aria-pressed',String(zoomed));
 }
-function focusMapTile(p){
+let cameraFrame=0;
+function focusMapTile(p,force=false,instant=false){
   const frame=$('scene').parentElement,viewport=frame.parentElement;
   if(!viewport||!viewport.scrollTo)return;
   if(!frame.classList.contains('zoomed'))setMapZoom(true);
   const cell=$('board').querySelector('.cell[data-x="'+p[0]+'"][data-y="'+p[1]+'"]');
   if(!cell)return;
-  const cells=[...$('board').querySelectorAll('.cell')],minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth)),minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));
-  viewport.scrollTo({left:Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cell.offsetLeft+cell.offsetWidth/2-viewport.clientWidth/2)),
-    top:Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cell.offsetTop+cell.offsetHeight/2-viewport.clientHeight/2)),behavior:'instant'});
+  const cells=[...$('board').querySelectorAll('.cell')];
+  const minLeft=Math.min(...cells.map(c=>c.offsetLeft)),maxRight=Math.max(...cells.map(c=>c.offsetLeft+c.offsetWidth));
+  const minTop=Math.min(...cells.map(c=>c.offsetTop)),maxBottom=Math.max(...cells.map(c=>c.offsetTop+c.offsetHeight));
+  const cx=cell.offsetLeft+cell.offsetWidth/2,cy=cell.offsetTop+cell.offsetHeight/2;
+  const edge=.28;
+  if(!force&&cx>=viewport.scrollLeft+viewport.clientWidth*edge&&cx<=viewport.scrollLeft+viewport.clientWidth*(1-edge)&&cy>=viewport.scrollTop+viewport.clientHeight*edge&&cy<=viewport.scrollTop+viewport.clientHeight*(1-edge))return;
+  const left=Math.max(minLeft,Math.min(Math.max(minLeft,maxRight-viewport.clientWidth),cx-viewport.clientWidth/2));
+  const top=Math.max(Math.max(0,minTop-cell.offsetHeight*.6),Math.min(Math.min(viewport.scrollHeight-viewport.clientHeight,Math.max(minTop,maxBottom-viewport.clientHeight+cell.offsetHeight*.6)),cy-viewport.clientHeight/2));
+  if(Math.abs(left-viewport.scrollLeft)<1&&Math.abs(top-viewport.scrollTop)<1)return;
+  if(cameraFrame)cancelAnimationFrame(cameraFrame);
+  if(instant||document.body.classList.contains('reduceMotion')){viewport.scrollTo({left,top,behavior:'instant'});return}
+  const fromLeft=viewport.scrollLeft,fromTop=viewport.scrollTop,start=performance.now(),duration=300;
+  const step=now=>{const t=Math.min(1,(now-start)/duration),ease=1-(1-t)**3;viewport.scrollLeft=fromLeft+(left-fromLeft)*ease;viewport.scrollTop=fromTop+(top-fromTop)*ease;if(t<1)cameraFrame=requestAnimationFrame(step);else cameraFrame=0};
+  cameraFrame=requestAnimationFrame(step);
 }
-function focusZoomMap(){if($('scene').parentElement.classList.contains('zoomed'))focusMapTile(state.pos)}
+function focusZoomMap(instant=false){if($('scene').parentElement.classList.contains('zoomed'))focusMapTile(state.pos,instant,instant)}
+for(const event of ['pointerdown','wheel','touchstart'])document.querySelector('.mapViewport').addEventListener(event,()=>{if(cameraFrame)cancelAnimationFrame(cameraFrame);cameraFrame=0},{passive:true});
 function render(){
   $('mobileWallet').textContent=save.wallet.toLocaleString();
   $('scene').parentElement.style.setProperty('--map-zoom',Math.max(1,(level.grid||8)/8.4)*100+'%');
@@ -613,7 +626,7 @@ function claimTrophy(id){const award=TROPHY_CATALOG.find(item=>item.id===id);if(
 function canPayRepair(payment){return payment==='inventory'?(save.powerStock?.road_repair||0)>0:payment==='gems'&&save.gems>=window.LLCGemShop.repairPrice(level.repair?.cost)}
 function canRepairMove(p,payment='gems'){const r=level.repair;if(!r||r.effect!=='open'||repaired()||state.done||state.failed||state.help||state.light<=1||!canPayRepair(payment)||!eq(p,r.tile)||Math.abs(p[0]-state.pos[0])+Math.abs(p[1]-state.pos[1])!==1)return false;save.repairs[level.n]=true;const valid=legal(p);delete save.repairs[level.n];return valid}
 function repairAndMove(p,payment='gems'){if(!canRepairMove(p,payment))return false;const r=level.repair;save.repairs[level.n]=true;const moved=move(p);if(!moved){delete save.repairs[level.n];return false}if(payment==='inventory'){save.powerStock.road_repair--;state.powerUsed=true}else save.gems-=window.LLCGemShop.repairPrice(r.cost);persist();render();ISO.repair(p);FEEDBACK.emit('repair');return true}
-function choose(n){window.__integratedShell?.onLevelChosen(n);window.__integratedShell?.enterBoard();showScreen('play');level=LEVELS[n-1];chapterShown=level.chapter;const zoom=level.grid>12;$('scene').parentElement.classList[zoom?'add':'remove']('zoomed');$('zoomMap').textContent=zoom?'− Fit map':'＋ Zoom map';$('zoomMap').setAttribute?.('aria-pressed',String(zoom));reset();if(zoom)requestAnimationFrame(focusZoomMap);$('playScreen').scrollTop=0}
+function choose(n){window.__integratedShell?.onLevelChosen(n);window.__integratedShell?.enterBoard();showScreen('play');level=LEVELS[n-1];chapterShown=level.chapter;const zoom=level.grid>12;$('scene').parentElement.classList[zoom?'add':'remove']('zoomed');$('zoomMap').textContent=zoom?'− Fit map':'＋ Zoom map';$('zoomMap').setAttribute?.('aria-pressed',String(zoom));reset();if(zoom)requestAnimationFrame(()=>focusZoomMap(true));$('playScreen').scrollTop=0}
 let pickerFromMenu=false;
 function showMenu(){if(window.__integratedShell){window.__integratedShell.navigate('map');return} $('menuCleared').textContent=Object.keys(save.cleared).length+' / 2000';$('menuWallet').textContent=save.wallet.toLocaleString();FEEDBACK.labels();$('mainMenu').hidden=false;$('menuContinue').focus() }
 function closeMenu(){$('mainMenu').hidden=true}
@@ -626,8 +639,8 @@ function onLegendTap(e){const button=e.target.closest('[data-legend-help]');if(!
 $('mapLegend').addEventListener('click',onLegendTap);$('mapIconRail').addEventListener('click',onLegendTap);
 $('legendHelpClose').addEventListener('click',closeLegendHelp);$('legendHelp').addEventListener('click',e=>{if(e.target===$('legendHelp'))closeLegendHelp()});document.addEventListener('keydown',e=>{if(!$('legendHelp').hidden&&e.key==='Escape')closeLegendHelp();if(!$('legendHelp').hidden&&e.key==='Tab'){e.preventDefault();$('legendHelpClose').focus()}});
 $('zoomMap').addEventListener('click',()=>{setMapZoom(!$('scene').parentElement.classList.contains('zoomed'));focusZoomMap()});
-$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos));
-$('focusDestination').addEventListener('change',e=>{const value=e.target.value;if(!value)return;const p=value==='depot'?level.depot:level.homes[Number(value)-1]?.p;if(p)focusMapTile(p)});
+$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos,true));
+$('focusDestination').addEventListener('change',e=>{const value=e.target.value;if(!value)return;const p=value==='depot'?level.depot:level.homes[Number(value)-1]?.p;if(p)focusMapTile(p,true)});
 $('menu').addEventListener('click',showMenu);
 $('menuContinue').addEventListener('click',continueLevel);
 $('menuLevelOne').addEventListener('click',()=>{closeMenu();choose(1)});
