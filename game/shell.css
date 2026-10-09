@@ -274,6 +274,5 @@ body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin
 #repairPopover [data-repair-tile-cancel]{position:absolute;right:3px;top:2px;border:0;background:transparent;color:#ffe8af;font-size:17px}
 #board .cell.repairable{box-shadow:inset 0 0 0 3px #ffdb5e,0 0 8px #ffcb55!important;background:#ffd35832!important;z-index:2}
 #board .cell.houseUnlit{box-shadow:inset 0 0 0 3px #ffad4d,0 0 12px 3px #ff9a3caa!important;z-index:2}
-#board .cell.houseUnlit.safe{box-shadow:inset 0 0 0 3px #70efad,0 0 12px 3px #ff9a3caa!important}
 #board .cell.houseLit{box-shadow:inset 0 0 0 3px #70efad,0 0 12px 2px #70efad99!important;z-index:2}
 #board .repairBadge{display:none!important}

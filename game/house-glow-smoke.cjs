@@ -15,9 +15,15 @@ const {chromium}=require('playwright');
     });
     if(!before.classes.includes('houseUnlit')||!before.shadow.includes('255, 154, 60'))throw Error('Unlit house lacks orange glow: '+JSON.stringify(before));
     await page.screenshot({path:path.join(__dirname,'house-orange-review.png')});
+    const adjacent=await page.evaluate(()=>{
+      const level=__campaign.levels[0];__campaign.move(level.spine[1]);
+      const home=level.homes[0].p,cell=document.querySelector(`#board .cell[data-x="${home[0]}"][data-y="${home[1]}"]`);
+      return {classes:cell.className,shadow:getComputedStyle(cell).boxShadow};
+    });
+    if(!adjacent.classes.includes('houseUnlit')||!adjacent.shadow.includes('255, 154, 60'))throw Error('Adjacent unlit house lost orange glow: '+JSON.stringify(adjacent));
     const after=await page.evaluate(()=>{
       const level=__campaign.levels[0];
-      for(const tile of level.spine.slice(1)){
+      for(const tile of level.spine.slice(2)){
         if(!__campaign.move(tile))throw Error('Reference move blocked');
         if(__campaign.getState().mask&1)break;
       }
