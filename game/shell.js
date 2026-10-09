@@ -16,7 +16,10 @@
   shopScreen.id='shopScreen';
   shopScreen.className='shopPage gemShopPanel';
   shopScreen.setAttribute('aria-label','Night Market');
-  document.querySelector('.side').append(shopScreen);
+  const side=document.querySelector('.side');
+  side.append(shopScreen);
+  const courierScreen=document.createElement('section');courierScreen.id='courierScreen';courierScreen.className='tabPage courierPanel courierPage';courierScreen.setAttribute('aria-label','Choose Courier');side.append(courierScreen);
+  const trophiesScreen=document.createElement('section');trophiesScreen.id='trophiesScreen';trophiesScreen.className='tabPage trophiesPage';trophiesScreen.setAttribute('aria-label','Trophy Cabinet');side.append(trophiesScreen);
   const playScreen = document.getElementById('playScreen');
   const home = document.createElement('section');
   home.id = 'storybookHome';
@@ -57,12 +60,16 @@
     if (selectedCourier === 0) return `<img src="../design/character-variants/holiday-wardrobe/01-ember-scout-${lookAssets[selectedLook]}.png" alt="${baseNames[selectedCourier]} in ${looks[selectedLook]}">`;
     return `<canvas class="outfitCanvas" width="125" height="155" role="img" aria-label="${baseNames[selectedCourier]} in ${looks[selectedLook]}" data-sheet="../design/character-variants/holiday-wardrobe/${String(selectedCourier+1).padStart(2,'0')}-${ids[selectedCourier]}-five-looks.png" data-look="${selectedLook}"></canvas>`;
   };
-  const drawOutfitCanvas = () => { const canvas=overlay.querySelector('.outfitCanvas');if(!canvas)return;const img=new Image();img.onload=()=>{if(!canvas.isConnected)return;const ctx=canvas.getContext('2d'),sw=img.naturalWidth/5,scale=Math.min(canvas.width/sw,canvas.height/img.naturalHeight),dw=sw*scale,dh=img.naturalHeight*scale;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,(Number(canvas.dataset.look)-1)*sw,0,sw,img.naturalHeight,(canvas.width-dw)/2,(canvas.height-dh)/2,dw,dh)};img.src=canvas.dataset.sheet;};
+  const drawOutfitCanvas = () => { const canvas=courierScreen.querySelector('.outfitCanvas');if(!canvas)return;const img=new Image();img.onload=()=>{if(!canvas.isConnected)return;const ctx=canvas.getContext('2d'),sw=img.naturalWidth/5,scale=Math.min(canvas.width/sw,canvas.height/img.naturalHeight),dw=sw*scale,dh=img.naturalHeight*scale;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,(Number(canvas.dataset.look)-1)*sw,0,sw,img.naturalHeight,(canvas.width-dw)/2,(canvas.height-dh)/2,dw,dh)};img.src=canvas.dataset.sheet;};
   const getSave = () => window.__campaign.getSave();
   const gems = window.LLCGemShop;
   const gemAmount = amount => `${gems.icon}<span>${Number(amount||0).toLocaleString()}</span>`;
   const pointIcon = '<svg class="pointIcon" viewBox="0 0 32 36" aria-hidden="true"><path d="M13 3h6m-3 0v5M9 12l3-4h8l3 4M9 12h14v17H9z" fill="#7a4b2c" stroke="#ffe5a7" stroke-width="2" stroke-linejoin="round"/><path d="M12 15h8v10h-8z" fill="#ffd275"/><path d="M13 20l3-5 3 5-3 5z" fill="#fff4b9"/><path d="M7 29h18v3H7z" fill="#c88a46" stroke="#ffe5a7" stroke-width="1.5"/></svg>';
   const pointAmount = amount => `${pointIcon}<span>${Number(amount||0).toLocaleString()}</span>`;
+  const resourceStrip=document.createElement('div');resourceStrip.id='resourceStrip';resourceStrip.setAttribute('aria-label','Gem and lantern point balances');side.prepend(resourceStrip);
+  const updateResources=()=>{const s=getSave();resourceStrip.innerHTML=`<strong class="gemAmount" aria-label="${s.gems} gems">${gemAmount(s.gems)}</strong><strong class="pointAmount" aria-label="${s.wallet} earned points">${pointAmount(s.wallet)}</strong>`};
+  updateResources();
+  new MutationObserver(updateResources).observe(document.getElementById('mobileWallet'),{subtree:true,childList:true,characterData:true});
   let exchangeQty=1;
   const settingsPanel=document.getElementById('settingsPanel');
   const extras=document.createElement('div');
@@ -99,7 +106,7 @@
   new MutationObserver(renderJourney).observe(levelButtons,{childList:true});
   renderJourney();
   journey.addEventListener('click', e=>{const stop=e.target.closest('[data-stop]');if(stop){selectedStop=Number(stop.dataset.stop);renderJourney();return}const play=e.target.closest('[data-play-stop]');if(play){levelButtons.querySelector(`[data-level="${play.dataset.playStop}"]`)?.click();setActive('play');}});
-  const setActive = id => nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.destination === id));
+  const setActive = id => {nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.destination === id));updateResources()};
   const powerShop=document.getElementById('powerShop'),powerShopHome=powerShop.parentElement;
   const restorePowerShop=()=>{if(powerShop.parentElement!==powerShopHome)powerShopHome.append(powerShop)};
   const close = () => { restorePowerShop();overlay.hidden = true; overlay.innerHTML = '';document.body.classList.remove('modalOpen'); };
@@ -114,8 +121,8 @@
   const repairPopover=document.createElement('div');repairPopover.id='repairPopover';repairPopover.hidden=true;
   document.querySelector('.boardframe').append(repairPopover);
   const closeRepairTile=()=>{repairPopover.hidden=true;repairPopover.replaceChildren()};
-  const showRepairTile=cell=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair;if(!r||getSave().repairs?.[level.n])return;const p=[Number(cell.dataset.x),Number(cell.dataset.y)],safe=window.__campaign.canRepairMove(p),cost=gems.repairPrice(r.cost),missing=Math.max(0,cost-getSave().gems);const frame=document.querySelector('.boardframe'),box=cell.getBoundingClientRect(),outer=frame.getBoundingClientRect();repairPopover.style.left=Math.max(6,Math.min(outer.width-174,box.left-outer.left+box.width/2-85))+'px';repairPopover.style.top=Math.max(4,box.top-outer.top-79)+'px';repairPopover.innerHTML=`<strong class="gemAmount">${gemAmount(cost)} gems</strong>${missing?`<small>Need ${missing.toLocaleString()} more gems</small>`:safe?'<button type="button" data-repair-move>Repair &amp; move</button>':'<small>Move beside this tile first</small>'}<button type="button" data-repair-tile-cancel aria-label="Close repair cost">×</button>`;repairPopover.dataset.x=p[0];repairPopover.dataset.y=p[1];repairPopover.hidden=false};
-  repairPopover.addEventListener('click',e=>{e.stopPropagation();if(e.target.closest('[data-repair-tile-cancel]')){closeRepairTile();return}if(e.target.closest('[data-repair-move]')){const p=[Number(repairPopover.dataset.x),Number(repairPopover.dataset.y)];closeRepairTile();window.__campaign.repairAndMove(p);renderRepairCallout()}});
+  const showRepairTile=cell=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||s.repairs?.[level.n])return;const p=[Number(cell.dataset.x),Number(cell.dataset.y)],cost=gems.repairPrice(r.cost),stock=s.powerStock?.road_repair||0,moveRequired=r.effect==='open',beside=Math.abs(p[0]-window.__campaign.getState().pos[0])+Math.abs(p[1]-window.__campaign.getState().pos[1])===1,canKit=stock>0&&(!moveRequired||window.__campaign.canRepairMove(p,'inventory')),canGems=s.gems>=cost&&(!moveRequired||window.__campaign.canRepairMove(p,'gems'));const frame=document.querySelector('.boardframe'),box=cell.getBoundingClientRect(),outer=frame.getBoundingClientRect();repairPopover.style.left=Math.max(4,Math.min(outer.width-202,box.left-outer.left+box.width/2-100))+'px';repairPopover.style.top=Math.max(4,box.top-outer.top-118)+'px';repairPopover.innerHTML=`<strong>${r.name}</strong><small>${moveRequired?'Clear this tile, then step onto it.':r.effect==='lamp'?'Restore this streetlamp.':r.effect==='beacon'?'Restore this beacon.':'Repair this marked tile.'}</small><div class="repairChoices"><button type="button" data-repair-apply="inventory" ${canKit?'':'disabled'} aria-label="Use one Road Repair charge">⚒ ×${stock}</button><button type="button" data-repair-apply="gems" ${canGems?'':'disabled'} aria-label="Spend ${cost} gems">${gemAmount(cost)}</button></div>${moveRequired&&!beside?'<small>Move beside the tile first</small>':''}<button type="button" data-repair-tile-cancel aria-label="Close repair choices">×</button>`;repairPopover.dataset.x=p[0];repairPopover.dataset.y=p[1];repairPopover.hidden=false};
+  repairPopover.addEventListener('click',e=>{e.stopPropagation();if(e.target.closest('[data-repair-tile-cancel]')){closeRepairTile();return}const button=e.target.closest('[data-repair-apply]');if(!button)return;const payment=button.dataset.repairApply,p=[Number(repairPopover.dataset.x),Number(repairPopover.dataset.y)],r=window.__campaign.getCurrentLevel()?.repair,cell=document.querySelector(`#board .cell[data-x="${p[0]}"][data-y="${p[1]}"]`);closeRepairTile();if(r?.effect==='open')window.__campaign.repairAndMove(p,payment);else window.__campaign.buyRepairConfirmed(cell,payment);renderRepairCallout()});
   document.getElementById('zoomMap').closest('.boardZoom').before(repairCallout);
   const boardMessage=document.createElement('section');
   boardMessage.id='boardMessage';boardMessage.setAttribute('role','status');boardMessage.setAttribute('aria-live','polite');
@@ -127,17 +134,18 @@
   boardMessage.addEventListener('click',()=>boardMessage.classList.toggle('expanded'));
   copyStatus();
   const inspectTile=cell=>{const tag=[...cell.querySelectorAll('.timer,.done')].map(el=>el.textContent.trim()).filter(Boolean).join(' · ');showBoardMessage(cell.getAttribute('aria-label')?.split(': ').at(-1)||'Map tile',tag||'Tap a green neighboring tile to move.');boardMessage.classList.add('expanded')};
-  const renderRepairCallout=()=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||r.effect==='open'){repairCallout.hidden=true;return}repairCallout.hidden=false;const bought=!!s.repairs?.[level.n],cost=gems.repairPrice(r.cost),missing=Math.max(0,cost-s.gems);repairCallout.innerHTML=`<div class="repairMark" aria-hidden="true">⚒</div><div class="repairInfo"><strong>${bought?'Road repaired':r.name}</strong><span class="gemAmount">${bought?'Shortcut active':`${gemAmount(cost)} gems · ${gemAmount(s.gems)} owned${missing?` · need ${missing} more`:''}`}</span></div><button type="button" data-repair-open ${bought?'disabled':''}>${bought?'Done':'View'}</button>`};
+  const renderRepairCallout=()=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||r.effect==='open'||s.repairs?.[level.n]){repairCallout.hidden=true;return}repairCallout.hidden=false;repairCallout.innerHTML=`<div class="repairMark" aria-hidden="true">⚒</div><div class="repairInfo"><strong>${r.name}</strong></div><button type="button" data-repair-open>Show tile</button>`};
   new MutationObserver(renderRepairCallout).observe(document.getElementById('repairBody'),{childList:true,subtree:true});
   repairCallout.addEventListener('click',e=>{if(e.target.closest('[data-repair-open]'))confirmRepair()});
-  const confirmRepair=()=>{const level=window.__campaign.getCurrentLevel(),r=level?.repair,s=getSave();if(!r||s.repairs?.[level.n])return;if(r.effect==='open'){const cell=document.querySelector(`#board .cell[data-x="${r.tile[0]}"][data-y="${r.tile[1]}"]`);if(cell)showRepairTile(cell);return}const cost=gems.repairPrice(r.cost),missing=Math.max(0,cost-s.gems);panel('Repair this road?',`<p><strong>${r.name}</strong></p><div class="repairCost"><span>Repair cost <strong class="gemAmount">${gemAmount(cost)} gems</strong></span><span>Owned <strong class="gemAmount">${gemAmount(s.gems)} gems</strong></span></div>${missing?`<p class="repairMissing">Need ${missing.toLocaleString()} more gems. Earn points and exchange them in the Shop.</p>`:''}<div class="repairActions"><button type="button" data-repair-cancel>Keep gems</button><button type="button" data-repair-approve ${missing?'disabled':''}>Spend ${cost} gems</button></div>`);overlay.querySelector('.integratedPanel').classList.add('repairPanel')};
+  const confirmRepair=()=>{const r=window.__campaign.getCurrentLevel()?.repair;if(!r)return;const cell=document.querySelector(`#board .cell[data-x="${r.tile[0]}"][data-y="${r.tile[1]}"]`);if(cell)showRepairTile(cell)};
   renderRepairCallout();
   const handledResults=new WeakSet();
   new MutationObserver(()=>{const result=document.querySelector('#board .boardOverlay .routeResults');if(!result||handledResults.has(result))return;const state=window.__campaign.getState(),level=window.__campaign.getCurrentLevel();if(!state.done)return;handledResults.add(result);const allHomes=state.mask===(1<<level.homes.length)-1,save=getSave();window.LLCPlayerData.record({levelId:level.n,steps:state.turns,mask:state.mask,wallet:save.wallet,earned:state.earned,allHomes,repairActive:!!save.repairs?.[level.n],powerUsed:!!state.powerUsed});if(allHomes){const personal=window.LLCPlayerData.bestFor(level.n);if(personal)result.children[1].querySelector('strong').textContent=personal.steps}const best=result.querySelector('[data-global-best]'),note=result.parentElement.querySelectorAll('.routeNote')[1];if(!allHomes){if(note)note.textContent='All-player best is for lighting every house and returning to the depot.';return}window.LLCPlayerData.globalBest(level.n).then(record=>{if(!result.isConnected)return;if(record.status==='ready'){best.textContent=record.steps.toLocaleString();if(note)note.textContent='Best full-delivery route by '+record.playerName+'.'}else if(note)note.textContent='All-player best is unavailable until shared results are connected.'})}).observe(document.getElementById('board'),{childList:true});
   const openTrophies = () => {
     const profile=window.LLCPlayerData.profile(),s = getSave(), clear = Object.keys(s.cleared || {}).filter(n => s.cleared[n] && +n <= 2000).length;
     const mastery = Object.keys(s.mastered || {}).filter(n => s.mastered[n] && +n <= 2000).length;
-    panel('Trophy Cabinet', `<p>${profile.displayName} · results saved on this device. A linked player account is planned for shared records.</p><div class="stats"><div class="stat"><label>Levels cleared</label><strong>${clear} / 2000</strong></div><div class="stat"><label>Mastered</label><strong>${mastery}</strong></div></div><div class="badge"><strong>First Delivery</strong><p>${clear >= 1 ? 'Earned' : 'Clear your first level'}</p></div><div class="badge"><strong>Ten Roads</strong><p>${clear >= 10 ? 'Earned' : `${10 - clear} unique clears to go`}</p></div><div class="badge"><strong>Chapter Lantern</strong><p>${Math.floor(clear / 10)} sets of ten clears recorded. A chapter-specific trophy rule needs review.</p></div><p class="note">Trophy rewards and shared leaderboards are not active in this offline build.</p>`);
+    trophiesScreen.innerHTML=`<h2>Trophy Cabinet</h2><p>${profile.displayName} · results saved on this device. A linked player account is planned for shared records.</p><div class="stats"><div class="stat"><label>Levels cleared</label><strong>${clear} / 2000</strong></div><div class="stat"><label>Mastered</label><strong>${mastery}</strong></div></div><div class="badge"><strong>First Delivery</strong><p>${clear >= 1 ? 'Earned' : 'Clear your first level'}</p></div><div class="badge"><strong>Ten Roads</strong><p>${clear >= 10 ? 'Earned' : `${10 - clear} unique clears to go`}</p></div><div class="badge"><strong>Chapter Lantern</strong><p>${Math.floor(clear / 10)} sets of ten clears recorded. A chapter-specific trophy rule needs review.</p></div><p class="note">Trophy rewards and shared leaderboards are not active in this offline build.</p>`;
+    document.body.dataset.screen='trophies';setActive('trophies');side.scrollTop=0;
   };
   const openShop = () => {
     close();
@@ -168,10 +176,10 @@
     if(e.target.closest('[data-gem-pack]')){const note=shopScreen.querySelector('.shopNote');note.textContent='Checkout unavailable in this browser build';note.scrollIntoView({block:'nearest',behavior:'smooth'})}
   });
   const openCourier = () => {
-    panel('Choose Courier', `<div class="appearanceStage"><div class="appearanceHero">${outfit()}</div><div class="appearanceSelected"><strong>${baseNames[selectedCourier]}</strong><span>${looks[selectedLook]}</span></div></div><h3>Courier <small>${selectedCourier+1} / 18</small></h3><div class="appearanceGrid courierGrid">${baseNames.map((name,i) => `<button type="button" data-courier="${i}" class="${i===selectedCourier?'selected':''}" aria-label="Choose ${name}" title="${name}"><img src="${image(i)}" alt=""><span>${name.split(' ')[0]}</span></button>`).join('')}</div><h3>Wardrobe <small>${looks[selectedLook]}</small></h3><div class="appearanceGrid lookGrid">${looks.map((name,i) => `<button type="button" data-look="${i}" class="${i===selectedLook?'selected':''}" aria-label="Choose ${name}" title="${name}"><span class="lookSwatch look${i}">✦</span><span>${name}</span></button>`).join('')}</div><p class="appearanceNote">Courier and outfit selections save on this device. Shadows now follow the map region.</p>`);
-    overlay.querySelector('.integratedPanel').classList.add('courierPanel');
-    drawOutfitCanvas();
+    courierScreen.innerHTML=`<h2>Choose Courier</h2><div class="appearanceStage"><div class="appearanceHero">${outfit()}</div><div class="appearanceSelected"><strong>${baseNames[selectedCourier]}</strong><span>${looks[selectedLook]}</span></div></div><h3>Courier <small>${selectedCourier+1} / 18</small></h3><div class="appearanceGrid courierGrid">${baseNames.map((name,i) => `<button type="button" data-courier="${i}" class="${i===selectedCourier?'selected':''}" aria-label="Choose ${name}" title="${name}"><img src="${image(i)}" alt=""><span>${name.split(' ')[0]}</span></button>`).join('')}</div><h3>Wardrobe <small>${looks[selectedLook]}</small></h3><div class="appearanceGrid lookGrid">${looks.map((name,i) => `<button type="button" data-look="${i}" class="${i===selectedLook?'selected':''}" aria-label="Choose ${name}" title="${name}"><span class="lookSwatch look${i}">✦</span><span>${name}</span></button>`).join('')}</div><p class="appearanceNote">Courier and outfit selections save on this device. Shadows follow the map region.</p>`;
+    document.body.dataset.screen='courier';setActive('courier');side.scrollTop=0;drawOutfitCanvas();
   };
+  courierScreen.addEventListener('click',e=>{const b=e.target.closest('[data-courier]');if(b){selectedCourier=Number(b.dataset.courier);saveAppearance();openCourier();return}const look=e.target.closest('[data-look]');if(look){selectedLook=Number(look.dataset.look);saveAppearance();openCourier()}});
   const navigate = id => {
     setActive(id); close();
     if (id === 'map') { legacyNav.querySelector('[data-screen="levels"]').click(); renderJourney(); }
@@ -188,12 +196,6 @@
   overlay.addEventListener('click', e => {
     if (e.target === overlay || e.target.closest('.close')) { close(); return; }
     if(e.target.closest('[data-open-guide]')){close();enterBoard();document.getElementById('help').click();return}
-    if(e.target.closest('[data-repair-cancel]')){close();return}
-    if(e.target.closest('[data-repair-approve]')){const origin=repairCallout.querySelector('[data-repair-open]');window.__campaign.buyRepairConfirmed(origin);close();renderRepairCallout();return}
-    const b = e.target.closest('[data-courier]');
-    if (b) { selectedCourier = Number(b.dataset.courier); saveAppearance(); openCourier(); }
-    const look = e.target.closest('[data-look]');
-    if (look) { selectedLook = Number(look.dataset.look); saveAppearance(); openCourier(); }
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) close(); });
   try{if(!localStorage.getItem('llc-storybook-view-v1')){window.__campaign.setView('overhead');localStorage.setItem('llc-storybook-view-v1','1')}}catch(_){}

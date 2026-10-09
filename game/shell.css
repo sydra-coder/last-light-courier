@@ -266,11 +266,14 @@ body[data-screen="play"] #repairCallout .repairMark{width:24px;height:24px}
 body[data-screen="play"] #repairCallout button{padding:5px 7px}
 body.testerBuild #levelTitle::after{content:'TEST';margin-left:6px;padding:2px 4px;border:1px solid #ffd48b;border-radius:4px;color:#ffe2ad;font:800 8px Arial,sans-serif;vertical-align:middle}
 body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin-top:4px;color:#ffe2ad;font:800 10px Arial,sans-serif;letter-spacing:.15em}
-#repairPopover{position:absolute;z-index:40;width:170px;min-height:58px;padding:7px 22px 7px 8px;background:#152d3e;border:2px solid #ffd15f;border-radius:9px;box-shadow:0 6px 20px #071321bb;color:#ffdf9a;font:700 11px/1.2 system-ui,sans-serif}
+#repairPopover{position:absolute;z-index:40;width:200px;min-height:88px;padding:8px 23px 8px 8px;background:#152d3e;border:2px solid #ffd15f;border-radius:9px;box-shadow:0 6px 20px #071321bb;color:#ffdf9a;font:700 11px/1.2 system-ui,sans-serif}
 #repairPopover[hidden]{display:none}
 #repairPopover strong,#repairPopover small{display:block}
 #repairPopover small{color:#d9dfda;font-weight:500;margin-top:3px}
-#repairPopover [data-repair-move]{display:block;margin-top:4px;padding:4px 7px;border:1px solid #f7d98c;border-radius:5px;background:#eebd65;color:#172435;font-weight:800;font-size:11px}
+#repairPopover .repairChoices{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+#repairPopover [data-repair-apply]{display:flex;align-items:center;justify-content:center;gap:3px;min-height:33px;padding:3px 5px;border:1px solid #f7d98c;border-radius:6px;background:#665037;color:#fff0d8;font-weight:900;font-size:11px}
+#repairPopover [data-repair-apply]:disabled{opacity:.4}
+#repairPopover [data-repair-apply] .gemIcon{width:16px;height:16px}
 #repairPopover [data-repair-tile-cancel]{position:absolute;right:3px;top:2px;border:0;background:transparent;color:#ffe8af;font-size:17px}
 #board .cell.repairable{box-shadow:inset 0 0 0 3px #ffdb5e,0 0 8px #ffcb55!important;background:#ffd35832!important;z-index:2}
 #board .cell.houseUnlit{box-shadow:inset 0 0 0 3px #ffad4d,0 0 12px 3px #ff9a3caa!important;z-index:2}
@@ -376,3 +379,19 @@ body[data-screen="shop"] .game{display:none}
 .shopPage .exchangeControls button:disabled{opacity:.4}
 .shopPage .exchangeControls output{color:#fff0d6;text-align:center;font-size:15px;font-weight:900}
 .shopPage .exchangeControls .exchangeCommit{background:linear-gradient(#ffe0a0,#cf9253);color:#302313;font-size:13px}
+#courierScreen,#trophiesScreen,#resourceStrip{display:none}
+body[data-screen="courier"] #courierScreen,body[data-screen="trophies"] #trophiesScreen{display:block}
+body[data-screen="levels"] #resourceStrip,body[data-screen="courier"] #resourceStrip,body[data-screen="trophies"] #resourceStrip{display:flex}
+#resourceStrip{position:sticky;top:0;z-index:8;align-items:center;justify-content:space-between;gap:8px;margin:0 0 7px;padding:7px 10px;border:1px solid #85cdd8;border-radius:10px;background:#153c51;box-shadow:0 3px 8px #07152388;color:#e1fcff;font-size:14px}
+#resourceStrip .gemIcon,#resourceStrip .pointIcon{width:23px;height:23px}
+#resourceStrip .pointAmount{color:#ffe0a5}
+.tabPage{width:100%;min-height:100%;margin:0;padding:13px 12px 25px;border:1px solid #9a7954;border-radius:15px;background:linear-gradient(#263e54,#102238);color:#f6e8d0}
+.tabPage h2{margin:0 0 9px;font:700 24px Georgia,serif;color:#ffe2ac}
+.tabPage p{font-size:12px;line-height:1.4;color:#d0d8dd}
+.courierPage{max-height:none;overflow:visible}
+.courierPage .appearanceGrid{margin-bottom:4px}
+.trophiesPage .stats{display:grid;grid-template-columns:repeat(2,1fr)}
+.trophiesPage .badge{padding:11px;margin:8px 0;border:1px solid #7c7a6d;border-radius:10px;background:#172b3d}
+.trophiesPage .badge strong{color:#ffdd9d}
+.trophiesPage .badge p{margin:5px 0 0}
+body[data-screen="courier"] .side,body[data-screen="trophies"] .side{display:block;overflow-y:auto;overscroll-behavior:contain}

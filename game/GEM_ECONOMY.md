@@ -1,8 +1,8 @@
 # Gem shop review rules
 
-The browser game keeps earned points as the play score. Repairs and optional power restocks spend gems. Players can select multiple **2,000 earned points → 20 gems** batches in the Shop and exchange them in one transaction. The +/− controls never spend points; Exchange applies the total. A paid pack preview never adds gems. The tester build starts with 200 test gems; its save is separate from the player build.
+The browser game keeps earned points as the play score. Map repairs can spend one Road Repair inventory charge or their shown gem price; optional power restocks spend gems. Players can select multiple **2,000 earned points → 20 gems** batches in the Shop and exchange them in one transaction. The +/− controls never spend points; Exchange applies the total. A paid pack preview never adds gems. The tester build starts with 200 test gems; its save is separate from the player build.
 
-The Shop sells power charges and displays gem packs. It does not list a level-specific repair: the player inspects the marked tile on the map and sees its cost before choosing whether to repair it.
+The Shop sells power charges and displays gem packs. It does not list a level-specific repair: the player inspects the marked tile on the map and chooses an inventory charge or the displayed gem price. The selected resource is spent only when the repair succeeds.
 
 Shop prices use four visible gem tiers. Existing repair prices in level data determine the tier without changing the levels: old cost 1–1,000 points = 10 gems; 1,001–2,000 = 15; 2,001–5,000 = 20; above 5,000 = 50. A zero-cost repair remains free. Milestone unlocks and level-provided power charges remain available.
 
