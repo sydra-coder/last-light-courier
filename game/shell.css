@@ -369,3 +369,12 @@ body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin
 .gemShopPanel #powerShop details>summary{display:none}
 .gemShopPanel #powerShop .powerGemBalance{display:none}
 .gemShopPanel #powerShop .powerCartFooter{bottom:-13px}
+#shopScreen{display:none}
+body[data-screen="shop"] #shopScreen{display:block}
+.shopPage{width:100%;max-height:none;min-height:100%;overflow:visible;margin:0;padding:13px 12px 25px;border:1px solid #9a7954;border-radius:15px;background:linear-gradient(#263e54,#102238);color:#f6e8d0}
+.shopPage h2{margin:0 0 9px;font:700 25px Georgia,serif;color:#ffe2ac}
+.shopPage h3{margin-top:15px}
+.shopPage .shopWallet{top:0}
+.shopPage #powerShop .powerCartFooter{bottom:4px}
+body[data-screen="shop"] .side{display:block;overflow-y:auto;overscroll-behavior:contain}
+body[data-screen="shop"] .game{display:none}
