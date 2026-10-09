@@ -350,3 +350,22 @@ body.testerBuild .storybookWordmark::after{content:'TESTER';display:block;margin
 #powerShop .cartTotal .gemIcon{width:23px;height:23px}
 #powerShop .powerCartFooter button{min-height:39px;padding:7px 15px;border:1px solid #ffe1a0;border-radius:8px;background:linear-gradient(#ffe0a0,#ce9253);color:#312111;font-weight:900}
 #powerShop .powerCartFooter button:disabled{opacity:.45}
+.gemShopPanel{max-height:calc(100dvh - 104px);overflow-y:auto;overscroll-behavior:contain}
+.gemShopPanel h3{display:flex;align-items:center;gap:5px;margin:12px 0 6px;font:900 14px system-ui;color:#ffe0a3}
+.gemShopPanel h3 .gemIcon{width:16px;height:16px}
+.gemShopPanel .shopWallet{position:sticky;top:-13px;z-index:4;box-shadow:0 3px 8px #07152388}
+.gemShopPanel .marketRepair{display:grid;grid-template-columns:32px minmax(0,1fr) auto auto;align-items:center;gap:6px;min-height:51px;padding:7px;border:1px solid #a78f68;border-radius:10px;background:#263c4b}
+.gemShopPanel .marketRepair.empty{grid-template-columns:32px 1fr}
+.gemShopPanel .marketRepairIcon{display:grid;place-items:center;width:29px;height:29px;border:1px solid #c7a06d;border-radius:7px;background:#644a35;color:#ffe3aa}
+.gemShopPanel .marketRepair b,.gemShopPanel .marketRepair small{display:block}
+.gemShopPanel .marketRepair b{font-size:12px}
+.gemShopPanel .marketRepair small{font-size:10px;color:#c6d2d8}
+.gemShopPanel .marketRepair .gemAmount{font-size:12px}
+.gemShopPanel .marketRepair .gemIcon{width:15px;height:15px}
+.gemShopPanel .marketRepair button{min-width:53px;min-height:33px;padding:4px 6px;border:1px solid #e9c581;border-radius:7px;background:#76573a;color:#ffebc6;font-weight:900;font-size:11px}
+.gemShopPanel .marketRepair button:disabled{opacity:.5}
+.gemShopPanel #powerShop{margin-top:0}
+.gemShopPanel #powerShop details{display:block}
+.gemShopPanel #powerShop details>summary{display:none}
+.gemShopPanel #powerShop .powerGemBalance{display:none}
+.gemShopPanel #powerShop .powerCartFooter{bottom:-13px}

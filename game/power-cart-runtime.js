@@ -30,6 +30,6 @@ $('powerShop').addEventListener('click',event=>{
   if(!selected.length||total<=0||total>save.gems||selected.some(item=>!save.powerUnlocked?.[item.id]))return;
   save.gems-=total;
   for(const item of selected){save.powerStock[item.id]=(save.powerStock[item.id]||0)+powerCart[item.id];powerCart[item.id]=0}
-  persist();render();setStatus('Powers restocked',selected.length+' types',total+' gems spent.');
+  persist();render();setStatus('Powers restocked',selected.length+' types',total+' gems spent.');window.dispatchEvent(new Event('llc:gem-balance-change'));
 });
 syncPowerUnlocks();
