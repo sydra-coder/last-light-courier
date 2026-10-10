@@ -111,11 +111,7 @@
   const restorePowerShop=()=>{if(powerShop.parentElement!==powerShopHome)powerShopHome.append(powerShop)};
   const close = () => { restorePowerShop();overlay.hidden = true; overlay.innerHTML = '';document.body.classList.remove('modalOpen'); };
   const panel = (title, body) => { restorePowerShop();overlay.hidden = false;document.body.classList.add('modalOpen');overlay.innerHTML = `<section class="integratedPanel" role="dialog" aria-modal="true" aria-label="${title}"><div class="head"><h2>${title}</h2><button class="close" type="button" aria-label="Close">×</button></div>${body}</section>`; };
-  const legendButton=document.createElement('button');
-  legendButton.type='button';legendButton.id='boardLegendButton';legendButton.setAttribute('aria-label','Map symbols');legendButton.textContent='?';
-  document.getElementById('zoomMap').after(legendButton);
-  document.querySelector('.boardZoom').prepend(document.getElementById('retry'));
-  legendButton.addEventListener('click',()=>{const rows=[...document.querySelectorAll('#mapLegend .mapLegendRow')].map(row=>{const canvas=row.querySelector('canvas');return `<div class="symbolRow"><img src="${canvas.toDataURL()}" alt=""><div><strong>${row.querySelector('b')?.textContent||''}</strong><small>${row.querySelector('small')?.textContent||''}</small></div></div>`}).join('');panel('Help and map symbols',`<button type="button" class="guideButton" data-open-guide>How to play this level</button><p>Symbols used on this route. Tap a highlighted neighboring tile to move.</p><div class="symbolList">${rows}</div>`);overlay.querySelector('.integratedPanel').classList.add('legendPanel')});
+  document.getElementById('zoomMap').title='Zoom map';
   const repairCallout=document.createElement('section');
   repairCallout.id='repairCallout';
   const repairPopover=document.createElement('div');repairPopover.id='repairPopover';repairPopover.hidden=true;
@@ -125,7 +121,7 @@
   repairPopover.addEventListener('click',e=>{e.stopPropagation();if(e.target.closest('[data-repair-tile-cancel]')){closeRepairTile();return}const button=e.target.closest('[data-repair-apply]');if(!button)return;const payment=button.dataset.repairApply,p=[Number(repairPopover.dataset.x),Number(repairPopover.dataset.y)],r=window.__campaign.getCurrentLevel()?.repair,cell=document.querySelector(`#board .cell[data-x="${p[0]}"][data-y="${p[1]}"]`);closeRepairTile();if(r?.effect==='open')window.__campaign.repairAndMove(p,payment);else window.__campaign.buyRepairConfirmed(cell,payment);renderRepairCallout()});
   document.getElementById('zoomMap').closest('.boardZoom').before(repairCallout);
   const boardMessage=document.createElement('section');
-  boardMessage.id='boardMessage';boardMessage.setAttribute('role','status');boardMessage.setAttribute('aria-live','polite');
+  boardMessage.id='boardMessage';boardMessage.hidden=true;boardMessage.setAttribute('role','status');boardMessage.setAttribute('aria-live','polite');
   boardMessage.innerHTML='<strong></strong><span></span>';
   document.getElementById('zoomMap').closest('.boardZoom').before(boardMessage);
   const showBoardMessage=(title,body)=>{boardMessage.querySelector('strong').textContent=title||'Route update';boardMessage.querySelector('span').textContent=body||'';boardMessage.classList.remove('expanded')};

@@ -417,4 +417,13 @@ body[data-screen="levels"] #resourceStrip,body[data-screen="courier"] #resourceS
 .trophyReward{display:grid;justify-items:end;gap:4px}.trophyReward>span{display:flex;align-items:center;gap:2px;color:#ffe1a7;font-size:11px;font-weight:700}.trophyReward .pointIcon{width:17px;height:20px}
 .trophyReward button{min-width:69px;padding:5px 7px;border:1px solid #ffda92;border-radius:7px;background:linear-gradient(#ffd98e,#c5894c);color:#302538;font-size:11px;font-weight:800}.trophyReward button:disabled{opacity:.58;filter:grayscale(.6)}.trophyCard.claimed .trophyReward button{background:#2d7458;color:#fff}
 .trophyFoot{text-align:center}
+/* Keep one compact map action; route updates remain available to regression fixtures only. */
+#boardMessage[hidden]{display:none!important}
+body[data-screen="play"] #playScreen .boardZoom{justify-content:flex-end;margin:2px 0 4px;min-height:30px}
+body[data-screen="play"] #playScreen:not(.largeBoard) .boardZoom{display:none}
+body[data-screen="play"] #playScreen .boardZoom #focusCourier,body[data-screen="play"] #playScreen .boardZoom #focusDestination,body[data-screen="play"] #playScreen .boardZoom label[for="focusDestination"],body[data-screen="play"] #playScreen .boardZoom #retry{display:none!important}
+body[data-screen="play"] #playScreen .boardZoom #zoomMap{display:none;align-items:center;justify-content:center;width:32px;min-width:32px;height:30px;min-height:30px;padding:0;border:1px solid #d6ad6e;border-radius:7px;background:#283f50;color:#ffdb94;font-size:0}
+body[data-screen="play"] #playScreen.largeBoard .boardZoom #zoomMap{display:inline-flex}
+body[data-screen="play"] #playScreen .boardZoom #zoomMap::before{content:'⛶';font:900 23px/1 Arial,sans-serif}
+body[data-screen="play"] #playScreen .boardZoom #zoomMap[aria-pressed="true"]::before{content:'⊟';font-size:22px}
 body[data-screen="courier"] .side,body[data-screen="trophies"] .side{display:block;overflow-y:auto;overscroll-behavior:contain}
