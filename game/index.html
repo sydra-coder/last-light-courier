@@ -638,7 +638,7 @@ $('board').addEventListener('click',e=>{const action=e.target.closest('[data-act
 function onLegendTap(e){const button=e.target.closest('[data-legend-help]');if(!button)return;legendTrigger=button;const key=button.dataset.legendHelp;$('legendHelpTitle').textContent=button.querySelector('b')?.textContent||button.title;$('legendHelpText').textContent=LEGEND_DETAILS[key];ISO.legend($('legendHelpIcon'),key);$('legendHelp').hidden=false;$('legendHelpClose').focus()}
 $('mapLegend').addEventListener('click',onLegendTap);$('mapIconRail').addEventListener('click',onLegendTap);
 $('legendHelpClose').addEventListener('click',closeLegendHelp);$('legendHelp').addEventListener('click',e=>{if(e.target===$('legendHelp'))closeLegendHelp()});document.addEventListener('keydown',e=>{if(!$('legendHelp').hidden&&e.key==='Escape')closeLegendHelp();if(!$('legendHelp').hidden&&e.key==='Tab'){e.preventDefault();$('legendHelpClose').focus()}});
-$('zoomMap').addEventListener('click',()=>{setMapZoom(!$('scene').parentElement.classList.contains('zoomed'));focusZoomMap()});
+$('zoomMap').addEventListener('click',()=>{setMapZoom(!$('scene').parentElement.classList.contains('zoomed'));render()});
 $('focusCourier').addEventListener('click',()=>focusMapTile(state.pos,true));
 $('focusDestination').addEventListener('change',e=>{const value=e.target.value;if(!value)return;const p=value==='depot'?level.depot:level.homes[Number(value)-1]?.p;if(p)focusMapTile(p,true)});
 $('menu').addEventListener('click',showMenu);

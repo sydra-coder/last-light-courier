@@ -159,6 +159,7 @@ for(const event of ['pointerdown','wheel','touchstart'])document.querySelector('
 `);
 replaceOnce("$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos));", "$('focusCourier').addEventListener('click',()=>focusMapTile(state.pos,true));");
 replaceOnce('if(p)focusMapTile(p)});', 'if(p)focusMapTile(p,true)});');
+replaceOnce("$('zoomMap').addEventListener('click',()=>{setMapZoom(!$('scene').parentElement.classList.contains('zoomed'));focusZoomMap()});", "$('zoomMap').addEventListener('click',()=>{setMapZoom(!$('scene').parentElement.classList.contains('zoomed'));render()});");
 replaceOnce("const zoom=!!window.matchMedia?.('(max-width:610px)').matches&&level.grid>=16;", "const zoom=level.grid>12;");
 replaceOnce("reset();$('playScreen').scrollTop=0}", "reset();if(zoom)requestAnimationFrame(()=>focusZoomMap(true));$('playScreen').scrollTop=0}");
 replaceOnce('Tap REPAIR on the marked tile to buy instantly with banked points.', 'Tap REPAIR on the marked tile to view the gem cost and confirm.');
