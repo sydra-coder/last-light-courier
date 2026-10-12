@@ -40,6 +40,8 @@
   let selectedShadow = regionShadow[Math.min(19,Math.floor(((Number(document.getElementById('levelTitle').textContent.match(/\d+/)?.[0])||1)-1)/100))];
   const looks = ['Roadworn','Marigold Trail','Hollowmoon','Gilded Lantern','Hearthbound','Starwake'];
   const lookAssets = ['','dussehra','halloween','diwali','christmas','new-year'];
+  const outfitEdges=()=>{const sheet=window.LLC_WARDROBE_SEAMS[selectedCourier],left=selectedLook===1?null:sheet.edges[selectedLook-2],right=selectedLook===5?null:sheet.edges[selectedLook-1];return {sheet,left,right,sx:left?Math.min(...left):0,ex:right?Math.max(...right):sheet.width}};
+  const drawOutfitFrame=(ctx,img,dx,dy,dw,dh)=>{const {sheet,left,right,sx,ex}=outfitEdges(),sw=ex-sx,count=(left||right).length,toX=x=>dx+(x-sx)/sw*dw,toY=y=>dy+y/sheet.height*dh;ctx.save();ctx.beginPath();ctx.moveTo(toX(right?.[0]??sheet.width),dy);for(let i=1;i<count;i++)ctx.lineTo(toX(right?.[i]??sheet.width),toY(Math.min(i*sheet.step,sheet.height-1)));ctx.lineTo(toX(right?.[count-1]??sheet.width),dy+dh);ctx.lineTo(toX(left?.[count-1]??0),dy+dh);for(let i=count-1;i>=0;i--)ctx.lineTo(toX(left?.[i]??0),toY(Math.min(i*sheet.step,sheet.height-1)));ctx.closePath();ctx.clip();ctx.drawImage(img,sx,0,sw,sheet.height,dx,dy,dw,dh);ctx.restore()};
   const image = i => `../design/character-variants/${String(i+1).padStart(2,'0')}-${ids[i]}.png`;
   const shadowImage = i => `../design/shadow-variants/${String(i+1).padStart(2,'0')}-${shadowIds[i]}.png`;
   const cache = new Map();
@@ -52,7 +54,7 @@
   const onLevelChosen = n => { selectedShadow=regionShadow[Math.min(19,Math.floor((n-1)/100))];playScreen.classList.toggle('largeBoard',(window.__campaign.levels[n-1]?.grid||8)>=12);getImage(shadowImage(selectedShadow));updateAmbient();startAmbient(); };
   window.__appearance = {
     drawBackdrop(ctx,w,h) { if(!storyBackdrop.complete||!storyBackdrop.naturalWidth)return false; ctx.drawImage(storyBackdrop,727,228,337,315,0,0,w,h); ctx.fillStyle='#0a1a2b98'; ctx.fillRect(0,0,w,h); return true; },
-    drawCourier(ctx,x,y,moving,t) { const img=getImage(courierAsset()); if (!img.complete || !img.naturalWidth) return false; ctx.save(); const bob=moving?Math.sin(t*.028)*2:0; ctx.shadowColor='#f8c777'; ctx.shadowBlur=8; if (selectedLook && selectedCourier !== 0) { const w=img.naturalWidth/5; ctx.drawImage(img,w*(selectedLook-1),0,w,img.naturalHeight,x-29,y-57+bob,58,66); } else ctx.drawImage(img,x-29,y-57+bob,58,66); ctx.restore(); return true; },
+    drawCourier(ctx,x,y,moving,t) { const img=getImage(courierAsset()); if (!img.complete || !img.naturalWidth) return false; ctx.save(); const bob=moving?Math.sin(t*.028)*2:0; ctx.shadowColor='#f8c777'; ctx.shadowBlur=8; if (selectedLook && selectedCourier !== 0) drawOutfitFrame(ctx,img,x-29,y-57+bob,58,66); else ctx.drawImage(img,x-29,y-57+bob,58,66); ctx.restore(); return true; },
     drawShadow(ctx,x,y,echo,moving,t) { const img=getImage(shadowImage(selectedShadow)); if (!img.complete || !img.naturalWidth) return false; ctx.save(); ctx.globalAlpha=echo?.58:1; ctx.shadowColor='#ba8dec'; ctx.shadowBlur=12; const sway=moving?Math.sin(t*.02)*2:0; ctx.drawImage(img,x-25+sway,y-51,50,56); ctx.restore(); return true; }
   };
   const outfit = () => {
@@ -60,7 +62,7 @@
     if (selectedCourier === 0) return `<img src="../design/character-variants/holiday-wardrobe/01-ember-scout-${lookAssets[selectedLook]}.png" alt="${baseNames[selectedCourier]} in ${looks[selectedLook]}">`;
     return `<canvas class="outfitCanvas" width="125" height="155" role="img" aria-label="${baseNames[selectedCourier]} in ${looks[selectedLook]}" data-sheet="../design/character-variants/holiday-wardrobe/${String(selectedCourier+1).padStart(2,'0')}-${ids[selectedCourier]}-five-looks.png" data-look="${selectedLook}"></canvas>`;
   };
-  const drawOutfitCanvas = () => { const canvas=courierScreen.querySelector('.outfitCanvas');if(!canvas)return;const img=new Image();img.onload=()=>{if(!canvas.isConnected)return;const ctx=canvas.getContext('2d'),sw=img.naturalWidth/5,scale=Math.min(canvas.width/sw,canvas.height/img.naturalHeight),dw=sw*scale,dh=img.naturalHeight*scale;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,(Number(canvas.dataset.look)-1)*sw,0,sw,img.naturalHeight,(canvas.width-dw)/2,(canvas.height-dh)/2,dw,dh)};img.src=canvas.dataset.sheet;};
+  const drawOutfitCanvas = () => { const canvas=courierScreen.querySelector('.outfitCanvas');if(!canvas)return;const img=new Image();img.onload=()=>{if(!canvas.isConnected)return;const ctx=canvas.getContext('2d'),{sheet,sx,ex}=outfitEdges(),sw=ex-sx,scale=Math.min(canvas.width/sw,canvas.height/sheet.height),dw=sw*scale,dh=sheet.height*scale;ctx.clearRect(0,0,canvas.width,canvas.height);drawOutfitFrame(ctx,img,(canvas.width-dw)/2,(canvas.height-dh)/2,dw,dh)};img.src=canvas.dataset.sheet;};
   const getSave = () => window.__campaign.getSave();
   const gems = window.LLCGemShop;
   const gemAmount = amount => `${gems.icon}<span>${Number(amount||0).toLocaleString()}</span>`;

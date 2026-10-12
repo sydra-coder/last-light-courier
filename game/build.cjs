@@ -176,7 +176,7 @@ replaceOnce("html+='<div class=\"boardOverlay\" role=\"alert\"><div class=\"over
 replaceOnce("if(what==='map')showPicker();", "if(what==='map')showPicker();if(what==='shell-map')window.__integratedShell?.navigate('map');");
 replaceOnce("function showMenu(){ $('menuCleared')", "function showMenu(){if(window.__integratedShell){window.__integratedShell.navigate('map');return} $('menuCleared')");
 replaceOnce('</head>', '<link rel="stylesheet" href="shell.css"><script src="gem-shop.js"></script><script src="challenge-patrols.js"></script><script src="tile-symbols.js"></script></head>');
-replaceOnce('</body>', '<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="shell.js"></script></body>');
+replaceOnce('</body>', '<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="wardrobe-seams.js"></script><script src="shell.js"></script></body>');
 
 const cartStart=html.indexOf('function renderPowerShop(){');
 const cartComment=html.indexOf('// Let the courier choose any earned tool',cartStart);

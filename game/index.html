@@ -999,5 +999,5 @@ window.CourierApp={back:()=>{if(!$('hintDialog').hidden){closeHint();return true
 const requested=Number(new URLSearchParams(location.search).get('level'));const hasLevel=Number.isInteger(requested)&&requested>=1&&requested<=LEVELS.length;choose(hasLevel?requested:(LEVELS.find(l=>!save.cleared[l.n])?.n||LEVELS.length));switchView(save.viewMode||'isometric');/* The five-tab shell is the entry screen. */
 })();
 </script>
-<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="shell.js"></script></body>
+<script src="region-shadows.js"></script><script src="ambient.js"></script><script src="player-data.js"></script><script src="wardrobe-seams.js"></script><script src="shell.js"></script></body>
 </html>
