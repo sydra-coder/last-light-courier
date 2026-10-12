@@ -16,5 +16,5 @@
   };
   const toolPrices = Object.freeze({anchor_trap:10,decoy_light:10,reveal_pulse:15,lumen_flask:15,road_repair:20,light_bridge:20,map_stabilizer:20,freeze_seal:50,rewind:50});
   const toolPrice = id => toolPrices[id];
-  window.LLCGemShop = Object.freeze({packs,icon,repairPrice,repairPriceFor,toolPrice,exchangePoints:2000,exchangeGems:20});
+  window.LLCGemShop = Object.freeze({packs,icon,repairPrice,repairPriceFor,toolPrice,exchangePoints:5000,exchangeGems:20});
 })();
