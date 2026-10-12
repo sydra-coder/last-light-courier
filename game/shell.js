@@ -118,7 +118,8 @@
   document.getElementById('gameSettings').before(legendButton);
   legendButton.addEventListener('click',()=>{
     const entries=[...document.querySelectorAll('#mapLegend .mapLegendRow')].map(row=>({key:row.dataset.legendHelp,title:row.querySelector('b')?.textContent||'',detail:row.dataset.legendHelp==='repair'?'Open this tile with a repair charge or gems for this level.':row.querySelector('small')?.textContent||'',icon:row.querySelector('canvas')}));
-    panel('Map symbols',`<div class="legendGuide"><div class="legendGuideRow"><span class="legendSwatch safe" aria-hidden="true"></span><div><strong>Green border</strong><small>Safe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch danger" aria-hidden="true"></span><div><strong>Red border</strong><small>Unsafe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch blocked" aria-hidden="true">♠</span><div><strong>Rock or tree</strong><small>Blocked tile</small></div></div>${entries.map(item=>`<div class="legendGuideRow" data-symbol="${item.key}"><canvas width="80" height="70" aria-hidden="true"></canvas><div><strong>${item.title}</strong><small>${item.detail}</small></div></div>`).join('')}</div>`);
+    const nest=window.__campaign.getCurrentLevel()?.shadowSpawner?'<div class="legendGuideRow"><span class="legendSwatch nest" aria-hidden="true">◈</span><div><strong>Shadow nest</strong><small>Fixed hazard. Wakes after the first delivery and spreads to marked cells. Filled cells block your route; the purple patrol moves separately.</small></div></div>':'';
+    panel('Map symbols',`<div class="legendGuide"><div class="legendGuideRow"><span class="legendSwatch safe" aria-hidden="true"></span><div><strong>Green border</strong><small>Safe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch danger" aria-hidden="true"></span><div><strong>Red border</strong><small>Unsafe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch blocked" aria-hidden="true">♠</span><div><strong>Rock or tree</strong><small>Blocked tile</small></div></div>${nest}${entries.map(item=>`<div class="legendGuideRow" data-symbol="${item.key}"><canvas width="80" height="70" aria-hidden="true"></canvas><div><strong>${item.title}</strong><small>${item.detail}</small></div></div>`).join('')}</div>`);
     for(const item of entries){const canvas=overlay.querySelector(`[data-symbol="${item.key}"] canvas`);if(item.icon&&canvas)canvas.getContext('2d').drawImage(item.icon,0,0)}
   });
   document.getElementById('zoomMap').title='Zoom map';
@@ -141,6 +142,9 @@
   copyStatus();
   const inspectTile=cell=>{const tag=[...cell.querySelectorAll('.timer,.done')].map(el=>el.textContent.trim()).filter(Boolean).join(' · ');showBoardMessage(cell.getAttribute('aria-label')?.split(': ').at(-1)||'Map tile',tag||'Tap a green neighboring tile to move.');boardMessage.classList.add('expanded')};
   const board=document.getElementById('board');
+  const markShadowNest=()=>{for(const cell of board.querySelectorAll('.cell.spawnerZone')){const badge=[...cell.querySelectorAll('.timer')].find(item=>/^(SHADOW|NEST|MERGED|SPLIT)$/.test(item.textContent.trim()));if(!badge)continue;const active=badge.textContent.trim()!=='NEST';badge.textContent=active?'◈':'◇';badge.classList.add('nestBadge');badge.setAttribute('aria-label',active?'Shadow nest: filled, route blocked':'Shadow nest: dormant, route open');cell.dataset.nestState=active?'filled':'dormant'}};
+  new MutationObserver(markShadowNest).observe(board,{childList:true,subtree:true});
+  markShadowNest();
   const tilePreview=document.createElement('div');
   tilePreview.id='tilePreview';tilePreview.hidden=true;
   tilePreview.innerHTML='<canvas width="180" height="180" aria-hidden="true"></canvas><strong></strong><span></span><small></small>';
@@ -161,8 +165,8 @@
       kind.contains('ice')?['Thin ice','This crossing breaks four moves after you first use it.']:
       kind.contains('switch')?['Timed switch','Step here to open the timed gate for four moves.']:
       kind.contains('gate')?['Timed gate','Pass through while its switch timer is active.']:
+      kind.contains('spawnerZone')?['Shadow nest',cell.dataset.nestState==='filled'?'This fixed nest has filled this tile. It blocks your route; the moving purple shadow patrols elsewhere.':'This marked tile is open now. After the first delivery, the fixed nest spreads here over time.']:
       kind.contains('wall')?['Blocked tile','Rocks and trees cannot be crossed.']:
-      badge.includes('SHADOW')||badge.includes('NEST')?['Shadow nest','This marked area can fill with shadow after a delivery.']:
       badge.includes('CLOSE')?['Changing road','This road changes after a delivery. Check whether it is open before crossing.']:
       ['Map tile',label];
     tilePreview.querySelector('strong').textContent=info[0];

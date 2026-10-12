@@ -199,6 +199,9 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 .legendSwatch{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:6px;background:#314b5e;color:#cddce3;font-size:22px}
 .legendSwatch.safe{box-shadow:inset 0 0 0 3px #92f8c9}
 .legendSwatch.danger{box-shadow:inset 0 0 0 3px #ff9ca7}
+.legendSwatch.nest{background:#493251;color:#f0b1e8;box-shadow:inset 0 0 0 2px #b978c6}
+#board .spawnerZone .nestBadge{display:grid;place-items:center;min-width:1.2em;height:1.2em;padding:0;border-radius:4px;background:#36233f;color:#e1a9e9;font-size:clamp(12px,1.9vw,19px);line-height:1;box-shadow:0 0 0 1px #b978c6,0 0 8px #9c53ad}
+#board .spawnerZone[data-nest-state="filled"] .nestBadge{background:#682d62;color:#fff0fb;box-shadow:0 0 0 2px #e78ada,0 0 12px #c84abe}
 .legendPanel{max-height:min(78dvh,660px);overflow:auto}
 .legendPanel .symbolList{display:grid;gap:4px;margin-top:8px}
 .legendPanel .symbolRow{display:flex;align-items:center;gap:10px;border-bottom:1px solid #71809555;padding:5px 0}
