@@ -2,8 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const source = path.join(root, 'design', 'campaign-2000-preview', 'index.html');
-const target = path.join(__dirname, 'index.html');
+const source = process.env.LLC_GAME_SOURCE || path.join(root, 'design', 'campaign-2000-preview', 'index.html');
+const target = process.env.LLC_GAME_TARGET || path.join(__dirname, 'index.html');
 const regionMap = JSON.parse(fs.readFileSync(path.join(root, 'design', 'shadow-variants', 'region-shadow-map.json'), 'utf8'));
 if(regionMap.length!==20 || regionMap.some((row,i)=>row.region!==i+1 || !(Number(row.shadow)>=1&&Number(row.shadow)<=19)))throw new Error('Invalid 20-region shadow map');
 fs.writeFileSync(path.join(__dirname,'region-shadows.js'),`window.LLC_REGION_SHADOWS=${JSON.stringify(regionMap.map(row=>Number(row.shadow)-1))};\n`);
@@ -74,6 +74,12 @@ replaceOnce('function featureArt(x,y,feature,closed){', 'function featureArt(x,y
 replaceSome('ctx.scale(.72,.72);house(0,0', 'ctx.scale(1,1);house(0,0');
 replaceSome('ctx.scale(.76,.76);', 'ctx.scale(.95,.95);');
 replaceOnce("const saveKey='last-light-courier-2000-candidate-v1';", "const TESTER_BUILD=false;if(TESTER_BUILD)document.body.classList.add('testerBuild');const saveKey=TESTER_BUILD?'last-light-courier-tester-v1':'last-light-courier-2000-candidate-v1';");
+replaceOnce('if(level.quakeEvent&&!state.quakeTriggered)state.quakeTriggered=true;',"if(level.quakeEvent&&!state.quakeTriggered){if(TESTER_BUILD&&window.LLCQuakePilot?.has(level.n)){level.__quakeBase??=structuredClone(level.quakeEvent);const picked=window.LLCQuakePilot.select(level,state,ROUTE_SOLVER,save);if(picked){level.quakeEvent=picked.quakeEvent;state.quakePilot=picked.log}}state.quakeTriggered=true;}");
+replaceOnce('function reset(){hintPath=null;',"function reset(){if(TESTER_BUILD&&level.__quakeBase)level.quakeEvent=structuredClone(level.__quakeBase);hintPath=null;");
+replaceOnce('if(!state?.quakeStabilized&&!state?.quakeRepaired)walls.add(k(level.quakeEvent.close))','if(!state?.quakeStabilized&&!state?.quakeRepaired){walls.add(k(level.quakeEvent.close));if(TESTER_BUILD)for(const tile of level.quakeEvent.closeExtra||[])walls.add(k(tile))}');
+replaceOnce('if(eq(p,level.quakeEvent.close))return true;','if(eq(p,level.quakeEvent.close)||level.quakeEvent.closeExtra?.some(tile=>eq(p,tile)))return true;');
+replaceOnce("level.quakeEvent&&eq(p,level.quakeEvent.close)?'quakeClose':''","level.quakeEvent&&(eq(p,level.quakeEvent.close)||TESTER_BUILD&&level.quakeEvent.closeExtra?.some(tile=>eq(p,tile)))?'quakeClose':''");
+replaceOnce("if(level.quakeEvent&&eq(p,level.quakeEvent.close))badge+='<span class=\"timer\">'","if(level.quakeEvent&&(eq(p,level.quakeEvent.close)||TESTER_BUILD&&level.quakeEvent.closeExtra?.some(tile=>eq(p,tile))))badge+='<span class=\"timer\">'");
 replaceOnce("if(!Number.isInteger(save.hints))", "save.gems=Number.isSafeInteger(save.gems)&&save.gems>=0?save.gems:0;if(!Number.isInteger(save.hints))");
 replaceOnce('save.hintRewardMilestone=Math.floor(Object.keys(save.cleared).length/10)', 'save.hintRewardMilestone=Math.floor(Object.keys(save.cleared).length/5)');
 replaceOnce('save.pendingHintRewards??=0;save.hintRewardMilestone??=0;', 'save.pendingHintRewards??=0;save.hintRewardMilestone??=Math.floor(Object.keys(save.cleared).length/5);');
@@ -186,8 +192,10 @@ html=html.slice(0,cartStart)+fs.readFileSync(path.join(__dirname,'power-cart-run
 
 html=html.trimEnd()+'\n';
 fs.writeFileSync(target, html);
-const testerTarget=path.join(__dirname,'tester.html');
-const testerHtml=html.replace('const TESTER_BUILD=false;', 'const TESTER_BUILD=true;').replace('<title>Last Light Courier — integrated campaign build</title>','<title>Last Light Courier — tester build</title>');
+const testerTarget=process.env.LLC_GAME_TESTER_TARGET||path.join(__dirname,'tester.html');
+const quakePlans=JSON.parse(fs.readFileSync(path.join(__dirname,'quake-pilot-layouts.json'),'utf8'));
+fs.writeFileSync(path.join(__dirname,'quake-pilot-data.js'),`window.LLC_QUAKE_PILOT_PLANS=${JSON.stringify(quakePlans)};\n`);
+const testerHtml=html.replace('const TESTER_BUILD=false;', 'const TESTER_BUILD=true;').replace('<title>Last Light Courier — integrated campaign build</title>','<title>Last Light Courier — tester build</title>').replace('</head>','<script src="quake-pilot-data.js"></script><script src="quake-pilot.js"></script></head>');
 if(testerHtml===html)throw new Error('Tester build flag missing');
 fs.writeFileSync(testerTarget,testerHtml);
 console.log(`Built player ${target} and tester ${testerTarget} from ${source}`);
