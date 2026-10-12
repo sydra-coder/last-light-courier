@@ -34,6 +34,7 @@ def main():
     parser.add_argument('--network-objectives',type=Path,default=ROOT/'campaign/enhanced/light-networks-v1/circuit_objectives.json')
     parser.add_argument('--express-stops',type=Path,default=ROOT/'campaign/enhanced/transit-v1/current_stop_overlays.json')
     parser.add_argument('--lantern-caps',type=Path,default=ROOT/'campaign/enhanced/lantern-balance-v1/promoted_caps.json')
+    parser.add_argument('--level-1001-balance',type=Path,default=ROOT/'campaign/enhanced/level-1001-balance-v1/overlay.json')
     parser.add_argument('--output',type=Path,default=TARGET)
     args=parser.parse_args()
     levels=json.loads(SOURCE.read_text(encoding='utf-8'))
@@ -230,6 +231,16 @@ def main():
             level=levels[int(level_number)-1]
             assert level['n']==int(level_number) and 0<new_cap<level['cap']
             level['cap']=new_cap
+    level_1001_balance=json.loads(args.level_1001_balance.read_text(encoding='utf-8'))
+    level=levels[1000]
+    assert level['n']==level_1001_balance['level']==1001 and level['cap']>level_1001_balance['cap']
+    openings={f'{x},{y}' for x,y in level_1001_balance['open']}
+    assert len(openings)==2 and openings.issubset(set(level['walls']))
+    level['walls']=sorted(set(level['walls'])-openings)
+    level['cap']=level_1001_balance['cap']
+    level['spine']=[step[:2] for step in level_1001_balance['referenceRoute']]
+    level['referenceMethod']='Shorter flood-aware route with full-rule replay; not globally optimal'
+    level['brief']+=' Two permanent side streets shorten the route; the flood and storm still change the roads after delivery.'
     template=(ROOT/'campaign'/'campaign.template.html').read_text(encoding='utf-8')
     html=template.replace('/*__LEVEL_DATA__*/','const LEVELS='+json.dumps(levels,ensure_ascii=False,separators=(',',':'))+';')
     for marker,source in [('/*__ISOMETRIC_SCENE__*/','isometric-scene.js'),('/*__FEEDBACK_CODE__*/','feedback.js'),('/*__UI_ICONS__*/','ui-icons.js'),('/*__ROUTE_SOLVER__*/','route-solver.js')]:
@@ -499,6 +510,7 @@ def main():
     html=html.replace("enhanceOverlayIcons();ISO.render();renderLevels();renderRepair();renderLegend();drawHint();",
         "enhanceOverlayIcons();ISO.render();renderLevels();renderRepair();renderLegend();renderCandidatePower();renderTransitControl();renderPhaseChoiceControl();drawHint();")
     hint_routes=json.loads(args.hints_path.read_text(encoding='utf-8'))
+    hint_routes[1001-201]=level_1001_balance['referenceRoute']
     signal_hint_routes=json.loads(args.signal_hints_path.read_text(encoding='utf-8'))
     assert len(hint_routes)==1800 and sum(route is not None for route in hint_routes)==1800
     hint_signature=(ROOT/'campaign/enhanced/reference-hints-v1/signature.js').read_text(encoding='utf-8')

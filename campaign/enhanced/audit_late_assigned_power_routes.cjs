@@ -10,6 +10,9 @@ for(const [number,cap] of Object.entries(tuned)){
   if(api.LEVELS[n-1].cap===cap)
     proofs[n-1001]={level:n,route:normalized[n-201].map(step=>({p:[step[0],step[1]],mask:step[2]}))};
 }
+// Level 1001's tightened cap uses its shorter verified reference route.
+if(api.LEVELS[1000].cap===120)
+  proofs[0]={level:1001,route:normalized[800].map(step=>({p:[step[0],step[1]],mask:step[2]}))};
 const failures=[];
 const counts={};
 const freezeTimings={};
