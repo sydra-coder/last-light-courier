@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Last Light Courier · Event review</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c1726;color:#f7e8c7}
+    *{box-sizing:border-box}body{margin:0;padding:18px 16px 40px}main{max-width:720px;margin:auto}
+    h1{font:700 clamp(25px,6vw,38px) Georgia,serif;margin:8px 0 10px}h2{font-size:19px;margin:26px 0 12px;color:#ffd585}
+    p{color:#b9c9d3;line-height:1.45;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px}
+    a.card{display:flex;flex-direction:column;gap:6px;min-height:120px;padding:14px;border:1px solid #7e9bad;border-radius:15px;text-decoration:none;color:inherit;background:#193249;box-shadow:0 4px 18px #0004}
+    a.card:focus-visible,a.card:hover{outline:2px solid #ffd585;background:#24435a}.icon{font-size:25px}.level{font-weight:800;font-size:20px}.detail{font-size:13px;color:#cedbe0}
+    .tag{align-self:flex-start;border:1px solid #ffd585;border-radius:20px;padding:2px 8px;font-size:11px;color:#ffd585}
+    aside{padding:13px 15px;margin-top:24px;border:1px solid #9d8050;border-radius:12px;background:#2b2b3b;color:#e9d5ad;font-size:13px;line-height:1.5}
+  </style>
+</head>
+<body><main>
+  <h1>Event maps to try</h1>
+  <p>Tap a card to open that level in the tester game. Deliver to the first house to trigger its event. The tester has powers and inventory available for review.</p>
+  <h2>Earthquake</h2>
+  <div class="grid">
+    <a class="card" href="tester.html?level=801"><span class="icon">⚡</span><span class="level">Level 801</span><span class="detail">Random road reshuffle · quake log</span><span class="tag">5 patterns</span></a>
+    <a class="card" href="tester.html?level=802"><span class="icon">⚡</span><span class="level">Level 802</span><span class="detail">Another random layout · replay patterns</span><span class="tag">5 patterns</span></a>
+    <a class="card" href="tester.html?level=808"><span class="icon">⚡</span><span class="level">Level 808</span><span class="detail">Different route and quake layout</span><span class="tag">5 patterns</span></a>
+    <a class="card" href="tester.html?level=901"><span class="icon">⚡</span><span class="level">Level 901</span><span class="detail">Standard single road change for comparison</span><span class="tag">fixed</span></a>
+  </div>
+  <h2>Flood and storm</h2>
+  <div class="grid">
+    <a class="card" href="tester.html?level=1001"><span class="icon">🌊</span><span class="level">Level 1001</span><span class="detail">Low road floods four moves after first delivery; wind shifts a blocker</span></a>
+    <a class="card" href="tester.html?level=1002"><span class="icon">🌊</span><span class="level">Level 1002</span><span class="detail">Different low road, closure, and wind direction</span></a>
+    <a class="card" href="tester.html?level=1006"><span class="icon">🌪️</span><span class="level">Level 1006</span><span class="detail">Flood timing and a high road detour</span></a>
+    <a class="card" href="tester.html?level=1010"><span class="icon">🌪️</span><span class="level">Level 1010</span><span class="detail">Alternate flood crossing and storm shift</span></a>
+  </div>
+  <h2>Later road change</h2>
+  <div class="grid"><a class="card" href="tester.html?level=1601"><span class="icon">🛣️</span><span class="level">Level 1601</span><span class="detail">A second road change after the second house</span></a></div>
+  <aside>The three random earthquake maps are a tester pilot. Level 901 and other earthquake maps still use a fixed, smaller change. The flood maps use the same four-move timer with different road positions; this page does not imply new event types have been added.</aside>
+</main></body></html>
