@@ -142,6 +142,14 @@
   copyStatus();
   const inspectTile=cell=>{const tag=[...cell.querySelectorAll('.timer,.done')].map(el=>el.textContent.trim()).filter(Boolean).join(' · ');showBoardMessage(cell.getAttribute('aria-label')?.split(': ').at(-1)||'Map tile',tag||'Tap a green neighboring tile to move.');boardMessage.classList.add('expanded')};
   const board=document.getElementById('board');
+  const quakeBanner=document.createElement('div');
+  quakeBanner.id='quakeBanner';quakeBanner.hidden=true;quakeBanner.setAttribute('role','status');quakeBanner.setAttribute('aria-live','polite');
+  quakeBanner.innerHTML='<strong>⚡ THE GROUND SHIFTS!</strong><span>Earthquake! The roads have changed.</span>';
+  document.body.append(quakeBanner);
+  let quakeLevel=null,quakeSeen=false,quakeTimer=0;
+  const watchQuake=()=>{const current=window.__campaign.getCurrentLevel(),hit=!!window.__campaign.getState().quakeTriggered;if(current?.n!==quakeLevel){quakeLevel=current?.n;quakeSeen=false}playScreen.classList.toggle('quakeHit',!!current?.quakeEvent&&hit);if(!hit){quakeSeen=false;return}if(quakeSeen||!current?.quakeEvent)return;quakeSeen=true;quakeBanner.hidden=false;quakeBanner.classList.remove('show');void quakeBanner.offsetWidth;quakeBanner.classList.add('show');document.body.classList.remove('quakeShaking');void document.body.offsetWidth;document.body.classList.add('quakeShaking');clearTimeout(quakeTimer);quakeTimer=setTimeout(()=>{quakeBanner.hidden=true;quakeBanner.classList.remove('show');document.body.classList.remove('quakeShaking')},3200)};
+  new MutationObserver(watchQuake).observe(board,{childList:true});
+  watchQuake();
   const markShadowNest=()=>{for(const cell of board.querySelectorAll('.cell.spawnerZone')){const badge=[...cell.querySelectorAll('.timer')].find(item=>/^(SHADOW|NEST|MERGED|SPLIT)$/.test(item.textContent.trim()));if(!badge)continue;const active=badge.textContent.trim()!=='NEST';badge.textContent=active?'◈':'◇';badge.classList.add('nestBadge');badge.setAttribute('aria-label',active?'Shadow nest: filled, route blocked':'Shadow nest: dormant, route open');cell.dataset.nestState=active?'filled':'dormant'}};
   new MutationObserver(markShadowNest).observe(board,{childList:true,subtree:true});
   markShadowNest();

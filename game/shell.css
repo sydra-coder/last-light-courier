@@ -1,4 +1,14 @@
 :root{--llc-navy:#10243a;--llc-gold:#f5bd65}
+#quakeBanner{position:fixed;z-index:140;left:50%;top:28%;width:min(360px,calc(100vw - 40px));transform:translateX(-50%);padding:13px 16px;border:2px solid #ffd17d;border-radius:12px;background:linear-gradient(135deg,#633d35,#302b42 65%,#192d3d);box-shadow:0 8px 32px #000c,0 0 24px #e9a45b88;color:#fff0d4;text-align:center;pointer-events:none}
+#quakeBanner[hidden]{display:none}
+#quakeBanner strong,#quakeBanner span{display:block}
+#quakeBanner strong{font:800 17px Georgia,serif;letter-spacing:.045em}
+#quakeBanner span{margin-top:4px;font-size:12px}
+#quakeBanner.show{animation:quakeBannerIn .32s ease-out both}
+body.quakeShaking .shell,body.quakeShaking #integratedNav{animation:quakeShake .75s ease-out both}
+#playScreen.quakeHit #progress::after{content:'  ⚡ QUAKE HIT';color:#ffd17d;font-weight:800;white-space:nowrap}
+@keyframes quakeShake{0%,100%{transform:translate(0,0) rotate(0)}9%{transform:translate(-5px,2px) rotate(-.6deg)}18%{transform:translate(6px,-3px) rotate(.7deg)}29%{transform:translate(-7px,1px) rotate(-.7deg)}40%{transform:translate(6px,3px) rotate(.6deg)}54%{transform:translate(-4px,-2px) rotate(-.4deg)}70%{transform:translate(3px,1px) rotate(.3deg)}84%{transform:translate(-2px,0) rotate(-.2deg)}}
+@keyframes quakeBannerIn{from{opacity:0;transform:translate(-50%,-18px) scale(.92)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
 body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #storybookHome{display:none}
 #playScreen.homeMode{padding:0!important;overflow:hidden!important;background:#091727;border-color:#9b815b;border-radius:18px}
