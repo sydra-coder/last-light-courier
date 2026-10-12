@@ -156,7 +156,8 @@
   const watchQuake=()=>{
     const current=window.__campaign.getCurrentLevel(),state=window.__campaign.getState(),hit=!!state.quakeTriggered;
     if(current?.n!==quakeLevel){quakeLevel=current?.n;quakeSeen=false;quakeLog=null;quakeBeforeRoads=null}
-    quakeLogButton.hidden=!testerBuild||!current?.quakeEvent;
+    quakeLogButton.hidden=!testerBuild||!(current?.quakeEvent||current?.floodRoad);
+    quakeLogButton.textContent=current?.quakeEvent?'⚡ Event log':'🌊 Event log';
     playScreen.classList.toggle('quakeHit',!!current?.quakeEvent&&hit);
     if(!hit){
       quakeSeen=false;quakeLog=null;
@@ -189,6 +190,54 @@
   overlay.addEventListener('click',event=>{if(event.target.closest('[data-quake-replay]')){window.LLCQuakePilot?.setForced(overlay.querySelector('#quakePatternSelect')?.value||'');close();window.__campaign.reset();return}const button=event.target.closest('[data-quake-tile]');if(!button)return;const [x,y]=button.dataset.quakeTile.split(',').map(Number);close();board.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`)?.scrollIntoView({behavior:getSave().reduceMotion?'instant':'smooth',block:'center',inline:'center'})});
   new MutationObserver(watchQuake).observe(board,{childList:true});
   watchQuake();
+  const weatherBanner=document.createElement('div');
+  weatherBanner.id='weatherBanner';weatherBanner.hidden=true;weatherBanner.setAttribute('role','status');weatherBanner.setAttribute('aria-live','polite');
+  weatherBanner.innerHTML='<strong></strong><span></span>';document.body.append(weatherBanner);
+  let weatherLevel=null,weatherStarted=false,weatherClosed=false,weatherLog=null,weatherTimer=0;
+  const weatherRoads=level=>[
+    ...(level.authoredEvent?.kind==='road_close'?[{kind:'Marked road',tile:level.authoredEvent.tile}]:[]),
+    ...(level.stormWind?[{kind:'Wind leaves',tile:level.stormWind.from},{kind:'Wind blocks',tile:level.stormWind.to}]:[]),
+    ...(level.floodRoad?[{kind:'Low road',tile:level.floodRoad.tile}]:[])
+  ];
+  const showWeather=(title,detail,kind)=>{
+    weatherBanner.querySelector('strong').textContent=title;
+    weatherBanner.querySelector('span').textContent=detail;
+    weatherBanner.hidden=false;weatherBanner.classList.remove('show');void weatherBanner.offsetWidth;weatherBanner.classList.add('show');
+    if(!getSave().reduceMotion){playScreen.classList.remove('weatherWash');void playScreen.offsetWidth;playScreen.classList.add('weatherWash')}
+    window.__campaign.eventCue?.(kind);
+    clearTimeout(weatherTimer);weatherTimer=setTimeout(()=>{weatherBanner.hidden=true;weatherBanner.classList.remove('show');playScreen.classList.remove('weatherWash')},2900);
+  };
+  const watchWeather=()=>{
+    const level=window.__campaign.getCurrentLevel(),state=window.__campaign.getState();
+    if(level?.n!==weatherLevel){weatherLevel=level?.n;weatherStarted=false;weatherClosed=false;weatherLog=null}
+    if(!level?.floodRoad)return;
+    if(state.floodStart===null||state.floodStart===undefined){weatherStarted=false;weatherClosed=false;weatherLog=null;weatherBanner.hidden=true;playScreen.classList.remove('weatherWash');clearTimeout(weatherTimer);return}
+    if(!weatherStarted){
+      weatherStarted=true;
+      weatherLog={level:level.n,triggerMove:state.floodStart,roads:weatherRoads(level).map(road=>({...road,before:road.kind==='Wind leaves'?'Blocked':'Open',afterDelivery:roadStatus(road.tile),afterFlood:null}))};
+      showWeather('🌊 FLOOD RISING',`Low road closes in ${level.floodRoad.closeAfter} moves.${level.stormWind?' Wind shifted the roadblock.':''}`,level.stormWind?'storm':'flood');
+    }
+    if(!weatherClosed&&state.turns-state.floodStart>=level.floodRoad.closeAfter){
+      weatherClosed=true;
+      if(weatherLog)for(const road of weatherLog.roads)road.afterFlood=roadStatus(road.tile);
+      showWeather('🌊 ROAD FLOODED','The low crossing is blocked. Find another route.','flood');
+    }
+  };
+  quakeLogButton.addEventListener('click',()=>{
+    const level=window.__campaign.getCurrentLevel();if(!testerBuild||level?.quakeEvent||!level?.floodRoad)return;
+    const roads=weatherLog?.roads||weatherRoads(level).map(road=>({...road,before:road.kind==='Wind leaves'?'Blocked':'Open',afterDelivery:'Waiting',afterFlood:null}));
+    const timer=window.__campaign.getState().floodStart;
+    panel('Flood & wind log',`<div class="quakeLog"><p>First delivery starts the flood countdown. The low road closes after ${level.floodRoad.closeAfter} moves.</p><div class="quakeLogSummary"><div><small>Delivery</small><strong>${timer===null?'Waiting':`Move ${timer}`}</strong></div><div><small>Flood</small><strong>${weatherClosed?'Road blocked':timer===null?'Waiting':`${Math.max(0,level.floodRoad.closeAfter-(window.__campaign.getState().turns-timer))} moves left`}</strong></div></div><div class="quakeLogRoads">${roads.map(road=>`<div class="quakeLogRoad"><span><strong>${road.kind}</strong><small>Column ${road.tile[0]+1}, row ${road.tile[1]+1}</small></span><b>${road.before} → ${road.afterDelivery}${road.afterFlood&&road.afterFlood!==road.afterDelivery?` → ${road.afterFlood}`:''}</b><button type="button" data-quake-tile="${road.tile.join(',')}">View</button></div>`).join('')}</div></div>`);
+  });
+  new MutationObserver(watchWeather).observe(board,{childList:true});watchWeather();
+  const compactEventBadges=()=>{
+    const level=window.__campaign.getCurrentLevel(),state=window.__campaign.getState();if(!level)return;
+    const set=(tile,mark,label,type)=>{if(!tile)return;const badge=board.querySelector(`.cell[data-x="${tile[0]}"][data-y="${tile[1]}"] .timer`);if(!badge)return;if(badge.textContent!==mark)badge.textContent=mark;if(!badge.classList.contains(type))badge.classList.add(type);if(badge.title!==label)badge.title=label};
+    if(level.floodRoad){const elapsed=state.floodStart===null||state.floodStart===undefined?null:state.turns-state.floodStart,left=elapsed===null?null:Math.max(0,level.floodRoad.closeAfter-elapsed);set(level.floodRoad.tile,left===null?'≈':left?'≈'+left:'✕',left===null?'Low road floods after first delivery':left?'Low road floods in '+left+' moves':'Low road flooded; blocked','floodBadge')}
+    if(level.stormWind){set(level.stormWind.from,state.eventTriggered?'✓':'↝',state.eventTriggered?'Wind cleared this tile':'Wind currently blocks this tile','windBadge');set(level.stormWind.to,state.eventTriggered?'✕':'↝',state.eventTriggered?'Wind now blocks this tile':'Wind will move here after first delivery','windBadge')}
+    if(level.authoredEvent?.kind==='road_close')set(level.authoredEvent.tile,state.eventTriggered?'✕':'◆',state.eventTriggered?'Marked road closed after delivery':'Marked road closes after first delivery','eventBadge');
+  };
+  new MutationObserver(compactEventBadges).observe(board,{childList:true,subtree:true});compactEventBadges();
   const markShadowNest=()=>{for(const cell of board.querySelectorAll('.cell.spawnerZone')){const badge=[...cell.querySelectorAll('.timer')].find(item=>/^(SHADOW|NEST|MERGED|SPLIT)$/.test(item.textContent.trim()));if(!badge)continue;const active=badge.textContent.trim()!=='NEST';badge.textContent=active?'◈':'◇';badge.classList.add('nestBadge');badge.setAttribute('aria-label',active?'Shadow nest: filled, route blocked':'Shadow nest: dormant, route open');cell.dataset.nestState=active?'filled':'dormant'}};
   new MutationObserver(markShadowNest).observe(board,{childList:true,subtree:true});
   markShadowNest();

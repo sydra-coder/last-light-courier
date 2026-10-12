@@ -79,13 +79,13 @@ const persist=()=>{try{localStorage.setItem(saveKey,JSON.stringify(save));}catch
 const FEEDBACK=(()=>{
   let audio=null;
   const history=[];
-  const vibrations={step:[10],shadowNear:[28,32,35],house:[24,24,45],repair:[35,28,65],denied:[55,35,55],complete:[30,40,30,40,75],failure:[75,45,100],crossing:[18,25,18]};
+  const vibrations={step:[10],shadowNear:[28,32,35],house:[24,24,45],repair:[35,28,65],denied:[55,35,55],complete:[30,40,30,40,75],failure:[75,45,100],crossing:[18,25,18],flood:[22,34,42],storm:[18,24,30]};
   function unlock(){
     if(save.soundOn===false)return null;
     try{audio??=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();return audio}catch(_){return null}
   }
   function tone(frequency,duration,delay=0,type='sine',volume=.045,endFrequency=frequency){
-    const context=unlock();if(!context)return;
+    const effectLevel=Math.max(0,Math.min(1,Number.isFinite(save.effectVolume)?save.effectVolume:1));if(!effectLevel)return;const context=unlock();if(!context)return;volume*=effectLevel;
     const start=context.currentTime+delay,osc=context.createOscillator(),gain=context.createGain();
     osc.type=type;osc.frequency.setValueAtTime(frequency,start);osc.frequency.exponentialRampToValueAtTime(Math.max(30,endFrequency),start+duration);
     gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume*(Number.isFinite(save.effectVolume)?save.effectVolume:1)),start+.012);
@@ -101,7 +101,7 @@ const FEEDBACK=(()=>{
     else if(kind==='denied')tone(230,.17,0,'square',.018,125);
     else if(kind==='complete'){[523,659,784,1046].forEach((f,i)=>tone(f,.35,i*.11,'sine',.05))}
     else if(kind==='failure'){tone(270,.35,0,'sawtooth',.03,95);tone(130,.3,.2,'sine',.025,70)}
-    else if(kind==='crossing')tone(460,.12,0,'triangle',.027,210);
+    else if(kind==='crossing')tone(460,.12,0,'triangle',.027,210);else if(kind==='flood'){tone(240,.38,0,'sine',.035,125);tone(340,.3,.1,'triangle',.018,190)}else if(kind==='storm'){tone(410,.24,0,'triangle',.027,255);tone(290,.27,.09,'sine',.02,160)}
   }
   function haptic(kind){
     if(save.hapticsOn===false||!vibrations[kind])return;
@@ -994,7 +994,7 @@ useCandidatePower=function(){
 })();
 
 setupNavigationIcons();
-window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,hintRoute:()=>ROUTE_SOLVER.solve(level,structuredClone(state),{repaired:repaired()}),getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history,redraw:()=>ISO.render(),setView:value=>switchView(value),setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()},getCurrentLevel:()=>level,buyRepairConfirmed:(origin,payment="gems")=>attemptRepair(origin,true,payment),canRepairMove,repairAndMove,trophyCatalog:TROPHY_CATALOG,claimTrophy,exchangePointsForGems:(qty=1)=>{if(!Number.isSafeInteger(qty)||qty<1||((qty*window.LLCGemShop.exchangePoints)>save.wallet)||!Number.isSafeInteger(qty*window.LLCGemShop.exchangePoints)||!Number.isSafeInteger(qty*window.LLCGemShop.exchangeGems)||save.gems+qty*window.LLCGemShop.exchangeGems>Number.MAX_SAFE_INTEGER)return false;save.wallet-=qty*window.LLCGemShop.exchangePoints;save.gems+=qty*window.LLCGemShop.exchangeGems;persist();render();return true}};
+window.__campaign={levels:LEVELS,choose,move,reset,minimumForLevel,hintRoute:()=>ROUTE_SOLVER.solve(level,structuredClone(state),{repaired:repaired()}),getState:()=>structuredClone(state),getSave:()=>structuredClone(save),feedbackHistory:FEEDBACK.history,eventCue:kind=>{if(["flood","storm"].includes(kind))FEEDBACK.emit(kind)},redraw:()=>ISO.render(),setView:value=>switchView(value),setPreference:(key,value)=>{if(!["musicOn","musicVolume","soundOn","effectVolume","hapticsOn","reduceMotion","highContrast"].includes(key))return;save[key]=value;persist();FEEDBACK.labels()},getCurrentLevel:()=>level,buyRepairConfirmed:(origin,payment="gems")=>attemptRepair(origin,true,payment),canRepairMove,repairAndMove,trophyCatalog:TROPHY_CATALOG,claimTrophy,exchangePointsForGems:(qty=1)=>{if(!Number.isSafeInteger(qty)||qty<1||((qty*window.LLCGemShop.exchangePoints)>save.wallet)||!Number.isSafeInteger(qty*window.LLCGemShop.exchangePoints)||!Number.isSafeInteger(qty*window.LLCGemShop.exchangeGems)||save.gems+qty*window.LLCGemShop.exchangeGems>Number.MAX_SAFE_INTEGER)return false;save.wallet-=qty*window.LLCGemShop.exchangePoints;save.gems+=qty*window.LLCGemShop.exchangeGems;persist();render();return true}};
 window.CourierApp={back:()=>{if(!$('hintDialog').hidden){closeHint();return true}if(document.body.dataset.screen!=='play'&&$('legendHelp').hidden&&$('settingsPanel').hidden){showScreen('play');return true}if(!$('legendHelp').hidden){closeLegendHelp();return true}if(!$('settingsPanel').hidden){$('settingsPanel').hidden=true;return true}if(!$('levelPicker').hidden){backPicker();return true}if(!$('mainMenu').hidden)return false;if(state.help){state.help=false;render();return true}showMenu();return true}};
 const requested=Number(new URLSearchParams(location.search).get('level'));const hasLevel=Number.isInteger(requested)&&requested>=1&&requested<=LEVELS.length;choose(hasLevel?requested:(LEVELS.find(l=>!save.cleared[l.n])?.n||LEVELS.length));switchView(save.viewMode||'isometric');/* The five-tab shell is the entry screen. */
 })();

@@ -5,6 +5,14 @@
 #quakeBanner strong{font:800 17px Georgia,serif;letter-spacing:.045em}
 #quakeBanner span{margin-top:4px;font-size:12px}
 #quakeBanner.show{animation:quakeBannerIn .32s ease-out both}
+#weatherBanner{position:fixed;z-index:140;left:50%;top:28%;width:min(360px,calc(100vw - 40px));transform:translateX(-50%);padding:13px 16px;border:2px solid #8dd9f1;border-radius:12px;background:linear-gradient(135deg,#14536d,#173a59 65%,#142b43);box-shadow:0 8px 32px #000c,0 0 22px #79d6ff77;color:#e9faff;text-align:center;pointer-events:none}
+#weatherBanner[hidden]{display:none}
+#weatherBanner strong,#weatherBanner span{display:block}
+#weatherBanner strong{font:800 17px Georgia,serif;letter-spacing:.045em}
+#weatherBanner span{margin-top:4px;font-size:12px}
+#weatherBanner.show{animation:quakeBannerIn .32s ease-out both}
+#playScreen.weatherWash .boardframe{animation:weatherWash .85s ease-out both}
+@keyframes weatherWash{0%,100%{box-shadow:0 0 0 transparent}35%{box-shadow:0 0 0 5px #7ee1ff77,0 0 28px #4cc9f0a0}65%{box-shadow:0 0 0 2px #7ee1ff55,0 0 16px #4cc9f066}}
 #quakeLogButton{margin-right:auto;min-height:28px;padding:3px 8px;border:1px solid #dda963;border-radius:7px;background:#493745;color:#ffe2af;font:800 11px Arial,sans-serif}
 #quakeLogButton[hidden]{display:none!important}
 .quakeLog{display:grid;gap:8px}.quakeLog>p{margin:0 0 4px}.quakeLogSummary{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quakeLogSummary>div{display:grid;gap:4px;padding:10px;border:1px solid #837461;border-radius:8px;background:#172a3c}.quakeLogSummary small,.quakeLogRoad small{color:#c9d5dd}.quakeLogSummary strong{font-size:13px;color:#ffe0a0}.quakeLogRoad{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #657b85;border-radius:8px;background:#1d3245}.quakeLogRoad>span{display:grid;gap:3px;min-width:0;flex:1}.quakeLogRoad>span strong{font-size:13px}.quakeLogRoad>b{font-size:11px;color:#ffe2aa}.quakeLogRoad button{border:1px solid #d3a66d;border-radius:6px;background:#6b4a2b;color:#fff0d1;padding:6px 8px;font-weight:800}
@@ -198,6 +206,11 @@ body{background:radial-gradient(ellipse at 50% -8%,#29415a,#0b1624 62%,#08111c)}
 #playScreen.largeBoard .board .cell .houseNumber.isLit{border-color:#fff3b4;background:#ffd15e;color:#3c2919;box-shadow:0 0 0 2px #ffc65c77,0 0 10px #ffd570}
 #playScreen .board .cell .houseNumber{display:none!important}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .timer:not(.repairBadge){display:none}
+#playScreen.largeBoard .boardframe:not(.zoomed) .board .timer.floodBadge,#playScreen.largeBoard .boardframe:not(.zoomed) .board .timer.windBadge,#playScreen.largeBoard .boardframe:not(.zoomed) .board .timer.eventBadge{display:grid}
+.board .cell .timer.floodBadge,.board .cell .timer.windBadge,.board .cell .timer.eventBadge{place-items:center;width:17px;height:17px;min-width:17px;max-width:17px;padding:0!important;border-radius:5px;font:900 11px/1 Arial,sans-serif!important;letter-spacing:-1px;overflow:hidden;white-space:nowrap;box-shadow:0 1px 5px #000b}
+.board .cell .timer.floodBadge{background:#145c78;color:#d9faff;border:1px solid #8ddff6}
+.board .cell .timer.windBadge{background:#315064;color:#e5f5fd;border:1px solid #b4d8ed}
+.board .cell .timer.eventBadge{background:#72512b;color:#ffe3a7;border:1px solid #f4c67e}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .repairBadge{font-size:0!important;width:16px;height:16px;display:grid;place-items:center;padding:0!important;border-radius:50%;background:#dca75c;color:#2a261f}
 #playScreen.largeBoard .boardframe:not(.zoomed) .board .repairBadge::after{content:'⚒';font-size:11px;line-height:1}
 .mapIconRail{display:none!important}
