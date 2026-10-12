@@ -419,6 +419,11 @@ body[data-screen="levels"] #resourceStrip,body[data-screen="courier"] #resourceS
 .trophyFoot{text-align:center}
 /* Keep one compact map action; route updates remain available to regression fixtures only. */
 #boardMessage[hidden]{display:none!important}
+#tilePreview{position:fixed;z-index:110;box-sizing:border-box;width:212px;padding:10px;border:2px solid #ffd47f;border-radius:12px;background:#152d3f;color:#fff1d8;box-shadow:0 10px 32px #061320dd;pointer-events:none;text-align:center}
+#tilePreview[hidden]{display:none}
+#tilePreview canvas{display:block;width:180px;height:180px;margin:0 auto 8px;border:1px solid #7794a3;border-radius:8px;background:#223b4d;image-rendering:auto}
+#tilePreview strong{display:block;font:700 17px/1.2 Georgia,serif;color:#ffe09d;overflow-wrap:anywhere}
+#tilePreview span{display:block;margin-top:4px;font:12px/1.3 system-ui,sans-serif;color:#e0e9eb;overflow-wrap:anywhere}
 body[data-screen="play"] #playScreen .boardZoom{justify-content:flex-end;margin:2px 0 4px;min-height:30px}
 body[data-screen="play"] #playScreen:not(.largeBoard) .boardZoom{display:none}
 body[data-screen="play"] #playScreen .boardZoom #focusCourier,body[data-screen="play"] #playScreen .boardZoom #focusDestination,body[data-screen="play"] #playScreen .boardZoom label[for="focusDestination"],body[data-screen="play"] #playScreen .boardZoom #retry{display:none!important}
