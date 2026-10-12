@@ -113,6 +113,14 @@
   const restorePowerShop=()=>{if(powerShop.parentElement!==powerShopHome)powerShopHome.append(powerShop)};
   const close = () => { restorePowerShop();overlay.hidden = true; overlay.innerHTML = '';document.body.classList.remove('modalOpen'); };
   const panel = (title, body) => { restorePowerShop();overlay.hidden = false;document.body.classList.add('modalOpen');overlay.innerHTML = `<section class="integratedPanel" role="dialog" aria-modal="true" aria-label="${title}"><div class="head"><h2>${title}</h2><button class="close" type="button" aria-label="Close">×</button></div>${body}</section>`; };
+  const legendButton=document.createElement('button');
+  legendButton.id='boardLegendButton';legendButton.type='button';legendButton.textContent='?';legendButton.setAttribute('aria-label','Map symbols and rules');legendButton.title='Map symbols';
+  document.getElementById('gameSettings').before(legendButton);
+  legendButton.addEventListener('click',()=>{
+    const entries=[...document.querySelectorAll('#mapLegend .mapLegendRow')].map(row=>({key:row.dataset.legendHelp,title:row.querySelector('b')?.textContent||'',detail:row.dataset.legendHelp==='repair'?'Open this tile with a repair charge or gems for this level.':row.querySelector('small')?.textContent||'',icon:row.querySelector('canvas')}));
+    panel('Map symbols',`<div class="legendGuide"><div class="legendGuideRow"><span class="legendSwatch safe" aria-hidden="true"></span><div><strong>Green border</strong><small>Safe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch danger" aria-hidden="true"></span><div><strong>Red border</strong><small>Unsafe next move</small></div></div><div class="legendGuideRow"><span class="legendSwatch blocked" aria-hidden="true">♠</span><div><strong>Rock or tree</strong><small>Blocked tile</small></div></div>${entries.map(item=>`<div class="legendGuideRow" data-symbol="${item.key}"><canvas width="80" height="70" aria-hidden="true"></canvas><div><strong>${item.title}</strong><small>${item.detail}</small></div></div>`).join('')}</div>`);
+    for(const item of entries){const canvas=overlay.querySelector(`[data-symbol="${item.key}"] canvas`);if(item.icon&&canvas)canvas.getContext('2d').drawImage(item.icon,0,0)}
+  });
   document.getElementById('zoomMap').title='Zoom map';
   const repairCallout=document.createElement('section');
   repairCallout.id='repairCallout';
@@ -135,7 +143,7 @@
   const board=document.getElementById('board');
   const tilePreview=document.createElement('div');
   tilePreview.id='tilePreview';tilePreview.hidden=true;
-  tilePreview.innerHTML='<canvas width="180" height="180" aria-hidden="true"></canvas><strong></strong><span></span>';
+  tilePreview.innerHTML='<canvas width="180" height="180" aria-hidden="true"></canvas><strong></strong><span></span><small></small>';
   document.body.append(tilePreview);
   let tileHoldTimer=0,tileHideTimer=0,tileHoldStart=null,tileHoldShown=false,suppressTileClick=false;
   const hideTilePreview=()=>{tilePreview.hidden=true;clearTimeout(tileHideTimer)};
@@ -146,12 +154,25 @@
     ctx.drawImage(source,left,top,size,size,0,0,art.width,art.height);
     const raw=cell.getAttribute('aria-label')||'Map tile',parts=raw.split(': '),label=parts.length>1?parts.slice(1).join(': '):raw;
     const badge=[...cell.querySelectorAll('.timer,.done')].map(el=>el.textContent.trim()).filter(Boolean).join(' · ');
-    tilePreview.querySelector('strong').textContent=badge||label;
-    tilePreview.querySelector('span').textContent=badge?label:`Column ${Number(cell.dataset.x)+1}, row ${Number(cell.dataset.y)+1}`;
-    const width=212,height=253;
+    const kind=cell.classList;
+    const info=kind.contains('dark')?['Dark street','The crescent marks a dark street. Entering costs 2 lantern light instead of 1.']:
+      kind.contains('repairable')?['Repairable tile','Open this marked tile with a repair charge or the shown gem cost.']:
+      kind.contains('fade')?['Fading crossing','This crossing closes five moves after you first use it.']:
+      kind.contains('ice')?['Thin ice','This crossing breaks four moves after you first use it.']:
+      kind.contains('switch')?['Timed switch','Step here to open the timed gate for four moves.']:
+      kind.contains('gate')?['Timed gate','Pass through while its switch timer is active.']:
+      kind.contains('wall')?['Blocked tile','Rocks and trees cannot be crossed.']:
+      badge.includes('SHADOW')||badge.includes('NEST')?['Shadow nest','This marked area can fill with shadow after a delivery.']:
+      badge.includes('CLOSE')?['Changing road','This road changes after a delivery. Check whether it is open before crossing.']:
+      ['Map tile',label];
+    tilePreview.querySelector('strong').textContent=info[0];
+    tilePreview.querySelector('span').textContent=info[1];
+    tilePreview.querySelector('small').textContent=(badge?badge+' · ':'')+(kind.contains('safe')?'Green border: safe next move.':kind.contains('danger')?'Red border: unsafe next move.':`Column ${Number(cell.dataset.x)+1}, row ${Number(cell.dataset.y)+1}`);
+    const width=212;
+    tilePreview.hidden=false;
+    const height=tilePreview.offsetHeight;
     tilePreview.style.left=Math.max(8,Math.min(innerWidth-width-8,tile.left+tile.width/2-width/2))+'px';
     tilePreview.style.top=Math.max(8,Math.min(innerHeight-height-8,tile.top-height-12))+'px';
-    tilePreview.hidden=false;
   };
   board.addEventListener('pointerdown',e=>{
     const cell=e.target.closest('.cell');if(!cell||e.button!==0)return;
